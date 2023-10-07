@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://dfxa3ju3tk8sh"]
+
+[node name="door_compose" type="VBoxContainer"]
+offset_right = 144.0
+offset_bottom = 100.0
+
+[node name="name" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="name"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "name"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="name"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "name"
+
+[node name="id" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="id"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "id"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="id"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "name"
+
+[node name="color" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="color"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "color"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="color"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "name"
