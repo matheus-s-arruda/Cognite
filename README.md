@@ -7,14 +7,13 @@
 > - Create or add a `CogniteAssemble` and start creating your graphs.
 <br>
 
+To generate the MachineState in your scene, go to the CogniteNode node and click `CLICK TO ASSEMBLY` in the inspector.<br>If there is another node created in this way in the scene, this node will be automatically deleted.<br> Remember to save your resources and codes.
+
+---
 Currently, there are 4 types of nodes.
 
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/main/thumbnail/nodes.png" height="120"/>
-
-<b>The general rule for using nodes is:</b>
-
-The path must always start in a `State`, always end in a `Change State`, at most 1 `Event` node per path and the `Condition` node there is no restriction.
-<br><br>
+<br>
 
 Each node has an important function.
 
@@ -28,3 +27,9 @@ Each node has an important function.
 <br>
 
 - <b>Change State</b>: Its use is simple, change to a new state.
+<br>
+
+## The general rule for using nodes:
+The path must always start in a `State`, always end in a `Change State`, at most 1 `Event` node per path and the `Condition` node there is no restriction.
+<br><br
+     
