@@ -53,30 +53,28 @@ func cognite_assembly_construct(cogNode: CogniteNode):
 		cogNode.add_child(root_node)
 		root_node.owner = EditorInterface.get_edited_scene_root()
 		root_node.set_name("ROOT")
-	
 	else:
 		return
 	
-	for modus in cogNode.cognite_assemble_root.nodes.values():
+	if cogNode.root_depth_level > 0:
+		generate_node_tree(cogNode.cognite_assemble_root, root_node, 1, cogNode.root_depth_level)
+	
+	EditorInterface.save_all_scenes()
+
+
+func generate_node_tree(assemble: CogniteAssemble, parent: Node, depth: int, max_depth):
+	for modus in assemble.nodes.values():
 		if modus.type != CogniteAssemble.MODUS:
 			continue
 		
-		var _name: String = cogNode.cognite_assemble_root.source.states[modus.state -1]
-		var result: Array = generate_node_modus(modus, CogniteData.except_letters(_name).to_upper(), root_node)
+		var name: String = assemble.source.states[modus.state -1]
+		var result: Array = generate_node_modus(modus, name, parent)
+		
 		if result.is_empty():
 			continue
 		
-		var node: Node = result[0]
-		var assemble: CogniteAssemble = result[1]
-		
-		for _modus in assemble.nodes.values():
-			if _modus.type != CogniteAssemble.MODUS:
-				continue
-			
-			var __name: String = assemble.source.states[_modus.state -1]
-			var _result: Array = generate_node_modus(_modus, __name, node)
-	
-	EditorInterface.save_all_scenes()
+		if depth < max_depth:
+			generate_node_tree(result[1], result[0], depth + 1, max_depth)
 
 
 func generate_node_modus(modus: Dictionary, name: String, parent: Node):
@@ -100,7 +98,7 @@ func generate_node_modus(modus: Dictionary, name: String, parent: Node):
 
 
 func is_resource_deleted(file_name: String):
-	last_resource.resource_name = file_name
-	bottom_panel.hide_editor()
+	if last_resource.resource_name == file_name:
+		bottom_panel.hide_editor()
 
 

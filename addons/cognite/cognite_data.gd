@@ -3,13 +3,11 @@ class_name CogniteData extends RefCounted
 
 const ROUTINE_SEARCH_FAIL := true
 const CODE_PROPERTY_NAMES := {"state": [], "signal": [], "conditions": []}
-const CODE_HEAD := "extends CogniteNodeAssembly\n"
+const CODE_HEAD := "extends Node\n"
 const CODE_EXPORT := "\n@export var current_state: State\n@onready var initial_state = current_state\n"
 const CODE_PARENT_CHANGED_SIGNAL := "	get_parent().state_changed.connect(_parent_state_changed)\n"
-const CODE_READY := "func _ready():
-	pass\n\n"
-const CODE_PROCESS := "\n\nfunc _process(delta):
-	pass\n\n"
+const CODE_READY := "func _ready():\n"
+const CODE_PROCESS := "\n\nfunc _process(delta):\n"
 const CODE_ROUTINE_DATA := {
 	"modus": "", "event": "", "body": {},
 }
@@ -51,10 +49,10 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	code += get_signals(code_names)
 	code += CogniteData.CODE_EXPORT
 	code += get_conditions(code_names)
+	code += "var is_active := true\n"
 	
-	code += "\nvar is_active := true\n"
 	if relative_parent_state != 0:
-		code += "\nvar relative_parent_state: int\n"
+		code += "var relative_parent_state: int\n"
 	
 	var routines: Array
 	for node in cognite_assemble.nodes.values():
@@ -65,22 +63,33 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	mont_signals(routines, events)
 	
 	code += CogniteData.CODE_READY
+	var nothing_in_ready = true
 	
 	if relative_parent_state != 0:
 		code += CogniteData.CODE_PARENT_CHANGED_SIGNAL
 		code += "\n	relative_parent_state = " + str(relative_parent_state) + "\n\n"
+		nothing_in_ready = false
 	
 	for event in events:
 		code += "	" + event + ".connect(_on_" + event + ")\n"
+		nothing_in_ready = false
+	
+	if nothing_in_ready:
+		code += '	pass\n'
 	
 	code += CogniteData.CODE_PROCESS
+	var nothing_in_process = true
 	
 	for routine in routines:
 		if not routine.event.is_empty():
 			continue
 		
+		nothing_in_process = false
 		code += "\n	if current_state == State." + routine.modus + ":\n"
 		code += build_routine(routine.body, 2)
+	
+	if nothing_in_process:
+		code += "	pass\n"
 	
 	code += CogniteData.CODE_CHANGE_STATE
 	if relative_parent_state != 0:
@@ -118,7 +127,6 @@ static func get_conditions(code_names: Dictionary):
 	var code := "\n"
 	for condition in code_names.conditions:
 		code += "var " + condition + ": bool\n"
-	code += "\n"
 	return code
 
 static func get_routines(node_modus: Dictionary, routines: Array, code_names: Dictionary, cognite_assemble: CogniteAssemble):
@@ -175,6 +183,9 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 
 static func condition_routine(node: Dictionary, routine: Dictionary, code_names: Dictionary, cognite_assemble: CogniteAssemble):
 	for node_id in node.right_connections:
+		if not cognite_assemble.nodes.has(node_id):
+			continue
+		
 		var key = "else" if node.right_connections[node_id].x == 1 else "ifs"
 		var new_routine: Dictionary
 		
@@ -234,7 +245,7 @@ static func mont_signals(routines: Array, events: Dictionary):
 
 static func except_letters(input_string: String) -> String:
 	var regex := RegEx.new()
-	regex.compile("[^A-Za-z_]")  # Esta expressão regular corresponde a qualquer caractere que não seja uma letra ou underline.
-	input_string = regex.sub(input_string, "")  # Substitui os caracteres especiais por uma string vazia.
+	regex.compile("[^A-Za-z_]") 
+	input_string = regex.sub(input_string, "")
 	input_string = input_string.replace(" ", "_")
 	return input_string

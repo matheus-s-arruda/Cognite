@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpwg601o5cdp5"]
+
+[ext_resource type="Script" path="res://addons/cognite/cognite_node.gd" id="1_6nh1b"]
+[ext_resource type="Resource" path="res://teste.cognite" id="2_1idii"]
+
+[node name="CogniteNode" type="Node"]
+script = ExtResource("1_6nh1b")
+root_depth_level = 99
+cognite_assemble_root = ExtResource("2_1idii")
