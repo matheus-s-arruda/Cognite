@@ -41,17 +41,17 @@ func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wi
 
 
 func cognite_assembly_construct(cogNode: CogniteNode):
-	for child in cogNode.get_children():
-		if child.name == "ROOT":
-			child.queue_free()
+	if cogNode.root_node:
+		cogNode.root_node.queue_free()
 	
 	var root_node: Node
 	if cogNode.cognite_assemble_root:
 		var gdscript: GDScript = CogniteData.assembly(cogNode.cognite_assemble_root, 0)
 		root_node = gdscript.new()
 		
-		cogNode.add_child(root_node)
+		EditorInterface.get_edited_scene_root().add_child(root_node)
 		root_node.owner = EditorInterface.get_edited_scene_root()
+		cogNode.root_node = root_node
 		root_node.set_name("ROOT")
 	else:
 		return
