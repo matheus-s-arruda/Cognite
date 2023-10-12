@@ -2,30 +2,106 @@
 "@path": "res://addons/cognite/assemble.gd",
 "@subpath": NodePath(""),
 "nodes": {
-2505324955046: {
-"assembly": "res://teste.cognite",
-"position": Vector2(180, 20),
+2415734622874: {
+"position": Vector2(0, 60),
 "right_connections": {
-2526229366231: Vector2i(0, 0)
+2496047156034: Vector2i(0, 0),
+3513551752227: Vector2i(0, 0),
+3643357072547: Vector2i(0, 0)
 },
 "state": 1,
 "type": 0
 },
-2526229366231: {
-"condition": 1,
-"position": Vector2(380, 0),
+2421673757333: {
+"position": Vector2(0, -180),
 "right_connections": {
-2580688209410: Vector2i(0, 0)
+2496047156034: Vector2i(0, 0),
+2599042485170: Vector2i(0, 0)
+},
+"state": 3,
+"type": 0
+},
+2426774031163: {
+"position": Vector2(20, 240),
+"right_connections": {
+3040467815402: Vector2i(0, 0)
+},
+"state": 2,
+"type": 0
+},
+2496047156034: {
+"position": Vector2(260, -60),
+"right_connections": {
+2794631269345: Vector2i(0, 0)
+},
+"trigger": 1,
+"type": 1
+},
+2599042485170: {
+"condition": 2,
+"position": Vector2(260, -180),
+"right_connections": {
+2620936752071: Vector2i(1, 0)
 },
 "type": 3
 },
-2580688209410: {
+2620936752071: {
+"condition": 2,
+"position": Vector2(400, -180),
+"right_connections": {
+2700896963556: Vector2i(1, 0)
+},
+"type": 3
+},
+2700896963556: {
+"change_state": 1,
+"position": Vector2(560, -180),
+"right_connections": {},
+"type": 2
+},
+2794631269345: {
+"change_state": 2,
+"position": Vector2(560, -60),
+"right_connections": {},
+"type": 2
+},
+3040467815402: {
+"position": Vector2(280, 240),
+"right_connections": {
+3093685144616: Vector2i(0, 0)
+},
+"trigger": 2,
+"type": 1
+},
+3093685144616: {
+"change_state": 1,
+"position": Vector2(580, 240),
+"right_connections": {},
+"type": 2
+},
+3513551752227: {
+"condition": 2,
+"position": Vector2(280, 20),
+"right_connections": {
+3777675463893: Vector2i(0, 0)
+},
+"type": 3
+},
+3643357072547: {
+"condition": 1,
+"position": Vector2(280, 120),
+"right_connections": {
+3777675463893: Vector2i(0, 0)
+},
+"type": 3
+},
+3777675463893: {
 "change_state": 3,
-"position": Vector2(540, 0),
+"position": Vector2(560, 80),
 "right_connections": {},
 "type": 2
 }
 },
-"source": Object(Resource,"resource_local_to_scene":false,"resource_name":"","script":Resource("res://addons/cognite/source.gd"),"triggers":Array[String](["xx"]),"conditions":Array[String](["aa", "bb", "cc"]),"states":Array[String](["A", "B", "C"]))
+"source": Object(Resource,"resource_local_to_scene":false,"resource_name":"","script":Resource("res://addons/cognite/source.gd"),"triggers":Array[String](["enemy detected", "no enemy detected"]),"conditions":Array[String](["hungry", "bathroom"]),"states":Array[String](["PATROL", "COMBAT", "REST"]))
 
 }
