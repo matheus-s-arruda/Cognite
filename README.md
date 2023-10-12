@@ -29,7 +29,29 @@ Each node has an important function.
 - <b>Change State</b>: Its use is simple, change to a new state.
 <br>
 
-## The general rule for using nodes:
+---
+### The general rule for using nodes:
 The path must always start in a `State`, always end in a `Change State`, at most 1 `Event` node per path and the `Condition` node there is no restriction.
-<br><br
-     
+
+<br>
+
+## install guide
+You can acquire Cognite in your project in two ways
+- Download directly to your godot 4.2 via [Godot Asset Library](https://godotengine.org/asset-library/asset/2235)
+- Download this repository and add the `cognite folder` to your `addons folder` (if it doesn't exist, create it)
+
+<br>
+
+## Examples
+Let's try out what logic would be like for an NPC soldier, first let's deduce what he will do and how he will do it:
+- He must patrol the region in search of any enemies.
+- Regardless of what you are doing, if an enemy is detected, it must enter COMBAT mode.
+- If he hears no enemy sightings, he will return to patrol.
+- Periodically, he may stop the patrol to eat or go to the bathroom.
+
+Now let's see what this logic would look like using Cognite.
+
+
+
+
+
