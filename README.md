@@ -50,8 +50,17 @@ Let's try out what logic would be like for an NPC soldier, first let's deduce wh
 - Periodically, he may stop the patrol to eat or go to the bathroom.
 
 Now let's see what this logic would look like using Cognite.
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/main/thumbnail/example.png">
+<br>
 
+The first path starts in <b>REST</b>, it will observe 2 conditions in series, this means that it will only change state if the condition is accepted, in this case, the conditions are that the `hunger` and `bathroom` variables are false.
 
+In <b>REST</b> to a second branch, there is already a detected enemy signal.
 
+The first branch of <b>PATROL</b> is the same as that of <b>REST</b>, changing to the <b>COMBAT</b> state if a detected enemy is issued.
+
+The next two branches of <b>PATROL<b/> will change to the same state, but with different conditions and in parallel, this means that if one of the two conditions is accepted, the state will be changed.
+
+Lastly we have the <b>COMBAT</b> state, it just waits for the signal of an undetected enemy to return to the <b>PATROL</b> state.
 
 
