@@ -1,25 +1,28 @@
 @tool
 extends Control
 
-enum {MODUS, EVENTS, CHANGE_STATE, CONDITION}
+enum {MODUS, EVENTS, CHANGE_STATE, CONDITION, RANGE}
 
+const CREATE_NODEGRAPH = preload("res://addons/cognite/editor/create_nodegraph.tscn")
 const GRAPH_NODES := {
 	MODUS: preload("res://addons/cognite/editor/graphnodes/modus.tscn"),
 	EVENTS: preload("res://addons/cognite/editor/graphnodes/events.tscn"),
 	CONDITION: preload("res://addons/cognite/editor/graphnodes/condition.tscn"),
 	CHANGE_STATE: preload("res://addons/cognite/editor/graphnodes/change_states.tscn"),
+	RANGE: preload("res://addons/cognite/editor/graphnodes/range.tscn"),
 }
 
 var nodes: Dictionary
 var assemble: CogniteAssemble
+var create_nodegraph: OptionButton = CREATE_NODEGRAPH.instantiate()
 
-@onready var create_nodegraph: OptionButton = $GraphEdit/HBoxContainer/create_nodegraph
 @onready var graph_edit: GraphEdit = $GraphEdit
 @onready var label: Label = $Label
 
 
 func _ready():
-	$GraphEdit/HBoxContainer.size = Vector2.ZERO
+	graph_edit.get_menu_hbox().add_child(create_nodegraph)
+	create_nodegraph.item_selected.connect(_on_create_nodegraph_item_selected)
 
 
 func create_node(type: int, id: int):

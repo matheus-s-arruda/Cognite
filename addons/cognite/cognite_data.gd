@@ -1,8 +1,10 @@
 @tool
 class_name CogniteData extends RefCounted
 
+enum Types {MODUS, EVENTS, CHANGE_STATE, CONDITION, RANGE}
+
 const ROUTINE_SEARCH_FAIL := true
-const CODE_PROPERTY_NAMES := {"state": [], "signal": [], "conditions": []}
+const CODE_PROPERTY_NAMES := {"state": [], "signal": [], "conditions": [], "ranges": []}
 const CODE_HEAD := "extends Node\n"
 const CODE_EXPORT := "\n@export var current_state: State\n@onready var initial_state = current_state\n"
 const CODE_PARENT_CHANGED_SIGNAL := "	get_parent().state_changed.connect(_parent_state_changed)\n"
@@ -45,18 +47,22 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	for condition in cognite_assemble.source.conditions:
 		code_names.conditions.append(except_letters(condition))
 	
+	for range in cognite_assemble.source.ranges:
+		code_names.ranges.append(except_letters(range))
+	
 	code += get_states(code_names)
 	code += get_signals(code_names)
 	code += CogniteData.CODE_EXPORT
+	code += get_ranges(code_names)
 	code += get_conditions(code_names)
-	code += "var is_active := true\n"
+	code += "var is_active := true\n\n"
 	
 	if relative_parent_state != 0:
 		code += "var relative_parent_state: int\n"
 	
 	var routines: Array
 	for node in cognite_assemble.nodes.values():
-		if node.type == CogniteAssemble.MODUS:
+		if node.type == Types.MODUS:
 			get_routines(node, routines, code_names, cognite_assemble)
 	
 	var events: Dictionary
@@ -95,6 +101,8 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	if relative_parent_state != 0:
 		code += CogniteData.CODE_PARENT_CHANGED_RECEIVER
 	
+	print(events)
+	
 	code += "\n\n"
 	for event in events:
 		code += "func _on_" + event + "():"
@@ -129,6 +137,12 @@ static func get_conditions(code_names: Dictionary):
 		code += "var " + condition + ": bool\n"
 	return code
 
+static func get_ranges(code_names: Dictionary):
+	var code := "\n"
+	for range in code_names.ranges:
+		code += "var " + range + ": float\n"
+	return code
+
 static func get_routines(node_modus: Dictionary, routines: Array, code_names: Dictionary, cognite_assemble: CogniteAssemble):
 	for node_id in node_modus.right_connections:
 		var routine := CogniteData.CODE_ROUTINE_DATA.duplicate(true)
@@ -137,13 +151,11 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 			continue
 		
 		match cognite_assemble.nodes[node_id].type:
-			CogniteAssemble.CHANGE_STATE:
+			Types.CHANGE_STATE:
 				routine.modus = code_names.state[node_modus.state -1]
-				
-				var state: String = code_names.state[cognite_assemble.nodes[node_id].change_state -1]
-				routine.body["body"] = "change_state(State." + state + ")\n"
+				routine.body["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
 			
-			CogniteAssemble.CONDITION:
+			Types.CONDITION:
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				var _condition_routine: Dictionary
 				
@@ -153,18 +165,27 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 				routine.modus = code_names.state[node_modus.state -1]
 				routine.body = {new_condition: _condition_routine}
 			
-			CogniteAssemble.EVENTS:
+			Types.RANGE:
+				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
+				var _range_routine: Dictionary
+				
+				if range_routine(cognite_assemble.nodes[node_id], _range_routine, code_names, cognite_assemble):
+					continue
+				
+				routine.modus = code_names.state[node_modus.state -1]
+				routine.body = {new_range: _range_routine}
+			
+			Types.EVENTS:
 				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
 				routine.event = new_event
 				var event_routine: Dictionary
 				
 				for _node_id in cognite_assemble.nodes[node_id].right_connections:
 					match cognite_assemble.nodes[_node_id].type:
-						CogniteAssemble.CHANGE_STATE:
-							var state: String = code_names.state[cognite_assemble.nodes[_node_id].change_state -1]
-							event_routine["body"] = "change_state(State." + state + ")\n"
+						Types.CHANGE_STATE:
+							routine.body["body"] = change_state_routine(code_names, cognite_assemble.nodes[_node_id].change_state -1)
 						
-						CogniteAssemble.CONDITION:
+						Types.CONDITION:
 							var new_condition = code_names.conditions[cognite_assemble.nodes[_node_id].condition -1]
 							var _condition_routine: Dictionary
 							
@@ -173,13 +194,44 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 							
 							event_routine = {new_condition: _condition_routine}
 						
-						CogniteAssemble.EVENTS:
+						Types.EVENTS:
 							continue
 				
 				routine.modus = code_names.state[node_modus.state -1]
 				routine.body = event_routine
-		
 		routines.append(routine)
+
+static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dictionary, cognite_assemble: CogniteAssemble):
+	for node_id in node.right_connections:
+		if not cognite_assemble.nodes.has(node_id):
+			continue
+		
+		var key = "smaller" if node.right_connections[node_id].x == 1 else "bigger"
+		var new_routine: Dictionary
+		routine[key] = {
+			"value": node[key]
+		}
+		
+		match cognite_assemble.nodes[node_id].type:
+			Types.CHANGE_STATE:
+				routine[key]["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
+				
+			Types.CONDITION:
+				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
+				routine[key][new_condition] = new_routine
+				
+				if condition_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
+					return ROUTINE_SEARCH_FAIL
+			
+			Types.RANGE:
+				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
+				routine[key][new_range] = new_routine
+				
+				if range_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
+					return ROUTINE_SEARCH_FAIL
+			
+			Types.EVENTS:
+				return ROUTINE_SEARCH_FAIL
 
 static func condition_routine(node: Dictionary, routine: Dictionary, code_names: Dictionary, cognite_assemble: CogniteAssemble):
 	for node_id in node.right_connections:
@@ -188,23 +240,32 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 		
 		var key = "else" if node.right_connections[node_id].x == 1 else "ifs"
 		var new_routine: Dictionary
-		
 		routine[key] = {}
 		
 		match cognite_assemble.nodes[node_id].type:
-			CogniteAssemble.CHANGE_STATE:
-				var state: String = code_names.state[cognite_assemble.nodes[node_id].change_state -1]
-				routine[key]["body"] = "change_state(State." + state + ")\n"
+			Types.CHANGE_STATE:
+				routine[key]["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
 			
-			CogniteAssemble.CONDITION:
+			Types.CONDITION:
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				routine[key][new_condition] = new_routine
 				
 				if condition_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
 					return ROUTINE_SEARCH_FAIL
+			
+			Types.RANGE:
+				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
+				routine[key][new_range] = new_routine
 				
-			CogniteAssemble.EVENTS:
+				if range_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
+					return ROUTINE_SEARCH_FAIL
+			
+			Types.EVENTS:
 				return ROUTINE_SEARCH_FAIL
+
+static func change_state_routine(code_names: Dictionary, state_id: int):
+	var state: String = code_names.state[state_id]
+	return "change_state(State." + state + ")\n"
 
 static func build_routine(body: Dictionary, identation: int):
 	var code: String
@@ -215,18 +276,26 @@ static func build_routine(body: Dictionary, identation: int):
 		if body.body is String:
 			return code
 	
-	for condition in body:
-		if body[condition].has("ifs"):
-			code += "	".repeat(identation) + "if "+ condition + ":\n"
-			code += build_routine(body[condition].ifs, identation + 1)
+	for member in body:
+		if body[member].has("ifs"):
+			code += "	".repeat(identation) + "if "+ member + ":\n"
+			code += build_routine(body[member].ifs, identation + 1)
 			
-			if body[condition].has("else"):
+			if body[member].has("else"):
 				code += "	".repeat(identation) + "else:\n"
-				code += build_routine(body[condition].else, identation + 1)
+				code += build_routine(body[member].else, identation + 1)
 		
-		elif body[condition].has("else"):
-			code += "	".repeat(identation) + "if not "+ condition + ":\n"
-			code += build_routine(body[condition].else, identation + 1)
+		elif body[member].has("else"):
+			code += "	".repeat(identation) + "if not "+ member + ":\n"
+			code += build_routine(body[member].else, identation + 1)
+		
+		elif body[member].has("bigger"):
+			code += "	".repeat(identation) + "if "+ member+ " > " + str(body[member].bigger.value) + ":\n"
+			code += build_routine(body[member].bigger, identation + 1)
+		
+		elif body[member].has("smaller"):
+			code += "	".repeat(identation) + "if "+ member+ " < " + str(body[member].smaller.value) + ":\n"
+			code += build_routine(body[member].smaller, identation + 1)
 	
 	return code
 

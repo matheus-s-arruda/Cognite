@@ -64,7 +64,7 @@ func cognite_assembly_construct(cogNode: CogniteNode):
 
 func generate_node_tree(assemble: CogniteAssemble, parent: Node, depth: int, max_depth):
 	for modus in assemble.nodes.values():
-		if modus.type != CogniteAssemble.MODUS:
+		if modus.type != CogniteData.Types.MODUS:
 			continue
 		
 		var name: String = assemble.source.states[modus.state -1]

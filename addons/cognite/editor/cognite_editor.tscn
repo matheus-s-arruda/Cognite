@@ -55,35 +55,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_rd5gr")
 theme_override_styles/panel = SubResource("StyleBoxFlat_3nrat")
-scroll_offset = Vector2(-1000, -500)
 right_disconnects = true
 minimap_enabled = false
 metadata/_edit_lock_ = true
-
-[node name="HBoxContainer" type="HBoxContainer" parent="GraphEdit"]
-clip_contents = true
-layout_mode = 0
-offset_left = 304.0
-offset_top = 10.0
-offset_right = 498.0
-offset_bottom = 41.0
-
-[node name="create_nodegraph" type="OptionButton" parent="GraphEdit/HBoxContainer"]
-layout_mode = 2
-item_count = 5
-selected = 0
-popup/item_0/text = "Create NodeGraph "
-popup/item_0/id = 0
-popup/item_0/disabled = true
-popup/item_0/separator = true
-popup/item_1/text = "States"
-popup/item_1/id = 1
-popup/item_2/text = "Events"
-popup/item_2/id = 2
-popup/item_3/text = "Change State"
-popup/item_3/id = 3
-popup/item_4/text = "Condition"
-popup/item_4/id = 4
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -100,4 +74,3 @@ metadata/_edit_lock_ = true
 
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
-[connection signal="item_selected" from="GraphEdit/HBoxContainer/create_nodegraph" to="." method="_on_create_nodegraph_item_selected"]
