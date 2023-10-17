@@ -42,4 +42,4 @@ func save_position():
 
 func _on_close_button_up():
 	$"../../".remove_node(id)
-	queue_free()
+	queue_free.call_deferred()

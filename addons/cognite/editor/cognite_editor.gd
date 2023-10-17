@@ -1,15 +1,14 @@
 @tool
 extends Control
 
-enum {MODUS, EVENTS, CHANGE_STATE, CONDITION, RANGE}
 
 const CREATE_NODEGRAPH = preload("res://addons/cognite/editor/create_nodegraph.tscn")
 const GRAPH_NODES := {
-	MODUS: preload("res://addons/cognite/editor/graphnodes/modus.tscn"),
-	EVENTS: preload("res://addons/cognite/editor/graphnodes/events.tscn"),
-	CONDITION: preload("res://addons/cognite/editor/graphnodes/condition.tscn"),
-	CHANGE_STATE: preload("res://addons/cognite/editor/graphnodes/change_states.tscn"),
-	RANGE: preload("res://addons/cognite/editor/graphnodes/range.tscn"),
+	CogniteData.Types.MODUS: preload("res://addons/cognite/editor/graphnodes/modus.tscn"),
+	CogniteData.Types.EVENTS: preload("res://addons/cognite/editor/graphnodes/events.tscn"),
+	CogniteData.Types.CONDITION: preload("res://addons/cognite/editor/graphnodes/condition.tscn"),
+	CogniteData.Types.CHANGE_STATE: preload("res://addons/cognite/editor/graphnodes/change_states.tscn"),
+	CogniteData.Types.RANGE: preload("res://addons/cognite/editor/graphnodes/range.tscn"),
 }
 
 var nodes: Dictionary
@@ -40,7 +39,11 @@ func create_node(type: int, id: int):
 
 func remove_node(id: int):
 	var node = nodes[id]
+	if not is_instance_valid(node): return
 	for node_id in assemble.nodes[id].right_connections:
+		if not nodes.has(node_id):
+			continue
+		
 		var conection_node = nodes[node_id]
 		var ports: Vector2i = assemble.nodes[id].right_connections[node_id]
 		graph_edit.disconnect_node(node.name, ports.x, conection_node.name, ports.y)

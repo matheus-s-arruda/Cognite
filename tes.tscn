@@ -1,7 +1,78 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7o1ibtkmypc5"]
+[gd_scene load_steps=4 format=3 uid="uid://c7o1ibtkmypc5"]
 
 [ext_resource type="Script" path="res://addons/cognite/cognite_node.gd" id="1_57ae6"]
 [ext_resource type="Resource" path="res://teste.cognite" id="2_ef1jd"]
+
+[sub_resource type="GDScript" id="GDScript_xuimb"]
+script/source = "extends Node
+
+enum State {STATELESS, PATROL, COMBAT, REST}
+
+signal state_changed(state)
+signal enemydetected
+signal noenemy_detected
+
+
+@export var current_state: State
+@onready var initial_state = current_state
+
+var speed: float
+
+var hungry: bool
+var bathroom: bool
+var is_active := true
+
+func _ready():
+	enemydetected.connect(_on_enemydetected)
+	noenemy_detected.connect(_on_noenemy_detected)
+
+
+func _process(delta):
+
+	if current_state == State.PATROL:
+		if bathroom:
+			change_state(State.REST)
+
+	if current_state == State.PATROL:
+		if hungry:
+			change_state(State.REST)
+
+	if current_state == State.REST:
+		if speed > 1:
+			change_state(State.PATROL)
+
+	if current_state == State.REST:
+		if not bathroom:
+			if bathroom:
+				change_state(State.PATROL)
+
+
+func change_state(new_state):
+	if new_state == current_state:
+		return
+	
+	if not is_active:
+		current_state = State.STATELESS
+	
+	current_state = new_state
+	state_changed.emit(current_state)
+
+
+
+func _on_enemydetected():
+	if current_state == State.PATROL:
+		change_state(State.COMBAT)
+
+	if current_state == State.REST:
+		change_state(State.COMBAT)
+
+
+func _on_noenemy_detected():
+	if current_state == State.COMBAT:
+		change_state(State.PATROL)
+
+
+"
 
 [node name="Node3D" type="Node3D"]
 
@@ -10,4 +81,5 @@ script = ExtResource("1_57ae6")
 root_depth_level = 1
 cognite_assemble_root = ExtResource("2_ef1jd")
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="ROOT2" type="Node" parent="."]
+script = SubResource("GDScript_xuimb")

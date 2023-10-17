@@ -65,6 +65,7 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 		if node.type == Types.MODUS:
 			get_routines(node, routines, code_names, cognite_assemble)
 	
+	print(routines)
 	var events: Dictionary
 	mont_signals(routines, events)
 	
@@ -101,8 +102,6 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	if relative_parent_state != 0:
 		code += CogniteData.CODE_PARENT_CHANGED_RECEIVER
 	
-	print(events)
-	
 	code += "\n\n"
 	for event in events:
 		code += "func _on_" + event + "():"
@@ -110,7 +109,7 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 			code += body
 		
 		code += "\n\n"
-	
+	print(code)
 	var gdscript = GDScript.new()
 	gdscript.source_code = code
 	gdscript.reload()
@@ -158,9 +157,15 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 			Types.CONDITION:
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				var _condition_routine: Dictionary
-				
-				if condition_routine(cognite_assemble.nodes[node_id], _condition_routine, code_names, cognite_assemble):
-					continue
+				var result = condition_routine(cognite_assemble.nodes[node_id], _condition_routine, code_names, cognite_assemble)
+				if result:
+					if result is bool:
+						continue
+					
+					if routine.event.is_empty():
+						routine.event = result
+					else:
+						continue
 				
 				routine.modus = code_names.state[node_modus.state -1]
 				routine.body = {new_condition: _condition_routine}
@@ -168,40 +173,73 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 			Types.RANGE:
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
 				var _range_routine: Dictionary
-				
-				if range_routine(cognite_assemble.nodes[node_id], _range_routine, code_names, cognite_assemble):
-					continue
+				var result = range_routine(cognite_assemble.nodes[node_id], _range_routine, code_names, cognite_assemble)
+				if result:
+					if result is bool:
+						continue
+					
+					if routine.event.is_empty():
+						routine.event = result
+					else:
+						continue
 				
 				routine.modus = code_names.state[node_modus.state -1]
 				routine.body = {new_range: _range_routine}
 			
 			Types.EVENTS:
+				if not routine.event.is_empty():
+					continue
+				
 				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
-				routine.event = new_event
 				var event_routine: Dictionary
 				
-				for _node_id in cognite_assemble.nodes[node_id].right_connections:
-					match cognite_assemble.nodes[_node_id].type:
-						Types.CHANGE_STATE:
-							routine.body["body"] = change_state_routine(code_names, cognite_assemble.nodes[_node_id].change_state -1)
-						
-						Types.CONDITION:
-							var new_condition = code_names.conditions[cognite_assemble.nodes[_node_id].condition -1]
-							var _condition_routine: Dictionary
-							
-							if condition_routine(cognite_assemble.nodes[_node_id], _condition_routine, code_names, cognite_assemble):
-								continue
-							
-							event_routine = {new_condition: _condition_routine}
-						
-						Types.EVENTS:
-							continue
+				if event_routine(cognite_assemble.nodes[node_id], event_routine, code_names, cognite_assemble):
+					continue
 				
-				routine.modus = code_names.state[node_modus.state -1]
+				routine.event = new_event
 				routine.body = event_routine
+				routine.modus = code_names.state[node_modus.state -1]
+				
 		routines.append(routine)
 
+static func event_routine(event: Dictionary, _event_routine: Dictionary, code_names: Dictionary, cognite_assemble: CogniteAssemble):
+	var sucess: bool
+	for _node_id in event.right_connections:
+		if not cognite_assemble.nodes.has(_node_id):
+			continue
+		
+		match cognite_assemble.nodes[_node_id].type:
+			Types.CHANGE_STATE:
+				_event_routine["body"] = change_state_routine(code_names, cognite_assemble.nodes[_node_id].change_state -1)
+				sucess = true
+			
+			Types.CONDITION:
+				var new_condition = code_names.conditions[cognite_assemble.nodes[_node_id].condition -1]
+				var _condition_routine: Dictionary
+				var result = condition_routine(cognite_assemble.nodes[_node_id], _condition_routine, code_names, cognite_assemble)
+				if result:
+					return true
+				
+				_event_routine[new_condition] = _condition_routine
+				sucess = true
+			
+			Types.RANGE:
+				var new_range = code_names.ranges[event.range -1]
+				var _range_routine: Dictionary
+				var result =  range_routine(event, _range_routine, code_names, cognite_assemble)
+				if result:
+					return true
+				
+				_event_routine[new_range] = _range_routine
+				sucess = true
+			
+			Types.EVENTS:
+				return true
+	if not sucess:
+		return true
+
 static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dictionary, cognite_assemble: CogniteAssemble):
+	var sucess: bool
 	for node_id in node.right_connections:
 		if not cognite_assemble.nodes.has(node_id):
 			continue
@@ -215,25 +253,40 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 		match cognite_assemble.nodes[node_id].type:
 			Types.CHANGE_STATE:
 				routine[key]["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
+				sucess = true
 				
 			Types.CONDITION:
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				routine[key][new_condition] = new_routine
 				
-				if condition_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
-					return ROUTINE_SEARCH_FAIL
+				var result = condition_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
+				if result:
+					return result
+				sucess = true
 			
 			Types.RANGE:
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
 				routine[key][new_range] = new_routine
 				
-				if range_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
-					return ROUTINE_SEARCH_FAIL
+				var result = range_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
+				if result:
+					return result
+				sucess = true
 			
 			Types.EVENTS:
-				return ROUTINE_SEARCH_FAIL
+				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
+				var event_routine: Dictionary
+				
+				if event_routine(cognite_assemble.nodes[node_id], event_routine, code_names, cognite_assemble):
+					continue
+				
+				routine[key]["event"] = event_routine
+				return code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
+	if not sucess:
+		return true
 
 static func condition_routine(node: Dictionary, routine: Dictionary, code_names: Dictionary, cognite_assemble: CogniteAssemble):
+	var sucess: bool
 	for node_id in node.right_connections:
 		if not cognite_assemble.nodes.has(node_id):
 			continue
@@ -245,23 +298,35 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 		match cognite_assemble.nodes[node_id].type:
 			Types.CHANGE_STATE:
 				routine[key]["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
+				sucess = true
 			
 			Types.CONDITION:
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				routine[key][new_condition] = new_routine
 				
-				if condition_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
-					return ROUTINE_SEARCH_FAIL
+				var result = condition_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
+				if result:
+					return result
+				sucess = true
 			
 			Types.RANGE:
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
 				routine[key][new_range] = new_routine
 				
-				if range_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
-					return ROUTINE_SEARCH_FAIL
+				var result = range_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
+				if result:
+					return result
+				sucess = true
 			
 			Types.EVENTS:
-				return ROUTINE_SEARCH_FAIL
+				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
+				if event_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
+					continue
+				
+				routine[key] = new_routine
+				return code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
+	if not sucess:
+		return true
 
 static func change_state_routine(code_names: Dictionary, state_id: int):
 	var state: String = code_names.state[state_id]
@@ -291,11 +356,11 @@ static func build_routine(body: Dictionary, identation: int):
 		
 		elif body[member].has("bigger"):
 			code += "	".repeat(identation) + "if "+ member+ " > " + str(body[member].bigger.value) + ":\n"
-			code += build_routine(body[member].bigger, identation + 1)
+			code += build_routine(body[member].bigger.event, identation + 1)
 		
 		elif body[member].has("smaller"):
 			code += "	".repeat(identation) + "if "+ member+ " < " + str(body[member].smaller.value) + ":\n"
-			code += build_routine(body[member].smaller, identation + 1)
+			code += build_routine(body[member].smaller.event, identation + 1)
 	
 	return code
 

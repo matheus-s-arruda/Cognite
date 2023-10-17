@@ -41,7 +41,7 @@ func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wi
 
 
 func cognite_assembly_construct(cogNode: CogniteNode):
-	if cogNode.root_node:
+	if is_instance_valid(cogNode.root_node):
 		cogNode.root_node.queue_free()
 	
 	var root_node: Node

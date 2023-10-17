@@ -1,9 +1,117 @@
-[gd_scene load_steps=3 format=3 uid="uid://cpwg601o5cdp5"]
+[gd_scene load_steps=7 format=3 uid="uid://cpwg601o5cdp5"]
 
-[ext_resource type="Script" path="res://addons/cognite/cognite_node.gd" id="1_6nh1b"]
-[ext_resource type="Resource" path="res://teste.cognite" id="2_1idii"]
+[ext_resource type="Script" path="res://addons/cognite/cognite_node.gd" id="1_uxnlv"]
+[ext_resource type="Script" path="res://addons/cognite/assemble.gd" id="2_0qdc8"]
+[ext_resource type="Script" path="res://addons/cognite/source.gd" id="3_lqkth"]
+
+[sub_resource type="Resource" id="Resource_k2jsa"]
+script = ExtResource("3_lqkth")
+triggers = Array[String](["c"])
+conditions = Array[String](["aaaaaaa"])
+ranges = Array[String](["asd"])
+states = Array[String](["A", "B"])
+
+[sub_resource type="Resource" id="Resource_d1kqv"]
+script = ExtResource("2_0qdc8")
+nodes = {
+3446493218605: {
+"position": Vector2(-200, -20),
+"right_connections": {
+3501337937769: Vector2i(0, 0),
+3772340307819: Vector2i(0, 0)
+},
+"state": 1,
+"type": 0
+},
+3467364074167: {
+"change_state": 2,
+"position": Vector2(520, 0),
+"right_connections": {},
+"type": 2
+},
+3501337937769: {
+"bigger": 4414.0,
+"position": Vector2(180, -20),
+"range": 1,
+"right_connections": {
+3467364074167: Vector2i(0, 0),
+3629935298456: Vector2i(0, 0)
+},
+"smaller": 0.018,
+"type": 4
+},
+3629935298456: {
+"position": Vector2(380, -120),
+"right_connections": {
+3467364074167: Vector2i(0, 0)
+},
+"trigger": 1,
+"type": 1
+},
+3772340307819: {
+"condition": 1,
+"position": Vector2(0, -140),
+"right_connections": {
+3501337937769: Vector2i(0, 0),
+3629935298456: Vector2i(0, 0)
+},
+"type": 3
+}
+}
+source = SubResource("Resource_k2jsa")
+
+[sub_resource type="GDScript" id="GDScript_fqfxt"]
+script/source = "extends Node
+
+enum State {STATELESS, A, B}
+
+signal state_changed(state)
+signal c
+
+
+@export var current_state: State
+@onready var initial_state = current_state
+
+var asd: float
+
+var aaaaaaa: bool
+var is_active := true
+
+func _ready():
+	c.connect(_on_c)
+
+
+func _process(delta):
+	pass
+
+
+func change_state(new_state):
+	if new_state == current_state:
+		return
+	
+	if not is_active:
+		current_state = State.STATELESS
+	
+	current_state = new_state
+	state_changed.emit(current_state)
+
+
+
+func _on_c():
+	if current_state == State.A:
+		if asd > 4414:
+			change_state(State.B)
+
+	if current_state == State.A:
+		if aaaaaaa:
+			change_state(State.B)
+
+
+"
 
 [node name="CogniteNode" type="Node"]
-script = ExtResource("1_6nh1b")
-root_depth_level = 99
-cognite_assemble_root = ExtResource("2_1idii")
+script = ExtResource("1_uxnlv")
+cognite_assemble_root = SubResource("Resource_d1kqv")
+
+[node name="ROOT" type="Node" parent="."]
+script = SubResource("GDScript_fqfxt")
