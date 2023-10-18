@@ -14,53 +14,37 @@ states = Array[String](["A", "B"])
 [sub_resource type="Resource" id="Resource_d1kqv"]
 script = ExtResource("2_0qdc8")
 nodes = {
+2633804873936: {
+"bigger": 0.006,
+"position": Vector2(0, -100),
+"range": 1,
+"right_connections": {
+3467364074167: Vector2i(1, 0),
+3629935298456: Vector2i(0, 0),
+3772340307819: Vector2i(1, 0)
+},
+"smaller": 0.005,
+"type": 4
+},
 3446493218605: {
 "position": Vector2(-200, -20),
 "right_connections": {
-3501337937769: Vector2i(0, 0),
-3772340307819: Vector2i(0, 0)
+2633804873936: Vector2i(0, 0),
+3501337937769: Vector2i(0, 0)
 },
 "state": 1,
 "type": 0
 },
 3467364074167: {
 "change_state": 2,
-"position": Vector2(520, 0),
+"position": Vector2(480, -60),
 "right_connections": {},
 "type": 2
-},
-3501337937769: {
-"bigger": 4414.0,
-"position": Vector2(180, -20),
-"range": 1,
-"right_connections": {
-3467364074167: Vector2i(0, 0),
-3629935298456: Vector2i(0, 0)
-},
-"smaller": 0.018,
-"type": 4
-},
-3629935298456: {
-"position": Vector2(380, -120),
-"right_connections": {
-3467364074167: Vector2i(0, 0)
-},
-"trigger": 1,
-"type": 1
-},
-3772340307819: {
-"condition": 1,
-"position": Vector2(0, -140),
-"right_connections": {
-3501337937769: Vector2i(0, 0),
-3629935298456: Vector2i(0, 0)
-},
-"type": 3
 }
 }
 source = SubResource("Resource_k2jsa")
 
-[sub_resource type="GDScript" id="GDScript_fqfxt"]
+[sub_resource type="GDScript" id="GDScript_5pgpk"]
 script/source = "extends Node
 
 enum State {STATELESS, A, B}
@@ -99,11 +83,7 @@ func change_state(new_state):
 
 func _on_c():
 	if current_state == State.A:
-		if asd > 4414:
-			change_state(State.B)
-
-	if current_state == State.A:
-		if aaaaaaa:
+		if asd > 0.006:
 			change_state(State.B)
 
 
@@ -114,4 +94,4 @@ script = ExtResource("1_uxnlv")
 cognite_assemble_root = SubResource("Resource_d1kqv")
 
 [node name="ROOT" type="Node" parent="."]
-script = SubResource("GDScript_fqfxt")
+script = SubResource("GDScript_5pgpk")

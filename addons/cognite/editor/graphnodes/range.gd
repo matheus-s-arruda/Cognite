@@ -40,12 +40,12 @@ func set_data(data: Dictionary):
 	option_button.selected = data.range
 	
 	if assemble.nodes[id].has("bigger"):
-		bigger = data.bigger
+		bigger.value = data.bigger
 	else:
 		assemble.nodes[id]["bigger"] = 1.0
 	
 	if assemble.nodes[id].has("smaller"):
-		smaller = data.smaller
+		smaller.value = data.smaller
 	else:
 		assemble.nodes[id]["smaller"] = 0.0
 

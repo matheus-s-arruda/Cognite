@@ -246,13 +246,11 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 		
 		var key = "smaller" if node.right_connections[node_id].x == 1 else "bigger"
 		var new_routine: Dictionary
-		routine[key] = {
-			"value": node[key]
-		}
+		routine[key] = {"value": node[key]}
 		
 		match cognite_assemble.nodes[node_id].type:
 			Types.CHANGE_STATE:
-				routine[key]["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
+				routine[key]["event"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
 				sucess = true
 				
 			Types.CONDITION:
