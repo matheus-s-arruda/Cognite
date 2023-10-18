@@ -33,7 +33,6 @@ func _parent_state_changed(state: int):
 		change_state(initial_state)
 "
 
-
 static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: int):
 	var code_names := CogniteData.CODE_PROPERTY_NAMES.duplicate(true)
 	var code := CogniteData.CODE_HEAD
@@ -65,7 +64,7 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 		if node.type == Types.MODUS:
 			get_routines(node, routines, code_names, cognite_assemble)
 	
-	print(routines)
+	#print(routines)
 	var events: Dictionary
 	mont_signals(routines, events)
 	
@@ -109,7 +108,7 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 			code += body
 		
 		code += "\n\n"
-	print(code)
+	#print(code)
 	var gdscript = GDScript.new()
 	gdscript.source_code = code
 	gdscript.reload()
@@ -182,7 +181,7 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 						routine.event = result
 					else:
 						continue
-				
+				print(_range_routine)
 				routine.modus = code_names.state[node_modus.state -1]
 				routine.body = {new_range: _range_routine}
 			
@@ -245,41 +244,39 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 			continue
 		
 		var key = "smaller" if node.right_connections[node_id].x == 1 else "bigger"
+		if not routine.has(key) or (routine.has(key) and routine[key].is_empty()):
+			routine[key] = {"value": node[key]}
+		
 		var new_routine: Dictionary
-		routine[key] = {"value": node[key]}
 		
 		match cognite_assemble.nodes[node_id].type:
 			Types.CHANGE_STATE:
-				routine[key]["event"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
+				routine[key]["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
 				sucess = true
 				
 			Types.CONDITION:
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
-				routine[key][new_condition] = new_routine
-				
 				var result = condition_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
 				if result:
 					return result
+				routine[key][new_condition] = new_routine
 				sucess = true
 			
 			Types.RANGE:
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
-				routine[key][new_range] = new_routine
-				
 				var result = range_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
 				if result:
 					return result
+				routine[key][new_range] = new_routine
 				sucess = true
 			
 			Types.EVENTS:
 				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
-				var event_routine: Dictionary
-				
-				if event_routine(cognite_assemble.nodes[node_id], event_routine, code_names, cognite_assemble):
+				if event_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
 					continue
-				
-				routine[key]["event"] = event_routine
+				routine[key][new_event] = new_routine
 				return code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
+	
 	if not sucess:
 		return true
 
@@ -340,6 +337,9 @@ static func build_routine(body: Dictionary, identation: int):
 			return code
 	
 	for member in body:
+		if member == "value":
+			continue
+		
 		if body[member].has("ifs"):
 			code += "	".repeat(identation) + "if "+ member + ":\n"
 			code += build_routine(body[member].ifs, identation + 1)
@@ -352,13 +352,13 @@ static func build_routine(body: Dictionary, identation: int):
 			code += "	".repeat(identation) + "if not "+ member + ":\n"
 			code += build_routine(body[member].else, identation + 1)
 		
-		elif body[member].has("bigger"):
+		if body[member].has("bigger"):
 			code += "	".repeat(identation) + "if "+ member+ " > " + str(body[member].bigger.value) + ":\n"
-			code += build_routine(body[member].bigger.event, identation + 1)
+			code += build_routine(body[member].bigger, identation + 1)
 		
-		elif body[member].has("smaller"):
+		if body[member].has("smaller"):
 			code += "	".repeat(identation) + "if "+ member+ " < " + str(body[member].smaller.value) + ":\n"
-			code += build_routine(body[member].smaller.event, identation + 1)
+			code += build_routine(body[member].smaller, identation + 1)
 	
 	return code
 
