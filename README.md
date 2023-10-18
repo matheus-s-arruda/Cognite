@@ -1,5 +1,5 @@
 # Cognite
-[![Generic badge](https://img.shields.io/badge/last_version-1.0.2-red.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/last_version-1.1.2-red.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/godot_version-4.2-blue.svg)](https://shields.io/)
 
  Develop State Machines & Behavior Trees with ease and introduce them into your scenes with just one click.
@@ -66,4 +66,7 @@ The next two branches of <b>PATROL<b/> will change to the same state, but with d
 
 Lastly we have the <b>COMBAT</b> state, it just waits for the signal of an undetected enemy to return to the <b>PATROL</b> state.
 
+# Update 1.1
+### Node Range added
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/1.1/thumbnail/range.png">
 
