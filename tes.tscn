@@ -8,7 +8,7 @@
 script = ExtResource("3_oovnd")
 triggers = Array[String](["Cd"])
 conditions = Array[String]([])
-ranges = Array[String]([])
+ranges = Array[String](["life"])
 states = Array[String](["A", "B"])
 
 [sub_resource type="Resource" id="Resource_p0l14"]
@@ -16,14 +16,14 @@ script = ExtResource("2_qt1o2")
 nodes = {
 2015430242680: {
 "condition": 0,
-"position": Vector2(540, -60),
+"position": Vector2(560, -60),
 "right_connections": {
 2048246477144: Vector2i(0, 0)
 },
 "type": 3
 },
 2045495022568: {
-"position": Vector2(60, -80),
+"position": Vector2(40, -80),
 "right_connections": {
 2483632017288: Vector2i(0, 0)
 },
@@ -32,12 +32,12 @@ nodes = {
 },
 2048246477144: {
 "change_state": 0,
-"position": Vector2(680, -40),
+"position": Vector2(700, -40),
 "right_connections": {},
 "type": 2
 },
 2483632017288: {
-"position": Vector2(220, -80),
+"position": Vector2(200, -80),
 "right_connections": {
 3132641842761: Vector2i(0, 0)
 },
@@ -45,13 +45,13 @@ nodes = {
 "type": 1
 },
 3132641842761: {
-"bigger": 1.0,
+"bigger": 90.0,
 "position": Vector2(340, -80),
-"range": 0,
+"range": 1,
 "right_connections": {
 2015430242680: Vector2i(0, 0)
 },
-"smaller": 0.0,
+"smaller": 10.0,
 "type": 4
 }
 }

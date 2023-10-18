@@ -62,7 +62,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "it's smaller than"
+text = "is smaller than"
 horizontal_alignment = 2
 
 [node name="smaller" type="SpinBox" parent="HBoxContainer"]
