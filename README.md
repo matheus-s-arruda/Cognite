@@ -70,3 +70,4 @@ Lastly we have the <b>COMBAT</b> state, it just waits for the signal of an undet
 ### Node Range added
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/1.1/thumbnail/range.png">
 
+This node will test a float variable, if it has a value above that specified in "bigger" or "smaller", the respective paths will be activated.
