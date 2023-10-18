@@ -1,11 +1,65 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7o1ibtkmypc5"]
+[gd_scene load_steps=6 format=3 uid="uid://c7o1ibtkmypc5"]
 
 [ext_resource type="Script" path="res://addons/cognite/cognite_node.gd" id="1_57ae6"]
-[ext_resource type="Resource" path="res://teste.cognite" id="2_ef1jd"]
+[ext_resource type="Script" path="res://addons/cognite/assemble.gd" id="2_qt1o2"]
+[ext_resource type="Script" path="res://addons/cognite/source.gd" id="3_oovnd"]
+
+[sub_resource type="Resource" id="Resource_npoem"]
+script = ExtResource("3_oovnd")
+triggers = Array[String](["Cd"])
+conditions = Array[String]([])
+ranges = Array[String]([])
+states = Array[String](["A", "B"])
+
+[sub_resource type="Resource" id="Resource_p0l14"]
+script = ExtResource("2_qt1o2")
+nodes = {
+2015430242680: {
+"condition": 0,
+"position": Vector2(540, -60),
+"right_connections": {
+2048246477144: Vector2i(0, 0)
+},
+"type": 3
+},
+2045495022568: {
+"position": Vector2(60, -80),
+"right_connections": {
+2483632017288: Vector2i(0, 0)
+},
+"state": 1,
+"type": 0
+},
+2048246477144: {
+"change_state": 0,
+"position": Vector2(680, -40),
+"right_connections": {},
+"type": 2
+},
+2483632017288: {
+"position": Vector2(220, -80),
+"right_connections": {
+3132641842761: Vector2i(0, 0)
+},
+"trigger": 0,
+"type": 1
+},
+3132641842761: {
+"bigger": 1.0,
+"position": Vector2(340, -80),
+"range": 0,
+"right_connections": {
+2015430242680: Vector2i(0, 0)
+},
+"smaller": 0.0,
+"type": 4
+}
+}
+source = SubResource("Resource_npoem")
 
 [node name="Node3D" type="Node3D"]
 
 [node name="CogniteNode" type="Node" parent="."]
 script = ExtResource("1_57ae6")
-root_depth_level = 1
-cognite_assemble_root = ExtResource("2_ef1jd")
+root_depth_level = 0
+cognite_assemble_root = SubResource("Resource_p0l14")

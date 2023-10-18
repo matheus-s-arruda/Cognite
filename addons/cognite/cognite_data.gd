@@ -64,7 +64,6 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 		if node.type == Types.MODUS:
 			get_routines(node, routines, code_names, cognite_assemble)
 	
-	#print(routines)
 	var events: Dictionary
 	mont_signals(routines, events)
 	
@@ -108,7 +107,7 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 			code += body
 		
 		code += "\n\n"
-	#print(code)
+	
 	var gdscript = GDScript.new()
 	gdscript.source_code = code
 	gdscript.reload()
@@ -181,7 +180,6 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 						routine.event = result
 					else:
 						continue
-				print(_range_routine)
 				routine.modus = code_names.state[node_modus.state -1]
 				routine.body = {new_range: _range_routine}
 			
@@ -198,7 +196,7 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 				routine.event = new_event
 				routine.body = event_routine
 				routine.modus = code_names.state[node_modus.state -1]
-				
+		
 		routines.append(routine)
 
 static func event_routine(event: Dictionary, _event_routine: Dictionary, code_names: Dictionary, cognite_assemble: CogniteAssemble):

@@ -44,6 +44,9 @@ func cognite_assembly_construct(cogNode: CogniteNode):
 	if is_instance_valid(cogNode.root_node):
 		cogNode.root_node.queue_free()
 	
+	if not cogNode.cognite_assemble_root.source:
+		return
+	
 	var root_node: Node
 	if cogNode.cognite_assemble_root:
 		var gdscript: GDScript = CogniteData.assembly(cogNode.cognite_assemble_root, 0)

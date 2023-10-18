@@ -4,26 +4,17 @@
 "nodes": {
 2186591409306: {
 "bigger": 10.0,
-"position": Vector2(260, -320),
+"position": Vector2(200, -200),
 "range": 1,
 "right_connections": {
-2700896963556: Vector2i(0, 0)
+21271144369268: Vector2i(0, 0),
+21356003524680: Vector2i(1, 0)
 },
-"smaller": 0.0,
+"smaller": 88.0,
 "type": 4
 },
-2415734622874: {
-"position": Vector2(0, 60),
-"right_connections": {
-2496047156034: Vector2i(0, 0),
-3513551752227: Vector2i(0, 0),
-3643357072547: Vector2i(0, 0)
-},
-"state": 1,
-"type": 0
-},
 2421673757333: {
-"position": Vector2(0, -180),
+"position": Vector2(0, -200),
 "right_connections": {
 2186591409306: Vector2i(0, 0),
 2496047156034: Vector2i(0, 0),
@@ -32,85 +23,90 @@
 "state": 3,
 "type": 0
 },
-2426774031163: {
-"position": Vector2(20, 240),
-"right_connections": {
-3040467815402: Vector2i(0, 0)
-},
-"state": 2,
-"type": 0
-},
-2496047156034: {
-"position": Vector2(260, -60),
-"right_connections": {
-2794631269345: Vector2i(0, 0)
-},
-"trigger": 1,
-"type": 1
-},
-2599042485170: {
-"condition": 2,
-"position": Vector2(260, -180),
-"right_connections": {
-2620936752071: Vector2i(1, 0)
-},
-"type": 3
-},
-2620936752071: {
-"condition": 2,
-"position": Vector2(400, -180),
-"right_connections": {
-2700896963556: Vector2i(0, 0)
-},
-"type": 3
-},
 2700896963556: {
 "change_state": 1,
-"position": Vector2(560, -180),
+"position": Vector2(620, -220),
 "right_connections": {},
 "type": 2
 },
 2794631269345: {
 "change_state": 2,
-"position": Vector2(560, -60),
+"position": Vector2(620, -100),
 "right_connections": {},
 "type": 2
 },
-3040467815402: {
-"position": Vector2(280, 240),
+21271144369268: {
+"position": Vector2(440, -220),
 "right_connections": {
-3093685144616: Vector2i(0, 0)
+2700896963556: Vector2i(0, 0)
 },
-"trigger": 2,
+"trigger": 1,
 "type": 1
 },
-3093685144616: {
-"change_state": 1,
-"position": Vector2(580, 240),
-"right_connections": {},
-"type": 2
-},
-3513551752227: {
-"condition": 2,
-"position": Vector2(280, 20),
-"right_connections": {
-3777675463893: Vector2i(0, 0)
-},
-"type": 3
-},
-3643357072547: {
+21356003524680: {
 "condition": 1,
-"position": Vector2(280, 120),
+"position": Vector2(440, -120),
 "right_connections": {
-3777675463893: Vector2i(0, 0)
+2794631269345: Vector2i(0, 0)
 },
 "type": 3
 },
-3777675463893: {
-"change_state": 3,
-"position": Vector2(560, 80),
+24455644513129: {
+"position": Vector2(-120, 60),
+"right_connections": {
+24479216502820: Vector2i(0, 0),
+24736562218968: Vector2i(0, 0)
+},
+"state": 3,
+"type": 0
+},
+24479216502820: {
+"position": Vector2(80, 40),
+"right_connections": {
+24550536449166: Vector2i(0, 0)
+},
+"trigger": 1,
+"type": 1
+},
+24550536449166: {
+"bigger": 10.0,
+"position": Vector2(280, 40),
+"range": 1,
+"right_connections": {
+24683479107626: Vector2i(0, 0)
+},
+"smaller": 88.0,
+"type": 4
+},
+24683479107626: {
+"change_state": 1,
+"position": Vector2(540, 60),
 "right_connections": {},
 "type": 2
+},
+24736562218968: {
+"condition": 1,
+"position": Vector2(80, 120),
+"right_connections": {
+25079639508151: Vector2i(0, 0)
+},
+"type": 3
+},
+24867743272002: {
+"change_state": 2,
+"position": Vector2(540, 180),
+"right_connections": {},
+"type": 2
+},
+25079639508151: {
+"bigger": 10.0,
+"position": Vector2(280, 140),
+"range": 1,
+"right_connections": {
+24867743272002: Vector2i(1, 0)
+},
+"smaller": 88.0,
+"type": 4
 }
 },
 "source": Object(Resource,"resource_local_to_scene":false,"resource_name":"","script":Resource("res://addons/cognite/source.gd"),"triggers":Array[String](["enemy detected", "no enemy detected"]),"conditions":Array[String](["hungry", "bathroom"]),"ranges":Array[String](["speed"]),"states":Array[String](["PATROL", "COMBAT", "REST"]))

@@ -12,3 +12,8 @@ var root_node: Node
 
 func is_cognite_node():
 	pass
+
+
+class RResource extends Resource:
+	var nada := "Nada"
+

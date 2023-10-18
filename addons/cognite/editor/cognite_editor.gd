@@ -20,6 +20,7 @@ var create_nodegraph: OptionButton = CREATE_NODEGRAPH.instantiate()
 
 
 func _ready():
+	graph_edit.add_valid_connection_type(1, 0)
 	graph_edit.get_menu_hbox().add_child(create_nodegraph)
 	create_nodegraph.item_selected.connect(_on_create_nodegraph_item_selected)
 
