@@ -15,7 +15,7 @@ To generate the MachineState in your scene, go to the CogniteNode node and click
 ---
 Currently, there are 4 types of nodes.
 
-<img src="https://github.com/matheus-s-arruda/Cognite/blob/main/thumbnail/nodes.png" height="120"/>
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/1.1/thumbnail/nodes.png" height="120"/>
 <br>
 
 Each node has an important function.
@@ -53,7 +53,7 @@ Let's try out what logic would be like for an NPC soldier, first let's deduce wh
 - Periodically, he may stop the patrol to eat or go to the bathroom.
 
 Now let's see what this logic would look like using Cognite.
-<img src="https://github.com/matheus-s-arruda/Cognite/blob/main/thumbnail/example.png">
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/1.1/thumbnail/example.png">
 <br>
 
 The first path starts in <b>REST</b>, it will observe 2 conditions in series, this means that it will only change state if the condition is accepted, in this case, the conditions are that the `hunger` and `bathroom` variables are false.
