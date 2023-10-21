@@ -1,4 +1,5 @@
-# Cognite
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/1.2/thumbnail/capa.png">
+
 [![Generic badge](https://img.shields.io/badge/last_version-1.2.2-red.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/godot_version-4.2-blue.svg)](https://shields.io/)
 
