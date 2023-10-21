@@ -1,5 +1,5 @@
 # Cognite
-[![Generic badge](https://img.shields.io/badge/last_version-1.1.2-red.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/last_version-1.2.2-red.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/godot_version-4.2-blue.svg)](https://shields.io/)
 
  Develop State Machines & Behavior Trees with ease and introduce them into your scenes with just one click.
