@@ -4,7 +4,8 @@
 
  Develop State Machines & Behavior Trees with ease and introduce them into your scenes with just one click.
 
-[Update 1.1](#update-11)
+[Update 1.1](#update-11)<br>
+[Update 1.2](#update-12)
 
 ## How to use
 > - Add the `CogniteNode` node to your scene, its function is to allow StateMachines to be built in this scene.
