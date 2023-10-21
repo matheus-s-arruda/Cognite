@@ -70,13 +70,18 @@ The next two branches of <b>PATROL<b/> will change to the same state, but with d
 Lastly we have the <b>COMBAT</b> state, it just waits for the signal of an undetected enemy to return to the <b>PATROL</b> state.
 
 # Update 1.1
-### Node Range added
+## Node Range added
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/1.1/thumbnail/range.png">
 
 This node will test a float variable, if it has a value above that specified in "bigger" or "smaller", the respective paths will be activated.
 
 # Update 1.2
-### Now on the Main Screen
+## Now on the Main Screen
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/1.2/thumbnail/main_screen.png">
 
 The graph editor will now be accessed from the main screen, the operation will remain the same.
+
+## CogniteBehavior
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/1.2/thumbnail/behavior.png">
+
+It is now possible to add Resource of type CogniteBehavior to the ROOT node so that it is activated when the respective state is activated.
