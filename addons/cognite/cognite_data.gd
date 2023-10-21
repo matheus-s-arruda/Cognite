@@ -6,10 +6,30 @@ enum Types {MODUS, EVENTS, CHANGE_STATE, CONDITION, RANGE}
 const ROUTINE_SEARCH_FAIL := true
 const CODE_PROPERTY_NAMES := {"state": [], "signal": [], "conditions": [], "ranges": []}
 const CODE_HEAD := "extends Node\n"
-const CODE_EXPORT := "\n@export var current_state: State\n@onready var initial_state = current_state\n"
+const CODE_EXPORT := "
+## Change this property to something other than STATELESS to make your system work. STATELESS is a disable condition.
+@export var current_state: State
+
+@onready var initial_state = current_state
+
+## Node that will be observed, this node must contain the methods and properties that CogniteBehavior will access
+@export var Main_node: Node
+
+@export_group(\"States Behavior\")\n"
 const CODE_PARENT_CHANGED_SIGNAL := "	get_parent().state_changed.connect(_parent_state_changed)\n"
 const CODE_READY := "func _ready():\n"
-const CODE_PROCESS := "\n\nfunc _process(delta):\n"
+const CODE_PROCESS := "
+
+func _process(delta):
+	if current_states_behavior:
+		current_states_behavior.process(delta)
+"
+const CODE_PHYSICS_PROCESS := "
+
+func _physics_process(delta):
+	if current_states_behavior:
+		current_states_behavior.physics_process(delta)
+"
 const CODE_ROUTINE_DATA := {
 	"modus": "", "event": "", "body": {},
 }
@@ -20,6 +40,11 @@ func change_state(new_state):
 	
 	if not is_active:
 		current_state = State.STATELESS
+	
+	current_states_behavior = null
+	if states_behavior[new_state]:
+		current_states_behavior = states_behavior[new_state]
+		current_states_behavior.start()
 	
 	current_state = new_state
 	state_changed.emit(current_state)
@@ -32,10 +57,22 @@ func _parent_state_changed(state: int):
 	if not flag and is_active:
 		change_state(initial_state)
 "
+const TEXT_ERROR_FAIL_CONDITION := "There are Condition nodes in the graph but there are no Condition variables in \"CogniteSource\".
+Add some variable to the \"conditions\" list in your CogniteSource."
+
+const TEXT_ERROR_FAIL_RANGE := "There are range nodes in the graph, but there are no range variables in \"CogniteSource\".
+Add some variable to the \"ranges\" list in your CogniteSource."
+
+const TEXT_ERROR_FAIL_EVENT := "There are event nodes in the graph, but there are no trigger variables in \"CogniteSource\".
+Add some variable to the \"triggers\" list in your CogniteSource."
+
 
 static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: int):
-	var code_names := CogniteData.CODE_PROPERTY_NAMES.duplicate(true)
-	var code := CogniteData.CODE_HEAD
+	var code_names := CODE_PROPERTY_NAMES.duplicate(true)
+	var code := CODE_HEAD
+	
+	if cognite_assemble.source.states.is_empty():
+		return
 	
 	for state in cognite_assemble.source.states:
 		code_names.state.append(except_letters(state).to_upper())
@@ -51,7 +88,15 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	
 	code += get_states(code_names)
 	code += get_signals(code_names)
-	code += CogniteData.CODE_EXPORT
+	code += CODE_EXPORT
+	
+	var state_behavior: String = "\nvar states_behavior := {"
+	for state in code_names.state:
+		code += "@export var " + state.to_lower() + "_behavior: CogniteBehavior\n"
+		state_behavior += "\n	State." + state +": " + state.to_lower() + "_behavior,"
+	
+	code += "\nvar current_states_behavior: CogniteBehavior\n"
+	code += state_behavior + "\n}\n"
 	code += get_ranges(code_names)
 	code += get_conditions(code_names)
 	code += "var is_active := true\n\n"
@@ -67,11 +112,11 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	var events: Dictionary
 	mont_signals(routines, events)
 	
-	code += CogniteData.CODE_READY
+	code += CODE_READY
 	var nothing_in_ready = true
 	
 	if relative_parent_state != 0:
-		code += CogniteData.CODE_PARENT_CHANGED_SIGNAL
+		code += CODE_PARENT_CHANGED_SIGNAL
 		code += "\n	relative_parent_state = " + str(relative_parent_state) + "\n\n"
 		nothing_in_ready = false
 	
@@ -82,7 +127,7 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	if nothing_in_ready:
 		code += '	pass\n'
 	
-	code += CogniteData.CODE_PROCESS
+	code += CODE_PROCESS
 	var nothing_in_process = true
 	
 	for routine in routines:
@@ -96,9 +141,11 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	if nothing_in_process:
 		code += "	pass\n"
 	
-	code += CogniteData.CODE_CHANGE_STATE
+	code += CODE_PHYSICS_PROCESS
+	
+	code += CODE_CHANGE_STATE
 	if relative_parent_state != 0:
-		code += CogniteData.CODE_PARENT_CHANGED_RECEIVER
+		code += CODE_PARENT_CHANGED_RECEIVER
 	
 	code += "\n\n"
 	for event in events:
@@ -142,7 +189,7 @@ static func get_ranges(code_names: Dictionary):
 
 static func get_routines(node_modus: Dictionary, routines: Array, code_names: Dictionary, cognite_assemble: CogniteAssemble):
 	for node_id in node_modus.right_connections:
-		var routine := CogniteData.CODE_ROUTINE_DATA.duplicate(true)
+		var routine := CODE_ROUTINE_DATA.duplicate(true)
 		
 		if not cognite_assemble.nodes.has(node_id):
 			continue
@@ -153,6 +200,9 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 				routine.body["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
 			
 			Types.CONDITION:
+				if code_names.conditions.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
+				
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				var _condition_routine: Dictionary
 				var result = condition_routine(cognite_assemble.nodes[node_id], _condition_routine, code_names, cognite_assemble)
@@ -169,6 +219,9 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 				routine.body = {new_condition: _condition_routine}
 			
 			Types.RANGE:
+				if code_names.ranges.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
+				
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
 				var _range_routine: Dictionary
 				var result = range_routine(cognite_assemble.nodes[node_id], _range_routine, code_names, cognite_assemble)
@@ -186,6 +239,9 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 			Types.EVENTS:
 				if not routine.event.is_empty():
 					continue
+				
+				if code_names.signal.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_EVENT)
 				
 				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
 				var event_routine: Dictionary
@@ -211,6 +267,9 @@ static func event_routine(event: Dictionary, _event_routine: Dictionary, code_na
 				sucess = true
 			
 			Types.CONDITION:
+				if code_names.conditions.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
+				
 				var new_condition = code_names.conditions[cognite_assemble.nodes[_node_id].condition -1]
 				var _condition_routine: Dictionary
 				var result = condition_routine(cognite_assemble.nodes[_node_id], _condition_routine, code_names, cognite_assemble)
@@ -221,9 +280,12 @@ static func event_routine(event: Dictionary, _event_routine: Dictionary, code_na
 				sucess = true
 			
 			Types.RANGE:
-				var new_range = code_names.ranges[event.range -1]
+				if code_names.ranges.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
+				
+				var new_range = code_names.ranges[cognite_assemble.nodes[_node_id].range -1]
 				var _range_routine: Dictionary
-				var result =  range_routine(event, _range_routine, code_names, cognite_assemble)
+				var result =  range_routine(cognite_assemble.nodes[_node_id], _range_routine, code_names, cognite_assemble)
 				if result:
 					return true
 				
@@ -253,6 +315,9 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 				sucess = true
 				
 			Types.CONDITION:
+				if code_names.conditions.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
+				
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				var result = condition_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
 				if result:
@@ -261,6 +326,9 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 				sucess = true
 			
 			Types.RANGE:
+				if code_names.ranges.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
+				
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
 				var result = range_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
 				if result:
@@ -269,6 +337,9 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 				sucess = true
 			
 			Types.EVENTS:
+				if code_names.signal.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_EVENT)
+				
 				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
 				if event_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
 					continue
@@ -294,6 +365,9 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 				sucess = true
 			
 			Types.CONDITION:
+				if code_names.conditions.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
+				
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				routine[key][new_condition] = new_routine
 				
@@ -303,6 +377,9 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 				sucess = true
 			
 			Types.RANGE:
+				if code_names.ranges.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
+				
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
 				routine[key][new_range] = new_routine
 				
@@ -312,6 +389,9 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 				sucess = true
 			
 			Types.EVENTS:
+				if code_names.signal.is_empty():
+					Cognite.emit_alert(TEXT_ERROR_FAIL_EVENT)
+				
 				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
 				if event_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
 					continue

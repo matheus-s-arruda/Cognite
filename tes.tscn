@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://c7o1ibtkmypc5"]
 
-[ext_resource type="Script" path="res://addons/cognite/cognite_node.gd" id="1_57ae6"]
-[ext_resource type="Script" path="res://addons/cognite/assemble.gd" id="2_qt1o2"]
-[ext_resource type="Script" path="res://addons/cognite/source.gd" id="3_oovnd"]
+[ext_resource type="Script" path="res://addons/cognite/node/cognite_node.gd" id="1_57ae6"]
+[ext_resource type="Script" path="res://addons/cognite/node/assemble.gd" id="2_qt1o2"]
+[ext_resource type="Script" path="res://addons/cognite/node/source.gd" id="3_oovnd"]
 
 [sub_resource type="Resource" id="Resource_npoem"]
 script = ExtResource("3_oovnd")

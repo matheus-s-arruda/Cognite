@@ -55,7 +55,7 @@ func cognite_assembly_construct(cogNode: CogniteNode):
 		EditorInterface.get_edited_scene_root().add_child(root_node)
 		root_node.owner = EditorInterface.get_edited_scene_root()
 		cogNode.root_node = root_node
-		root_node.set_name("ROOT")
+		root_node.set_name.call_deferred("ROOT")
 	else:
 		return
 	

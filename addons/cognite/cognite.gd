@@ -1,7 +1,7 @@
 @tool
 class_name Cognite extends EditorPlugin
 
-#var bottom_panel: Control
+static var alert: AcceptDialog
 var main_panel: Control
 var inspector: EditorInspectorPlugin
 
@@ -21,25 +21,12 @@ func _enter_tree():
 	EditorInterface.get_file_system_dock().file_removed.connect(inspector.is_resource_deleted)
 	add_inspector_plugin(inspector)
 	add_custom_type( "CogniteNode", "Node",
-			preload("res://addons/cognite/cognite_node.gd"),
+			preload("res://addons/cognite/node/cognite_node.gd"),
 			preload("res://addons/cognite/assets/brain.svg"))
-
-
-func _has_main_screen():
-	return true
-
-
-func _make_visible(visible: bool):
-	if main_panel:
-		main_panel.visible = visible
-
-
-func _get_plugin_name():
-	return "Cognite"
-
-
-func _get_plugin_icon():
-	return preload("res://addons/cognite/assets/brain.svg")
+	
+	alert = AcceptDialog.new()
+	alert.get_ok_button().text = "Close"
+	get_editor_interface().get_base_control().add_child(alert)
 
 
 func _exit_tree():
@@ -47,7 +34,29 @@ func _exit_tree():
 	remove_custom_type("CogniteNode")
 	if is_instance_valid(main_panel):
 		main_panel.queue_free()
+	if is_instance_valid(alert):
+		alert.queue_free()
 
 
 func file_removed(file: String):
 	inspector.is_resource_deleted(file)
+
+
+static func emit_alert(mensagem: String):
+	alert.dialog_text = mensagem
+	alert.popup_centered()
+
+
+func _has_main_screen():
+	return true
+
+func _make_visible(visible: bool):
+	if main_panel:
+		main_panel.visible = visible
+
+func _get_plugin_name():
+	return "Cognite"
+
+func _get_plugin_icon():
+	return preload("res://addons/cognite/assets/brain.svg")
+

@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://cpwg601o5cdp5"]
 
-[ext_resource type="Script" path="res://addons/cognite/cognite_node.gd" id="1_uxnlv"]
-[ext_resource type="Script" path="res://addons/cognite/assemble.gd" id="2_0qdc8"]
-[ext_resource type="Script" path="res://addons/cognite/source.gd" id="3_lqkth"]
+[ext_resource type="Script" path="res://addons/cognite/node/cognite_node.gd" id="1_uxnlv"]
+[ext_resource type="Script" path="res://addons/cognite/node/assemble.gd" id="2_0qdc8"]
+[ext_resource type="Script" path="res://addons/cognite/node/source.gd" id="3_lqkth"]
 
 [sub_resource type="Resource" id="Resource_k2jsa"]
 script = ExtResource("3_lqkth")
@@ -51,7 +51,7 @@ nodes = {
 }
 source = SubResource("Resource_k2jsa")
 
-[sub_resource type="GDScript" id="GDScript_2obro"]
+[sub_resource type="GDScript" id="GDScript_gh0po"]
 script/source = "extends Node
 
 enum State {STATELESS, A, B}
@@ -60,8 +60,24 @@ signal state_changed(state)
 signal c
 
 
+## Change this property to something other than STATELESS to make your system work. STATELESS is a disable condition.
 @export var current_state: State
+
 @onready var initial_state = current_state
+
+## Node that will be observed, this node must contain the methods and properties that CogniteBehavior will access
+@export var Main_node: Node
+
+@export_group(\"States Behavior\")
+@export var a_behavior: CogniteBehavior
+@export var b_behavior: CogniteBehavior
+
+var current_states_behavior: CogniteBehavior
+
+var states_behavior := {
+	State.A: a_behavior,
+	State.B: b_behavior,
+}
 
 var asd: float
 
@@ -73,10 +89,19 @@ func _ready():
 
 
 func _process(delta):
+	if current_states_behavior:
+		current_states_behavior.process(delta)
 
 	if current_state == State.A:
 		if asd > 0.005:
 			change_state(State.A)
+		if asd < 0.007:
+			change_state(State.B)
+
+
+func _physics_process(delta):
+	if current_states_behavior:
+		current_states_behavior.physics_process(delta)
 
 
 func change_state(new_state):
@@ -85,6 +110,11 @@ func change_state(new_state):
 	
 	if not is_active:
 		current_state = State.STATELESS
+	
+	current_states_behavior = null
+	if states_behavior[new_state]:
+		current_states_behavior = states_behavior[new_state]
+		current_states_behavior.start()
 	
 	current_state = new_state
 	state_changed.emit(current_state)
@@ -98,4 +128,4 @@ script = ExtResource("1_uxnlv")
 cognite_assemble_root = SubResource("Resource_d1kqv")
 
 [node name="ROOT2" type="Node" parent="."]
-script = SubResource("GDScript_2obro")
+script = SubResource("GDScript_gh0po")
