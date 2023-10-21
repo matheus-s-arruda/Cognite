@@ -6,7 +6,7 @@ const STYLEBOX := preload("res://addons/cognite/assets/button_inspetor.stylebox"
 const BUTTON_ASSEMBLY := preload("res://addons/cognite/inspetor/button_assembly.tscn")
 
 var plugin: EditorPlugin
-var bottom_panel: Control
+var main_panel: Control
 
 var last_resource: CogniteAssemble
 
@@ -17,8 +17,8 @@ func _can_handle(object: Object):
 	
 	elif object.has_method("is_cognite_assemble"):
 		last_resource = object
-		bottom_panel.show_editor(object)
-		plugin.make_bottom_panel_item_visible(bottom_panel)
+		main_panel.show_editor(object)
+		plugin.get_editor_interface().set_main_screen_editor("Cognite")
 		return true
 	
 	elif object.has_method("is_cognite_node"):
@@ -102,6 +102,7 @@ func generate_node_modus(modus: Dictionary, name: String, parent: Node):
 
 func is_resource_deleted(file_name: String):
 	if last_resource.resource_name == file_name:
-		bottom_panel.hide_editor()
+		return
+		#main_panel.hide_editor()
 
 

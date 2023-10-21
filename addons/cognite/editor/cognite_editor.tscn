@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cdyybwnor7o2u"]
 
 [ext_resource type="Script" path="res://addons/cognite/editor/cognite_editor.gd" id="1_8i7su"]
-[ext_resource type="Texture2D" uid="uid://dgsq8vhvavv6k" path="res://addons/cognite/assets/artwork_godot.jpg" id="2_3d5g2"]
+[ext_resource type="Texture2D" uid="uid://dgsq8vhvavv6k" path="res://addons/cognite/assets/artwork_godot.jpg" id="2_v4idv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n24ot"]
 content_margin_left = 4.0
@@ -22,9 +22,8 @@ bg_color = Color(0, 0.0196078, 0.0588235, 0.627451)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4bqwb"]
 bg_color = Color(0, 0, 0.109804, 0.427451)
 
-[node name="editor" type="Control"]
+[node name="editor" type="VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
-layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -33,44 +32,34 @@ grow_vertical = 2
 script = ExtResource("1_8i7su")
 metadata/_edit_lock_ = true
 
-[node name="TextureRect" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0.180392)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_3d5g2")
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer"]
+self_modulate = Color(1, 1, 1, 0.180392)
+layout_mode = 2
+texture = ExtResource("2_v4idv")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="GraphEdit" type="GraphEdit" parent="."]
+[node name="GraphEdit" type="GraphEdit" parent="PanelContainer"]
 visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme = SubResource("Theme_rd5gr")
 theme_override_styles/panel = SubResource("StyleBoxFlat_3nrat")
 right_disconnects = true
 minimap_enabled = false
 metadata/_edit_lock_ = true
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_4bqwb")
 text = "Select or create a CogniteAssemble to start editing"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
-[connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
+[connection signal="connection_request" from="PanelContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
+[connection signal="disconnection_request" from="PanelContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]

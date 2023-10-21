@@ -15,8 +15,8 @@ var nodes: Dictionary
 var assemble: CogniteAssemble
 var create_nodegraph: OptionButton = CREATE_NODEGRAPH.instantiate()
 
-@onready var graph_edit: GraphEdit = $GraphEdit
-@onready var label: Label = $Label
+@onready var graph_edit: GraphEdit = $PanelContainer/GraphEdit
+@onready var label: Label = $PanelContainer/Label
 
 
 func _ready():

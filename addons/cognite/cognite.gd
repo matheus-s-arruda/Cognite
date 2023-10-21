@@ -1,31 +1,52 @@
 @tool
 class_name Cognite extends EditorPlugin
 
-var bottom_panel: Control
+#var bottom_panel: Control
+var main_panel: Control
 var inspector: EditorInspectorPlugin
 
 
 func _enter_tree():
-	bottom_panel = preload("res://addons/cognite/editor/cognite_editor.tscn").instantiate()
+	main_panel = preload("res://addons/cognite/editor/cognite_editor.tscn").instantiate()
 	inspector = preload("res://addons/cognite/inspetor/inspector.gd").new()
 	
-	inspector.bottom_panel = bottom_panel
+	main_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	main_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	inspector.main_panel = main_panel
 	inspector.plugin = self
 	
-	EditorInterface.get_file_system_dock().file_removed.connect(inspector.is_resource_deleted)
+	get_editor_interface().get_editor_main_screen().add_child(main_panel)
+	_make_visible(false)
 	
+	EditorInterface.get_file_system_dock().file_removed.connect(inspector.is_resource_deleted)
+	add_inspector_plugin(inspector)
 	add_custom_type( "CogniteNode", "Node",
 			preload("res://addons/cognite/cognite_node.gd"),
-			preload("res://addons/cognite/assets/brain.svg")
-	)
-	add_control_to_bottom_panel(bottom_panel, "Cognite")
-	add_inspector_plugin(inspector)
+			preload("res://addons/cognite/assets/brain.svg"))
+
+
+func _has_main_screen():
+	return true
+
+
+func _make_visible(visible: bool):
+	if main_panel:
+		main_panel.visible = visible
+
+
+func _get_plugin_name():
+	return "Cognite"
+
+
+func _get_plugin_icon():
+	return preload("res://addons/cognite/assets/brain.svg")
 
 
 func _exit_tree():
-	remove_control_from_bottom_panel(bottom_panel)
 	remove_inspector_plugin(inspector)
 	remove_custom_type("CogniteNode")
+	if is_instance_valid(main_panel):
+		main_panel.queue_free()
 
 
 func file_removed(file: String):
