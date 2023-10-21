@@ -17,9 +17,17 @@ const CODE_EXPORT := "
 
 @export_group(\"States Behavior\")\n"
 const CODE_PARENT_CHANGED_SIGNAL := "	get_parent().state_changed.connect(_parent_state_changed)\n"
-const CODE_READY := "func _ready():\n"
-const CODE_PROCESS := "
+const CODE_READY := "
+func _ready():
+	current_states_behavior = states_behavior[current_state].new()
+	if current_states_behavior:
+		if main_node:
+			current_states_behavior.body = main_node
+			current_states_behavior.root = self
+			current_states_behavior.start.call_deferred()
+"
 
+const CODE_PROCESS := "
 func _process(delta):
 	if current_states_behavior:
 		current_states_behavior.process(delta)
@@ -41,12 +49,12 @@ func change_state(new_state):
 	if not is_active:
 		current_state = State.STATELESS
 	
-	current_states_behavior = null
-	if states_behavior[new_state]:
-		current_states_behavior = states_behavior[new_state]
-		current_states_behavior.start()
+	current_states_behavior = states_behavior[new_state].new()
+	if current_states_behavior:
 		if main_node:
-			current_states_behavior.root = main_node
+			current_states_behavior.body = main_node
+			current_states_behavior.root = self
+			current_states_behavior.start()
 	
 	current_state = new_state
 	state_changed.emit(current_state)
@@ -92,9 +100,9 @@ static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: i
 	code += get_signals(code_names)
 	code += CODE_EXPORT
 	
-	var state_behavior: String = "\nvar states_behavior := {"
+	var state_behavior: String = "\n@onready var states_behavior := {"
 	for state in code_names.state:
-		code += "@export var " + state.to_lower() + "_behavior: CogniteBehavior\n"
+		code += "@export var " + state.to_lower() + "_behavior: GDScript\n"
 		state_behavior += "\n	State." + state +": " + state.to_lower() + "_behavior,"
 	
 	code += "\nvar current_states_behavior: CogniteBehavior\n"
