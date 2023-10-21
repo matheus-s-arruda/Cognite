@@ -13,7 +13,7 @@ const CODE_EXPORT := "
 @onready var initial_state = current_state
 
 ## Node that will be observed, this node must contain the methods and properties that CogniteBehavior will access
-@export var Main_node: Node
+@export var main_node: Node
 
 @export_group(\"States Behavior\")\n"
 const CODE_PARENT_CHANGED_SIGNAL := "	get_parent().state_changed.connect(_parent_state_changed)\n"
@@ -45,6 +45,8 @@ func change_state(new_state):
 	if states_behavior[new_state]:
 		current_states_behavior = states_behavior[new_state]
 		current_states_behavior.start()
+		if main_node:
+			current_states_behavior.root = main_node
 	
 	current_state = new_state
 	state_changed.emit(current_state)
