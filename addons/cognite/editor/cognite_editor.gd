@@ -28,14 +28,14 @@ func _ready():
 func create_node(type: int, id: int):
 	var new_graph_node: CogniteGraphNode = GRAPH_NODES[type].instantiate()
 	var _id: int = new_graph_node.init(assemble, id, type)
+	var string: String = str(hash(type))
+	string = string.left(6 - string.length())
 	
 	nodes[_id] = new_graph_node
 	new_graph_node.size = Vector2.ZERO
-	graph_edit.add_child(new_graph_node)
-	
-	var string: String = str(hash(type))
-	string = string.left(6 - string.length())
+	new_graph_node.graph_editor = self
 	new_graph_node.modulate = (Color(string) + Color(0.8, 0.8, 0.8, 1.0)).clamp()
+	graph_edit.add_child(new_graph_node)
 
 
 func remove_node(id: int):

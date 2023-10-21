@@ -5,6 +5,8 @@ var id: int
 var assemble: CogniteAssemble
 var is_ready: bool
 
+var graph_editor: Control
+
 
 func init(_assemble: CogniteAssemble, _id: int, type: int):
 	assemble = _assemble
@@ -41,5 +43,5 @@ func save_position():
 
 
 func _on_close_button_up():
-	$"../../".remove_node(id)
+	graph_editor.remove_node(id)
 	queue_free.call_deferred()
