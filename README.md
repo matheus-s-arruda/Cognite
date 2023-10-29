@@ -86,3 +86,4 @@ The graph editor will now be accessed from the main screen, the operation will r
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/1.2/thumbnail/behavior.png">
 
 It is now possible to add Resource of type CogniteBehavior to the ROOT node so that it is activated when the respective state is activated.
+To correctly use a CogniteBehavior, extend a script and save it in a file, then drag the file to one of the states created in ROOT, the code will be called when the state is activated.
