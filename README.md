@@ -66,7 +66,7 @@ In <b>REST</b> to a second branch, there is already a detected enemy signal.
 
 The first branch of <b>PATROL</b> is the same as that of <b>REST</b>, changing to the <b>COMBAT</b> state if a detected enemy is issued.
 
-The next two branches of <b>PATROL<b/> will change to the same state, but with different conditions and in parallel, this means that if one of the two conditions is accepted, the state will be changed.
+The next two branches of <b>PATROL</b> will change to the same state, but with different conditions and in parallel, this means that if one of the two conditions is accepted, the state will be changed.
 
 Lastly we have the <b>COMBAT</b> state, it just waits for the signal of an undetected enemy to return to the <b>PATROL</b> state.
 
