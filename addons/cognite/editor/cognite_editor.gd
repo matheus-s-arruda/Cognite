@@ -105,6 +105,7 @@ func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
 	
 	graph_edit.connect_node(from_node, from_port, to_node, to_port)
 	assemble.nodes[front_id].right_connections[to_node_id] = Vector2i(from_port, to_port)
+	assemble.actualize()
 
 
 func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port):
@@ -113,3 +114,4 @@ func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port
 	
 	graph_edit.disconnect_node(from_node, from_port, to_node, to_port)
 	assemble.nodes[front_id].right_connections.erase(to_node_id)
+	assemble.actualize()

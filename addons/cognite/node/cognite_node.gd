@@ -1,14 +1,22 @@
 @tool
 class_name CogniteNode extends Node
 
-## This value will indicate how many times a machine can be built within another machine
-@export var root_depth_level := 3:
-	set(value):
-		root_depth_level = clamp(value, 0, 99)
 
-@export var cognite_assemble_root: CogniteAssemble
+@export var cognite_assemble_root: CogniteAssemble:
+	set(value):
+		if cognite_assemble_root != value:
+			value.actualized.connect(actualized)
+		
+		cognite_assemble_root = value
 
 var root_node: Node
+var is_active := true
 
-func is_cognite_node():
-	pass
+
+func actualized():
+	var propertie_names: Dictionary = CogniteData.get_propertie_names(cognite_assemble_root)
+	var routines: Array = CogniteData.create_routines(cognite_assemble_root, propertie_names)
+	
+
+
+func is_cognite_node(): pass

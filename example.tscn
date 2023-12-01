@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://b63crrmieet4o"]
+[gd_scene load_steps=14 format=3 uid="uid://b63crrmieet4o"]
 
 [ext_resource type="Texture2D" uid="uid://bptey1d4yeclf" path="res://assets/img/undead_executioner/idle.png" id="1_aj8cv"]
 [ext_resource type="Script" path="res://scripts/npc/npc.gd" id="1_kt4pe"]
 [ext_resource type="Script" path="res://addons/cognite/node/cognite_node.gd" id="3_y5m25"]
+[ext_resource type="Script" path="res://addons/cognite/node/assemble.gd" id="4_iaw5n"]
+[ext_resource type="Script" path="res://addons/cognite/node/source.gd" id="5_i8yru"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gipc7"]
 radius = 17.0
@@ -49,6 +51,41 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Resource" id="Resource_ql85k"]
+script = ExtResource("5_i8yru")
+triggers = Array[String]([])
+conditions = Array[String]([])
+ranges = Array[String](["asd"])
+states = Array[String](["asdas"])
+
+[sub_resource type="Resource" id="Resource_n4w5x"]
+script = ExtResource("4_iaw5n")
+nodes = {
+3663540064545: {
+"position": Vector2(80, 120),
+"right_connections": {
+4306795305336: Vector2i(0, 0)
+},
+"state": 1,
+"type": 0
+},
+4306795305336: {
+"position": Vector2(420, 140),
+"range": 1,
+"right_connections": {
+4368233470256: Vector2i(0, 0)
+},
+"type": 4
+},
+4368233470256: {
+"change_state": 1,
+"position": Vector2(860, 20),
+"right_connections": {},
+"type": 2
+}
+}
+source = SubResource("Resource_ql85k")
+
 [node name="world" type="Node2D"]
 
 [node name="npc" type="CharacterBody2D" parent="."]
@@ -65,4 +102,4 @@ animation = &"idle"
 
 [node name="CogniteNode" type="Node" parent="npc"]
 script = ExtResource("3_y5m25")
-root_depth_level = 0
+cognite_assemble_root = SubResource("Resource_n4w5x")

@@ -5,68 +5,8 @@ enum Types {MODUS, EVENTS, CHANGE_STATE, CONDITION, RANGE}
 
 const ROUTINE_SEARCH_FAIL := true
 const CODE_PROPERTY_NAMES := {"state": [], "signal": [], "conditions": [], "ranges": []}
-const CODE_HEAD := "extends Node\n"
-const CODE_EXPORT := "
-## Change this property to something other than STATELESS to make your system work. STATELESS is a disable condition.
-@export var current_state: State
+const CODE_ROUTINE_DATA := {"modus": "", "event": "", "body": {}}
 
-@onready var initial_state = current_state
-
-## Node that will be observed, this node must contain the methods and properties that CogniteBehavior will access
-@export var main_node: Node
-
-@export_group(\"States Behavior\")\n"
-const CODE_PARENT_CHANGED_SIGNAL := "	get_parent().state_changed.connect(_parent_state_changed)\n"
-const CODE_READY := "
-func _ready():
-	current_states_behavior = states_behavior[current_state].new()
-	if current_states_behavior:
-		if main_node:
-			current_states_behavior.body = main_node
-			current_states_behavior.root = self
-			current_states_behavior.start.call_deferred()
-"
-
-const CODE_PROCESS := "
-func _process(delta):
-	if current_states_behavior:
-		current_states_behavior.process(delta)
-"
-const CODE_PHYSICS_PROCESS := "
-
-func _physics_process(delta):
-	if current_states_behavior:
-		current_states_behavior.physics_process(delta)
-"
-const CODE_ROUTINE_DATA := {
-	"modus": "", "event": "", "body": {},
-}
-const CODE_CHANGE_STATE := "\n
-func change_state(new_state):
-	if new_state == current_state:
-		return
-	
-	if not is_active:
-		current_state = State.STATELESS
-	
-	current_states_behavior = states_behavior[new_state].new()
-	if current_states_behavior:
-		if main_node:
-			current_states_behavior.body = main_node
-			current_states_behavior.root = self
-			current_states_behavior.start()
-	
-	current_state = new_state
-	state_changed.emit(current_state)
-\n"
-const CODE_PARENT_CHANGED_RECEIVER := "\n
-func _parent_state_changed(state: int):
-	var flag = is_active
-	is_active = state == relative_parent_state
-	
-	if not flag and is_active:
-		change_state(initial_state)
-"
 const TEXT_ERROR_FAIL_CONDITION := "There are Condition nodes in the graph but there are no Condition variables in \"CogniteSource\".
 Add some variable to the \"conditions\" list in your CogniteSource."
 
@@ -77,98 +17,29 @@ const TEXT_ERROR_FAIL_EVENT := "There are event nodes in the graph, but there ar
 Add some variable to the \"triggers\" list in your CogniteSource."
 
 
-static func assembly(cognite_assemble: CogniteAssemble, relative_parent_state: int):
-	var code_names := CODE_PROPERTY_NAMES.duplicate(true)
-	var code := CODE_HEAD
-	
-	if cognite_assemble.source.states.is_empty():
-		return
+static func get_propertie_names(cognite_assemble: CogniteAssemble) -> Dictionary:
+	var propertie_names := CODE_PROPERTY_NAMES.duplicate(true)
+	if cognite_assemble.source.states.is_empty(): return {}
 	
 	for state in cognite_assemble.source.states:
-		code_names.state.append(except_letters(state).to_upper())
-	
+		propertie_names.state.append(except_letters(state).to_upper())
 	for trigger in cognite_assemble.source.triggers:
-		code_names.signal.append(except_letters(trigger))
-	
+		propertie_names.signal.append(except_letters(trigger))
 	for condition in cognite_assemble.source.conditions:
-		code_names.conditions.append(except_letters(condition))
-	
+		propertie_names.conditions.append(except_letters(condition))
 	for range in cognite_assemble.source.ranges:
-		code_names.ranges.append(except_letters(range))
+		propertie_names.ranges.append(except_letters(range))
 	
-	code += get_states(code_names)
-	code += get_signals(code_names)
-	code += CODE_EXPORT
-	
-	var state_behavior: String = "\n@onready var states_behavior := {"
-	for state in code_names.state:
-		code += "@export var " + state.to_lower() + "_behavior: GDScript\n"
-		state_behavior += "\n	State." + state +": " + state.to_lower() + "_behavior,"
-	
-	code += "\nvar current_states_behavior: CogniteBehavior\n"
-	code += state_behavior + "\n}\n"
-	code += get_ranges(code_names)
-	code += get_conditions(code_names)
-	code += "var is_active := true\n\n"
-	
-	if relative_parent_state != 0:
-		code += "var relative_parent_state: int\n"
-	
+	return propertie_names
+
+
+static func create_routines(cognite_assemble: CogniteAssemble, propertie_names: Dictionary):
 	var routines: Array
 	for node in cognite_assemble.nodes.values():
 		if node.type == Types.MODUS:
-			get_routines(node, routines, code_names, cognite_assemble)
-	
-	var events: Dictionary
-	mont_signals(routines, events)
-	
-	code += CODE_READY
-	var nothing_in_ready = true
-	
-	if relative_parent_state != 0:
-		code += CODE_PARENT_CHANGED_SIGNAL
-		code += "\n	relative_parent_state = " + str(relative_parent_state) + "\n\n"
-		nothing_in_ready = false
-	
-	for event in events:
-		code += "	" + event + ".connect(_on_" + event + ")\n"
-		nothing_in_ready = false
-	
-	if nothing_in_ready:
-		code += '	pass\n'
-	
-	code += CODE_PROCESS
-	var nothing_in_process = true
-	
-	for routine in routines:
-		if not routine.event.is_empty():
-			continue
-		
-		nothing_in_process = false
-		code += "\n	if current_state == State." + routine.modus + ":\n"
-		code += build_routine(routine.body, 2)
-	
-	if nothing_in_process:
-		code += "	pass\n"
-	
-	code += CODE_PHYSICS_PROCESS
-	
-	code += CODE_CHANGE_STATE
-	if relative_parent_state != 0:
-		code += CODE_PARENT_CHANGED_RECEIVER
-	
-	code += "\n\n"
-	for event in events:
-		code += "func _on_" + event + "():"
-		for body in events[event]:
-			code += body
-		
-		code += "\n\n"
-	
-	var gdscript = GDScript.new()
-	gdscript.source_code = code
-	gdscript.reload()
-	return gdscript
+			get_routines(node, routines, propertie_names, cognite_assemble)
+	return routines
+
 
 static func get_states(code_names: Dictionary):
 	var code := "\nenum State {STATELESS"

@@ -1,6 +1,8 @@
 @tool
 class_name CogniteAssemble extends Resource
 
+signal actualized
+
 
 @export var nodes: Dictionary
 @export var source: CogniteSource
@@ -9,3 +11,6 @@ class_name CogniteAssemble extends Resource
 func is_cognite_assemble():
 	return true
 
+
+func actualize():
+	actualized.emit()

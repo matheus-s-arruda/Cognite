@@ -14,6 +14,7 @@ func _input(event: InputEvent):
 	assemble.nodes[id]["state"] = option_button.selected
 	get_options("state")
 	option_button.selected = assemble.nodes[id].state
+	assemble.actualize()
 
 
 func get_options(value: String):

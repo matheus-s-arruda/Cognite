@@ -15,6 +15,7 @@ func _input(event: InputEvent):
 	
 	get_options()
 	option_button.selected = assemble.nodes[id].range
+	assemble.actualize()
 
 
 func get_options():
