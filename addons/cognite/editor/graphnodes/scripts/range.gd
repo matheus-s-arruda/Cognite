@@ -7,7 +7,7 @@ extends CogniteGraphNode
 @onready var smaller = $HBoxContainer/smaller
 
 
-func _input(event: InputEvent):
+func _gui_input(event: InputEvent):
 	if event is InputEventMouseMotion:
 		return
 	
@@ -16,6 +16,7 @@ func _input(event: InputEvent):
 	get_options()
 	option_button.selected = assemble.nodes[id].range
 	assemble.actualize()
+	super(event)
 
 
 func get_options():

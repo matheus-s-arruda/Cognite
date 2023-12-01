@@ -1,10 +1,8 @@
 @tool
-class_name Cognite extends EditorPlugin
+extends EditorPlugin
 
 var inspector: EditorInspectorPlugin
-static var alert: AcceptDialog
 var main_panel: Control
-
 
 func _enter_tree():
 	main_panel = preload("res://addons/cognite/editor/cognite_editor.tscn").instantiate()
@@ -22,10 +20,6 @@ func _enter_tree():
 	add_custom_type( "CogniteNode", "Node",
 			preload("res://addons/cognite/node/cognite_node.gd"),
 			preload("res://addons/cognite/assets/brain.svg"))
-	
-	alert = AcceptDialog.new()
-	alert.get_ok_button().text = "Close"
-	get_editor_interface().get_base_control().add_child(alert)
 
 
 func _exit_tree():
@@ -33,13 +27,6 @@ func _exit_tree():
 	remove_custom_type("CogniteNode")
 	if is_instance_valid(main_panel):
 		main_panel.queue_free()
-	if is_instance_valid(alert):
-		alert.queue_free()
-
-
-static func emit_alert(mensagem: String):
-	alert.dialog_text = mensagem
-	alert.popup_centered()
 
 
 #region MAIN PANEL

@@ -36,6 +36,8 @@ func create_node(type: int, id: int):
 	new_graph_node.graph_editor = self
 	new_graph_node.modulate = (Color(string) + Color(0.8, 0.8, 0.8, 1.0)).clamp()
 	graph_edit.add_child(new_graph_node)
+	if id == 0:
+		new_graph_node.position_offset = Vector2(100, 100)
 
 
 func remove_node(id: int):

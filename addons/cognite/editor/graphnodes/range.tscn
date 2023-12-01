@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b76w21a8p1fuj"]
 
-[ext_resource type="Script" path="res://addons/cognite/editor/graphnodes/range.gd" id="1_y8837"]
+[ext_resource type="Script" path="res://addons/cognite/editor/graphnodes/scripts/range.gd" id="1_y8837"]
 
 [node name="range" type="GraphNode"]
 offset_right = 232.0

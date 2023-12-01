@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ctl6hgf0lia2t"]
 
-[ext_resource type="Script" path="res://addons/cognite/editor/graphnodes/events.gd" id="1_303ag"]
+[ext_resource type="Script" path="res://addons/cognite/editor/graphnodes/scripts/events.gd" id="1_303ag"]
 
 [node name="events" type="GraphNode"]
 offset_right = 9.0

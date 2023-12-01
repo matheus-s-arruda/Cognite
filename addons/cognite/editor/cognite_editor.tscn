@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cdyybwnor7o2u"]
 
-[ext_resource type="Script" path="res://addons/cognite/editor/cognite_editor.gd" id="1_8i7su"]
+[ext_resource type="Script" path="res://addons/cognite/editor/scripts/cognite_editor.gd" id="1_8i7su"]
 [ext_resource type="Texture2D" uid="uid://dgsq8vhvavv6k" path="res://addons/cognite/assets/artwork_godot.jpg" id="2_v4idv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n24ot"]

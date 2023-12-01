@@ -32,41 +32,12 @@ static func get_propertie_names(cognite_assemble: CogniteAssemble) -> Dictionary
 	
 	return propertie_names
 
-
 static func create_routines(cognite_assemble: CogniteAssemble, propertie_names: Dictionary):
 	var routines: Array
 	for node in cognite_assemble.nodes.values():
 		if node.type == Types.MODUS:
 			get_routines(node, routines, propertie_names, cognite_assemble)
 	return routines
-
-
-static func get_states(code_names: Dictionary):
-	var code := "\nenum State {STATELESS"
-	for state in code_names.state:
-		code += ", " + state
-	code += "}\n"
-	return code
-
-static func get_signals(code_names: Dictionary):
-	var code := "\n"
-	code += "signal state_changed(state)\n"
-	for sinal in code_names.signal:
-		code += "signal " + sinal + "\n"
-	code += "\n"
-	return code
-
-static func get_conditions(code_names: Dictionary):
-	var code := "\n"
-	for condition in code_names.conditions:
-		code += "var " + condition + ": bool\n"
-	return code
-
-static func get_ranges(code_names: Dictionary):
-	var code := "\n"
-	for range in code_names.ranges:
-		code += "var " + range + ": float\n"
-	return code
 
 static func get_routines(node_modus: Dictionary, routines: Array, code_names: Dictionary, cognite_assemble: CogniteAssemble):
 	for node_id in node_modus.right_connections:
@@ -78,11 +49,11 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 		match cognite_assemble.nodes[node_id].type:
 			Types.CHANGE_STATE:
 				routine.modus = code_names.state[node_modus.state -1]
-				routine.body["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
+				routine.body["body"] = code_names.state[cognite_assemble.nodes[node_id].change_state -1]
 			
 			Types.CONDITION:
 				if code_names.conditions.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
 				
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				var _condition_routine: Dictionary
@@ -101,7 +72,7 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 			
 			Types.RANGE:
 				if code_names.ranges.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
 				
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
 				var _range_routine: Dictionary
@@ -122,7 +93,7 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 					continue
 				
 				if code_names.signal.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_EVENT)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_EVENT)
 				
 				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
 				var event_routine: Dictionary
@@ -144,12 +115,12 @@ static func event_routine(event: Dictionary, _event_routine: Dictionary, code_na
 		
 		match cognite_assemble.nodes[_node_id].type:
 			Types.CHANGE_STATE:
-				_event_routine["body"] = change_state_routine(code_names, cognite_assemble.nodes[_node_id].change_state -1)
+				_event_routine["body"] = code_names.state[cognite_assemble.nodes[_node_id].change_state -1]
 				sucess = true
 			
 			Types.CONDITION:
 				if code_names.conditions.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
 				
 				var new_condition = code_names.conditions[cognite_assemble.nodes[_node_id].condition -1]
 				var _condition_routine: Dictionary
@@ -162,7 +133,7 @@ static func event_routine(event: Dictionary, _event_routine: Dictionary, code_na
 			
 			Types.RANGE:
 				if code_names.ranges.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
 				
 				var new_range = code_names.ranges[cognite_assemble.nodes[_node_id].range -1]
 				var _range_routine: Dictionary
@@ -192,12 +163,12 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 		
 		match cognite_assemble.nodes[node_id].type:
 			Types.CHANGE_STATE:
-				routine[key]["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
+				routine[key]["body"] = code_names.state[cognite_assemble.nodes[node_id].change_state -1]
 				sucess = true
 				
 			Types.CONDITION:
 				if code_names.conditions.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
 				
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				var result = condition_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
@@ -208,7 +179,7 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 			
 			Types.RANGE:
 				if code_names.ranges.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
 				
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
 				var result = range_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble)
@@ -219,7 +190,7 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 			
 			Types.EVENTS:
 				if code_names.signal.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_EVENT)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_EVENT)
 				
 				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
 				if event_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
@@ -242,12 +213,12 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 		
 		match cognite_assemble.nodes[node_id].type:
 			Types.CHANGE_STATE:
-				routine[key]["body"] = change_state_routine(code_names, cognite_assemble.nodes[node_id].change_state -1)
+				routine[key]["body"] = code_names.state[cognite_assemble.nodes[node_id].change_state -1]
 				sucess = true
 			
 			Types.CONDITION:
 				if code_names.conditions.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
 				
 				var new_condition = code_names.conditions[cognite_assemble.nodes[node_id].condition -1]
 				routine[key][new_condition] = new_routine
@@ -259,7 +230,7 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 			
 			Types.RANGE:
 				if code_names.ranges.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_RANGE)
 				
 				var new_range = code_names.ranges[cognite_assemble.nodes[node_id].range -1]
 				routine[key][new_range] = new_routine
@@ -271,7 +242,7 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 			
 			Types.EVENTS:
 				if code_names.signal.is_empty():
-					Cognite.emit_alert(TEXT_ERROR_FAIL_EVENT)
+					pass # Cognite.emit_alert(TEXT_ERROR_FAIL_EVENT)
 				
 				var new_event = code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
 				if event_routine(cognite_assemble.nodes[node_id], new_routine, code_names, cognite_assemble):
@@ -281,58 +252,6 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 				return code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
 	if not sucess:
 		return true
-
-static func change_state_routine(code_names: Dictionary, state_id: int):
-	var state: String = code_names.state[state_id]
-	return "change_state(State." + state + ")\n"
-
-static func build_routine(body: Dictionary, identation: int):
-	var code: String
-	
-	if body.has("body"):
-		code += "	".repeat(identation) + body.body
-	
-		if body.body is String:
-			return code
-	
-	for member in body:
-		if member == "value":
-			continue
-		
-		if body[member].has("ifs"):
-			code += "	".repeat(identation) + "if "+ member + ":\n"
-			code += build_routine(body[member].ifs, identation + 1)
-			
-			if body[member].has("else"):
-				code += "	".repeat(identation) + "else:\n"
-				code += build_routine(body[member].else, identation + 1)
-		
-		elif body[member].has("else"):
-			code += "	".repeat(identation) + "if not "+ member + ":\n"
-			code += build_routine(body[member].else, identation + 1)
-		
-		if body[member].has("bigger"):
-			code += "	".repeat(identation) + "if "+ member+ " > " + str(body[member].bigger.value) + ":\n"
-			code += build_routine(body[member].bigger, identation + 1)
-		
-		if body[member].has("smaller"):
-			code += "	".repeat(identation) + "if "+ member+ " < " + str(body[member].smaller.value) + ":\n"
-			code += build_routine(body[member].smaller, identation + 1)
-	
-	return code
-
-static func mont_signals(routines: Array, events: Dictionary):
-	for routine in routines:
-		if routine.event.is_empty():
-			continue
-		
-		var _code: String = "\n	if current_state == State." + routine.modus + ":\n"
-		_code += build_routine(routine.body, 2)
-		
-		if events.has(routine.event):
-			events[routine.event].append(_code)
-		else:
-			events[routine.event] = [_code]
 
 static func except_letters(input_string: String) -> String:
 	var regex := RegEx.new()

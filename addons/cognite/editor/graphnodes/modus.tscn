@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://7tjt5gy3dqh7"]
+[gd_scene load_steps=4 format=3 uid="uid://7tjt5gy3dqh7"]
 
-[ext_resource type="Script" path="res://addons/cognite/editor/graphnodes/modus.gd" id="1_dtqp6"]
-[ext_resource type="Texture2D" uid="uid://eicbj8vr3pfr" path="res://addons/cognite/assets/Clear.svg" id="2_f22u4"]
+[ext_resource type="Script" path="res://addons/cognite/editor/graphnodes/scripts/modus.gd" id="1_dtqp6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icug0"]
 content_margin_left = 4.0
@@ -45,15 +44,6 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
-slot/2/left_enabled = false
-slot/2/left_type = 0
-slot/2/left_color = Color(1, 1, 1, 1)
-slot/2/left_icon = null
-slot/2/right_enabled = false
-slot/2/right_type = 0
-slot/2/right_color = Color(1, 1, 1, 1)
-slot/2/right_icon = null
-slot/2/draw_stylebox = true
 script = ExtResource("1_dtqp6")
 
 [node name="states" type="OptionButton" parent="."]
@@ -66,23 +56,3 @@ popup/item_0/id = 0
 [node name="Control" type="HSeparator" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 4
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-
-[node name="Button" type="Button" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "[empty]"
-text_overrun_behavior = 3
-
-[node name="Button2" type="Button" parent="HBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 2
-icon = ExtResource("2_f22u4")
-expand_icon = true
-
-[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="HBoxContainer/Button2" to="." method="_on_button_2_pressed"]
