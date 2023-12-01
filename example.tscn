@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://b63crrmieet4o"]
+
+[ext_resource type="Texture2D" uid="uid://bptey1d4yeclf" path="res://assets/img/undead_executioner/idle.png" id="1_aj8cv"]
+[ext_resource type="Script" path="res://scripts/npc/npc.gd" id="1_kt4pe"]
+[ext_resource type="Script" path="res://addons/cognite/node/cognite_node.gd" id="3_y5m25"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gipc7"]
+radius = 17.0
+height = 62.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mbgbk"]
+atlas = ExtResource("1_aj8cv")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xhuw"]
+atlas = ExtResource("1_aj8cv")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3q8kl"]
+atlas = ExtResource("1_aj8cv")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uj0pt"]
+atlas = ExtResource("1_aj8cv")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vapwt"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mbgbk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xhuw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3q8kl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uj0pt")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="world" type="Node2D"]
+
+[node name="npc" type="CharacterBody2D" parent="."]
+position = Vector2(244, 140)
+script = ExtResource("1_kt4pe")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="npc"]
+shape = SubResource("CapsuleShape2D_gipc7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="npc"]
+position = Vector2(-2, 0)
+sprite_frames = SubResource("SpriteFrames_vapwt")
+animation = &"idle"
+
+[node name="CogniteNode" type="Node" parent="npc"]
+script = ExtResource("3_y5m25")
+root_depth_level = 0
