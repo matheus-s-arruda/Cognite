@@ -5,8 +5,9 @@ extends CharacterBody2D
 
 
 func _ready():
-	
-	print(cognite_node.EKE)
-	print(cognite_node.Bababue)
-	print(cognite_node.triangulo_mineiro)
+	pass
 
+
+func _input(event):
+	if Input.is_action_just_pressed("ui_down"):
+		cognite_node.vendeu = !cognite_node.vendeu

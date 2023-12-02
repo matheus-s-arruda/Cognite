@@ -17,6 +17,28 @@ const TEXT_ERROR_FAIL_EVENT := "There are event nodes in the graph, but there ar
 Add some variable to the \"triggers\" list in your CogniteSource."
 
 
+class RoutineAsembly:
+	var modus: int
+	var assemble: Callable
+	var _calls: Array[Callable]
+
+class RoutineAsemblyProcess extends RoutineAsembly:
+	func process(state: int):
+		if modus == state and assemble:
+			assemble.call()
+
+class RoutineAsemblyEvent extends RoutineAsembly:
+	var cognite_node: CogniteNode
+	var event: Signal
+	
+	func build():
+		event.connect(get_modus)
+	
+	func get_modus():
+		if cognite_node.current_state == modus and assemble:
+			assemble.call()
+
+
 static func get_propertie_names(cognite_assemble: CogniteAssemble) -> Dictionary:
 	var propertie_names := CODE_PROPERTY_NAMES.duplicate(true)
 	if cognite_assemble.source.states.is_empty(): return {}
@@ -252,6 +274,136 @@ static func condition_routine(node: Dictionary, routine: Dictionary, code_names:
 				return code_names.signal[cognite_assemble.nodes[node_id].trigger -1]
 	if not sucess:
 		return true
+
+## IN GAME #########################################################################################
+
+static func process_routine_to_callable(routine: Dictionary, propertie_names: Dictionary, cognite_node: CogniteNode):
+	if not routine.body: return
+	
+	var assembly := RoutineAsemblyProcess.new()
+	
+	var state_id: int = propertie_names.state.find(routine.modus)
+	if state_id == -1:
+		print("ERROR: propertie_names.state.find(routine.modus): ", routine.modus)
+		return
+	else: assembly.modus = state_id
+	
+	var calls = get_routine_members(routine.body, propertie_names, cognite_node)
+	if not calls is Callable:
+		return
+	
+	assembly.assemble = calls
+	return assembly
+
+static func event_routine_to_callable(routine: Dictionary, propertie_names: Dictionary, cognite_node: CogniteNode):
+	if not routine.body: return
+	
+	var assembly := RoutineAsemblyEvent.new()
+	var state_id: int = propertie_names.state.find(routine.modus)
+	if state_id == -1:
+		print("ERROR: propertie_names.state.find(routine.modus): ", routine.modus)
+		return
+	else: assembly.modus = state_id
+	
+	if not cognite_node.variables.has(routine.event):
+		print("ERROR: cognite_node.variables.has(routine.event): ", routine.event)
+		return
+	
+	var calls = get_routine_members(routine.body, propertie_names, cognite_node)
+	if not calls is Callable:
+		return
+	
+	assembly.assemble = calls
+	assembly.cognite_node = cognite_node
+	assembly.event = cognite_node.variables[routine.event]
+	
+	return assembly
+
+static func get_routine_members(body: Dictionary, propertie_names: Dictionary, cognite_node: CogniteNode):
+	var call_result: Array[Callable]
+	
+	for member in body:
+		var calls: Array[Callable]
+		
+		if member == "value":
+			continue
+		
+		if member == "body":
+			var state_id: int = propertie_names.state.find(body[member])
+			if state_id == -1:
+				continue
+			calls.append(cognite_node.change_state.bind(state_id))
+		else:
+			if body[member].has("ifs"):
+				_procedural_callable_generation(
+					body[member].ifs, Callable(func(): return cognite_node.get(member)), propertie_names, cognite_node, calls
+				)
+				
+				#var member_calls = get_routine_members(body[member].ifs, propertie_names, cognite_node)
+				#if member_calls is Callable:
+					#var condition := Callable(func(): return cognite_node.get(member))
+					#var call = Callable(CogniteData._meta_call.bind(condition, member_calls))
+					#calls.append(call)
+				
+				if body[member].has("else"):
+					_procedural_callable_generation(
+						body[member].else, Callable(func(): return not cognite_node.get(member)), propertie_names, cognite_node, calls
+					)
+					#var member_calls_else = get_routine_members(body[member].else, propertie_names, cognite_node)
+					#if member_calls_else is Callable:
+						#var condition_else := Callable(func(): return not cognite_node.get(member))
+						#var call_else = Callable(CogniteData._meta_call.bind(condition_else, member_calls_else))
+						#calls.append(call_else)
+			
+			elif body[member].has("else"):
+				_procedural_callable_generation(
+					body[member].else, Callable(func(): return not cognite_node.get(member)), propertie_names, cognite_node, calls
+				)
+				#var member_calls = get_routine_members(body[member].else, propertie_names, cognite_node)
+				#if member_calls is Callable:
+					#var condition := Callable(func(): return not cognite_node.get(member))
+					#var call = Callable(CogniteData._meta_call.bind(condition, member_calls))
+					#calls.append(call)
+			
+			if body[member].has("bigger"):
+				_procedural_callable_generation(
+					body[member].bigger,
+					Callable(func(): return cognite_node.get(member) > body[member].bigger.value),
+					propertie_names, cognite_node, calls
+				)
+				#var member_calls = get_routine_members(body[member].bigger, propertie_names, cognite_node)
+				#if member_calls is Callable:
+					#var condition := Callable(func(): return cognite_node.get(member))
+					#var call = Callable(CogniteData._meta_call.bind(condition, member_calls))
+					#calls.append(call)
+			
+			if body[member].has("smaller"):
+				_procedural_callable_generation(
+					body[member].smaller,
+					Callable(func(): return cognite_node.get(member) < body[member].smaller.value),
+					propertie_names, cognite_node, calls
+				)
+		
+		call_result.append(
+			Callable(
+				func(_calls: Array[Callable]): for _call in _calls: _call.call()
+			).bind(calls)
+		)
+	
+	var callable := Callable(func(_calls): for _call in _calls: _call.call()).bind(call_result)
+	return callable
+
+static func _meta_call(condition: Callable, _call: Callable):
+	if condition.call():
+		_call.call()
+
+static func _procedural_callable_generation(body: Dictionary, condition: Callable, propertie_names: Dictionary, cognite_node: CogniteNode, calls: Array[Callable]):
+	var member_calls = get_routine_members(body, propertie_names, cognite_node)
+	if member_calls is Callable:
+		var call = Callable(CogniteData._meta_call.bind(condition, member_calls))
+		calls.append(call)
+
+####################################################################################################
 
 static func except_letters(input_string: String) -> String:
 	var regex := RegEx.new()

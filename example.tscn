@@ -51,60 +51,62 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="Resource" id="Resource_aweaf"]
+[sub_resource type="Resource" id="Resource_134do"]
 script = ExtResource("5_2veeb")
-triggers = Array[String](["triangulo_mineiro"])
-conditions = Array[String](["Bababue"])
-ranges = Array[String](["EKE"])
-states = Array[String](["ATA"])
+triggers = Array[String]([])
+conditions = Array[String](["vendeu"])
+ranges = Array[String]([])
+states = Array[String](["BATATA", "PICLES"])
 
-[sub_resource type="Resource" id="Resource_8kro8"]
+[sub_resource type="Resource" id="Resource_xqsqj"]
 script = ExtResource("4_ma7yx")
 nodes = {
-2802365568278: {
-"position": Vector2(240, 240),
+2401021004339: {
+"position": Vector2(280, -20),
 "right_connections": {
-3288367960808: Vector2i(0, 0),
-5625551579461: Vector2i(0, 0),
-6666292619370: Vector2i(0, 0)
+2436756474472: Vector2i(0, 0)
 },
-"state": 0,
+"state": 1,
 "type": 0
 },
-3288367960808: {
-"condition": 1,
-"position": Vector2(520, 160),
+2417227795020: {
+"position": Vector2(280, 100),
 "right_connections": {
-3343715998320: Vector2i(0, 0)
+2454557100694: Vector2i(0, 0)
+},
+"state": 2,
+"type": 0
+},
+2436756474472: {
+"condition": 1,
+"position": Vector2(520, -20),
+"right_connections": {
+2489688590982: Vector2i(0, 0)
 },
 "type": 3
 },
-3343715998320: {
-"change_state": 1,
-"position": Vector2(740, 180),
+2454557100694: {
+"condition": 1,
+"position": Vector2(520, 100),
+"right_connections": {
+2512539159262: Vector2i(1, 0)
+},
+"type": 3
+},
+2489688590982: {
+"change_state": 2,
+"position": Vector2(700, 0),
 "right_connections": {},
 "type": 2
 },
-5625551579461: {
-"bigger": 1.0,
-"position": Vector2(460, 340),
-"range": 1,
-"right_connections": {
-3343715998320: Vector2i(1, 0)
-},
-"smaller": 0.0,
-"type": 4
-},
-6666292619370: {
-"position": Vector2(460, 260),
-"right_connections": {
-3343715998320: Vector2i(0, 0)
-},
-"trigger": 1,
-"type": 1
+2512539159262: {
+"change_state": 1,
+"position": Vector2(700, 140),
+"right_connections": {},
+"type": 2
 }
 }
-source = SubResource("Resource_aweaf")
+source = SubResource("Resource_134do")
 
 [node name="world" type="Node2D"]
 
@@ -123,4 +125,4 @@ animation = &"idle"
 
 [node name="CogniteNode" type="Node" parent="npc"]
 script = ExtResource("3_y5m25")
-cognite_assemble_root = SubResource("Resource_8kro8")
+cognite_assemble_root = SubResource("Resource_xqsqj")

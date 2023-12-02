@@ -5,13 +5,20 @@ extends CogniteGraphNode
 @onready var option_button: OptionButton = $OptionButton
 
 
-func _gui_input(event: InputEvent):
+
+func _input(event: InputEvent):
 	if event is InputEventMouseMotion:
 		return
 	
 	assemble.nodes[id]["trigger"] = option_button.selected
 	get_options()
 	option_button.selected = assemble.nodes[id].trigger
+
+
+func _gui_input(event: InputEvent):
+	if event is InputEventMouseMotion:
+		return
+	
 	assemble.actualize()
 	super(event)
 

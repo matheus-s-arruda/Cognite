@@ -16,13 +16,14 @@ func init(_assemble: CogniteAssemble, _id: int, type: int):
 	else:                                   ## {to node id: right port, left port}
 		id = get_instance_id()              ## {node_id_1: Vector2i.x, Vector2i.y}
 		assemble.nodes[id] = {"type": type, "right_connections": {}}
-
+	
 	position_offset_changed.connect(save_position)
 	return id
 
 
 func _ready():
 	is_ready = true
+	get_options()
 
 
 func _draw():
@@ -33,6 +34,10 @@ func _gui_input(event: InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		if Rect2(Vector2(size.x -12, 1), Vector2(13, 13)).has_point(event.position):
 			_on_close_button_up()
+
+
+func get_options():
+	pass
 
 
 func set_data(data: Dictionary):
