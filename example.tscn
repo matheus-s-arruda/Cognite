@@ -502,7 +502,7 @@ states = Array[String](["PATROL", "HUNT", "ATTACK", "SKILL", "SUMMON", "DIED"])
 script = ExtResource("4_ma7yx")
 nodes = {
 59819801260191: {
-"position": Vector2(300, -300),
+"position": Vector2(500, -640),
 "right_connections": {
 59836846920691: Vector2i(0, 0),
 61113039384127: Vector2i(0, 0)
@@ -511,7 +511,7 @@ nodes = {
 "type": 0
 },
 59836846920691: {
-"position": Vector2(460, -300),
+"position": Vector2(660, -640),
 "right_connections": {
 60024802065932: Vector2i(0, 0)
 },
@@ -520,12 +520,12 @@ nodes = {
 },
 59906623339979: {
 "change_state": 2,
-"position": Vector2(780, -300),
+"position": Vector2(980, -640),
 "right_connections": {},
 "type": 2
 },
 59965226170469: {
-"position": Vector2(-40, 180),
+"position": Vector2(500, -440),
 "right_connections": {
 60140917167160: Vector2i(0, 0),
 60197355732241: Vector2i(0, 0),
@@ -536,7 +536,7 @@ nodes = {
 },
 60024802065932: {
 "condition": 1,
-"position": Vector2(640, -300),
+"position": Vector2(840, -640),
 "right_connections": {
 59906623339979: Vector2i(1, 0)
 },
@@ -544,7 +544,7 @@ nodes = {
 },
 60197355732241: {
 "bigger": 400.0,
-"position": Vector2(220, 200),
+"position": Vector2(660, -400),
 "range": 1,
 "right_connections": {
 62637383694694: Vector2i(1, 0),
@@ -555,18 +555,18 @@ nodes = {
 },
 60369758404502: {
 "change_state": 4,
-"position": Vector2(680, 360),
+"position": Vector2(1100, -260),
 "right_connections": {},
 "type": 2
 },
 60588214515805: {
 "change_state": 5,
-"position": Vector2(680, 180),
+"position": Vector2(1100, -440),
 "right_connections": {},
 "type": 2
 },
 61113039384127: {
-"position": Vector2(460, -40),
+"position": Vector2(660, -540),
 "right_connections": {
 61329448691940: Vector2i(0, 0)
 },
@@ -575,33 +575,33 @@ nodes = {
 },
 61329448691940: {
 "change_state": 6,
-"position": Vector2(600, -40),
+"position": Vector2(840, -540),
 "right_connections": {},
 "type": 2
 },
 61432444042578: {
-"position": Vector2(-60, -440),
+"position": Vector2(-20, -460),
 "right_connections": {
-61113039384127: Vector2i(0, 0),
 64291835287892: Vector2i(0, 0),
-65517645797716: Vector2i(0, 0)
+65517645797716: Vector2i(0, 0),
+190889402112162: Vector2i(0, 0)
 },
 "state": 3,
 "type": 0
 },
 61523644987540: {
-"position": Vector2(-300, -60),
+"position": Vector2(-20, -660),
 "right_connections": {
-61113039384127: Vector2i(0, 0),
 64291835287892: Vector2i(0, 0),
-68106571540917: Vector2i(0, 0)
+68106571540917: Vector2i(0, 0),
+190889402112162: Vector2i(0, 0)
 },
 "state": 5,
 "type": 0
 },
 62637383694694: {
 "condition": 5,
-"position": Vector2(480, 300),
+"position": Vector2(900, -320),
 "right_connections": {
 60369758404502: Vector2i(1, 0),
 63618129391182: Vector2i(0, 0)
@@ -609,18 +609,18 @@ nodes = {
 "type": 3
 },
 62740613885145: {
-"position": Vector2(-260, -220),
+"position": Vector2(-20, -560),
 "right_connections": {
-61113039384127: Vector2i(0, 0),
 64291835287892: Vector2i(0, 0),
-67981447069912: Vector2i(0, 0)
+67981447069912: Vector2i(0, 0),
+190889402112162: Vector2i(0, 0)
 },
 "state": 4,
 "type": 0
 },
 63618129391182: {
 "change_state": 3,
-"position": Vector2(680, 280),
+"position": Vector2(1100, -340),
 "right_connections": {},
 "type": 2
 },
@@ -634,13 +634,13 @@ nodes = {
 },
 66729799641392: {
 "change_state": 2,
-"position": Vector2(280, -460),
+"position": Vector2(320, -460),
 "right_connections": {},
 "type": 2
 },
 67981447069912: {
 "condition": 3,
-"position": Vector2(-100, -300),
+"position": Vector2(160, -560),
 "right_connections": {
 68044344846661: Vector2i(1, 0)
 },
@@ -648,13 +648,13 @@ nodes = {
 },
 68044344846661: {
 "change_state": 2,
-"position": Vector2(20, -300),
+"position": Vector2(320, -560),
 "right_connections": {},
 "type": 2
 },
 68106571540917: {
 "condition": 4,
-"position": Vector2(-180, 0),
+"position": Vector2(160, -660),
 "right_connections": {
 68166516538971: Vector2i(1, 0)
 },
@@ -662,19 +662,33 @@ nodes = {
 },
 68166516538971: {
 "change_state": 2,
-"position": Vector2(-60, 0),
+"position": Vector2(320, -660),
 "right_connections": {},
 "type": 2
 },
 140982754542652: {
 "bigger": 1.0,
-"position": Vector2(460, 180),
+"position": Vector2(880, -440),
 "range": 2,
 "right_connections": {
 60588214515805: Vector2i(1, 0)
 },
 "smaller": 1.0,
 "type": 4
+},
+190889402112162: {
+"position": Vector2(160, -340),
+"right_connections": {
+191670884838003: Vector2i(0, 0)
+},
+"trigger": 1,
+"type": 1
+},
+191670884838003: {
+"change_state": 6,
+"position": Vector2(320, -340),
+"right_connections": {},
+"type": 2
 }
 }
 source = SubResource("Resource_nxsn1")
@@ -727,7 +741,6 @@ script/source = "extends Node
 
 
 func start():
-	#cognite_node.skill_variation = true
 	cognite_node.attacking = true
 "
 
@@ -760,7 +773,6 @@ script/source = "extends Node
 
 
 func start():
-	#cognite_node.skill_variation = false
 	cognite_node.using_skill = true
 "
 
