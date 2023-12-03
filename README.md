@@ -101,5 +101,13 @@ To correctly use a CogniteBehavior, extend a script and save it in a file, then 
 # Update 2.0
 ## No code generation, everything virtual
 Now, the behavior will be built in real time, using `Callable` instead of conversion to GDScript.<br>
+
 Additionally, there is no longer `CogniteBehavior`, there is now a more efficient way to create state blocks.<br>
+It is enough that the direct child node of `CogniteNode` has exactly the name of a state.<br>
+
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/2.0/thumbnail/states.png"><br>
+
+The `start()` function will be called when the state is started, the `_process(delta)` and `_physics_process(delta)` functions will **ONLY** be available when the state is activated.<br>
+
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/2.0/thumbnail/funcs.png">
 
