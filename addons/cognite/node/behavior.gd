@@ -1,18 +1,61 @@
 @tool
-class_name CogniteBehavior extends Resource
-## use this class to inject behavior code into a CogniteAssemble.
+class_name CogniteBehavior extends Node
+## DO NOT MODIFY THIS CODE.[br][br]
+## Instead, create a script and extend it from [code]CogniteBehavior[/code].
+##
+## Use this class as a child node of CogniteNode to add behaviors according to [code]CogniteNode.curren_state[/code].
 
-## Node that will be observed, this node must contain the methods and properties that CogniteBehavior will access
-var root: Node
+## State relative to CogniteSource.state on its parent CogniteNode.
+var state: int
 
-## The code inside this function will be called whenever the state is activated.
+## CogniteNode parent.
+@onready var cognite_node: CogniteNode = $".."
+
+
+func _init():
+	await ready
+	if not cognite_node is CogniteNode: return
+	cognite_node.state_changed.connect(update)
+	
+	set_process(false)
+	set_physics_process(false)
+
+
+func _get_property_list():
+	var property_list: Array[Dictionary]
+	
+	if cognite_node and cognite_node.cognite_assemble_root and cognite_node.cognite_assemble_root.source:
+		var string_array = PackedStringArray(cognite_node.cognite_assemble_root.source.states)
+		var hint_string = ",".join(string_array)
+		
+		property_list.append(
+			{
+				"name": "state",
+				"type": TYPE_INT,
+				"usage": PROPERTY_USAGE_DEFAULT,
+				"hint": PROPERTY_HINT_ENUM,
+				"hint_string": hint_string
+			}
+		)
+	return property_list
+
+## Activates the node if its state is the same as the current CogniteNode.
+func update(new_state: int):
+	if new_state == state: start()
+	set_process(new_state ==  state)
+	set_physics_process(new_state ==  state)
+
+## This function will be called as soon as the state is active.[br][br]
+## override this function in your legacy gdscript code.
 func start():
 	pass
 
-## Called in every frame relative to [code]Node._process(delta)[/code].
-func process(delta: float):
+## Will be active when the state is active.[br][br]
+## override this function in your legacy gdscript code.
+func _physics_process(delta):
 	pass
 
-## Called in every frame relative to [code]Node._physics_process(delta)[/code].
-func physics_process(delta: float):
+## Will be active when the state is active.[br][br]
+## override this function in your legacy gdscript code.
+func _process(delta):
 	pass

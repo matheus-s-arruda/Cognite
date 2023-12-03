@@ -42,14 +42,21 @@ func create_node(type: int, id: int):
 
 func remove_node(id: int):
 	var node = nodes[id]
-	if not is_instance_valid(node): return
+	if not is_instance_valid(node):
+		print("ERROR: remove_node::is_instance_valid() : nodes[id]")
+		return
+	
 	for node_id in assemble.nodes[id].right_connections:
 		if not nodes.has(node_id):
 			continue
 		
 		var conection_node = nodes[node_id]
 		var ports: Vector2i = assemble.nodes[id].right_connections[node_id]
-		graph_edit.disconnect_node(node.name, ports.x, conection_node.name, ports.y)
+		
+		if is_instance_valid(conection_node):
+			graph_edit.disconnect_node(node.name, ports.x, conection_node.name, ports.y)
+		else:
+			print("ERROR: remove_node::is_instance_valid() : conection_node")
 	
 	for node_id in assemble.nodes:
 		if node_id == id:
@@ -60,7 +67,9 @@ func remove_node(id: int):
 			if connection_node_id == id:
 				var ports: Vector2i = assemble.nodes[node_id].right_connections[connection_node_id]
 				graph_edit.disconnect_node(conection_node.name, ports.x, node.name, ports.y)
+	
 	assemble.nodes.erase(id)
+	nodes.erase(id)
 
 
 func show_editor(_assemble):

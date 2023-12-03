@@ -1,20 +1,24 @@
 @tool
 class_name CogniteNode extends Node
 
-enum {PROCESS, EVENT}
+signal state_changed(state)
 
 @export var cognite_assemble_root: CogniteAssemble:
 	set(value):
 		if cognite_assemble_root != value:
 			if cognite_assemble_root:
-				cognite_assemble_root.actualized.disconnect(actualized)
+				cognite_assemble_root.actualized.disconnect(actualize)
 			
 			if value:
-				value.actualized.connect(actualized)
+				value.actualized.connect(actualize)
 		
 		cognite_assemble_root = value
 
-## META ############################################################################################
+class FakeSignal:
+	var callable: Callable
+	func emit():
+		if callable:
+			callable.call()
 
 var root_node: Node
 var is_active := true
@@ -27,28 +31,12 @@ var routines: Array
 var decompressed_process: Array
 var decompressed_event: Array
 
-var current_state: int
+var current_state: int = -1
 var assembly_process: Array
 var assembly_event: Array
 
 
-## IN GAME #########################################################################################
-func _ready():
-	if not Engine.is_editor_hint():
-		actualized()
-		
-		for routine in decompressed_process:
-			var assemble = CogniteData.process_routine_to_callable(routine, propertie_names, self)
-			if assemble:
-				assembly_process.append(assemble)
-		
-		for routine in decompressed_event:
-			var assemble = CogniteData.event_routine_to_callable(routine, propertie_names, self)
-			if assemble:
-				assembly_event.append(assemble)
-
-
-func actualized():
+func actualize():
 	if not cognite_assemble_root:
 		return
 	
@@ -71,7 +59,7 @@ func actualized():
 	var count: int
 	for names in propertie_names.state:
 		var _names: String = names
-		variables[_names.to_upper()] = count
+		variables[_names] = count
 		count += 1
 	
 	for names in propertie_names.conditions:
@@ -81,20 +69,57 @@ func actualized():
 		variables[names] = 0.0
 	
 	for names in propertie_names.signal:
-		var _signal := Signal(self, names)
+		var _signal := FakeSignal.new()
 		variables[names] = _signal
-	
-	
 	
 	set_deferred("updating", false)
 
 
+## IN GAME #########################################################################################
+func _ready():
+	if Engine.is_editor_hint():
+		return
+	
+	actualize()
+	
+	for routine in decompressed_process:
+		var assemble = CogniteData.process_routine_to_callable(routine, propertie_names, self)
+		if assemble:
+			assembly_process.append(assemble)
+	
+	for routine in decompressed_event:
+		var assemble = CogniteData.event_routine_to_callable(routine, propertie_names, self)
+		if assemble:
+			assembly_event.append(assemble)
+	
+	get_children().map(func(child): child.set_process(false); child.set_physics_process(false))
+	
+	change_state(0)
+
+
 func change_state(new_state: int):
+	if new_state != current_state:
+		current_state = new_state
+		state_changed.emit(current_state)
+		get_children().map(set_child_behavior_enabled)
+
+
+func set_child_behavior_enabled(child: Node):
+	child.set_process(false)
+	child.set_physics_process(false)
 	
-	if new_state == current_state: return
-	current_state = new_state
+	if not cognite_assemble_root or not cognite_assemble_root.source:
+		return
 	
-	print("change_state: ", propertie_names.state[current_state])
+	if not cognite_assemble_root.source.states.has(child.name):
+		return
+	
+	if child.name == variables.find_key(current_state):
+		if child.has_method("start"):
+			child.start()
+		
+		child.set_process(true)
+		child.set_physics_process(true)
 
 
 func _process(delta):
@@ -129,10 +154,10 @@ func _get_property_list():
 	for state in propertie_names.state:
 		property_list.append({"name": state, "type": TYPE_INT, "usage": PROPERTY_USAGE_SCRIPT_VARIABLE})
 	for _signal in propertie_names.signal:
-		property_list.append({"name": _signal, "type": TYPE_SIGNAL, "usage": PROPERTY_USAGE_SCRIPT_VARIABLE})
+		property_list.append({"name": _signal, "type": TYPE_OBJECT, "usage": PROPERTY_USAGE_SCRIPT_VARIABLE})
 	
 	return property_list
 
-
-
 func is_cognite_node(): pass
+
+####################################################################################################

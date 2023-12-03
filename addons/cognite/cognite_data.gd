@@ -29,10 +29,6 @@ class RoutineAsemblyProcess extends RoutineAsembly:
 
 class RoutineAsemblyEvent extends RoutineAsembly:
 	var cognite_node: CogniteNode
-	var event: Signal
-	
-	func build():
-		event.connect(get_modus)
 	
 	func get_modus():
 		if cognite_node.current_state == modus and assemble:
@@ -315,7 +311,7 @@ static func event_routine_to_callable(routine: Dictionary, propertie_names: Dict
 	
 	assembly.assemble = calls
 	assembly.cognite_node = cognite_node
-	assembly.event = cognite_node.variables[routine.event]
+	cognite_node.variables[routine.event].callable = assembly.get_modus
 	
 	return assembly
 
@@ -338,45 +334,20 @@ static func get_routine_members(body: Dictionary, propertie_names: Dictionary, c
 				_procedural_callable_generation(
 					body[member].ifs, Callable(func(): return cognite_node.get(member)), propertie_names, cognite_node, calls
 				)
-				
-				#var member_calls = get_routine_members(body[member].ifs, propertie_names, cognite_node)
-				#if member_calls is Callable:
-					#var condition := Callable(func(): return cognite_node.get(member))
-					#var call = Callable(CogniteData._meta_call.bind(condition, member_calls))
-					#calls.append(call)
-				
 				if body[member].has("else"):
 					_procedural_callable_generation(
 						body[member].else, Callable(func(): return not cognite_node.get(member)), propertie_names, cognite_node, calls
 					)
-					#var member_calls_else = get_routine_members(body[member].else, propertie_names, cognite_node)
-					#if member_calls_else is Callable:
-						#var condition_else := Callable(func(): return not cognite_node.get(member))
-						#var call_else = Callable(CogniteData._meta_call.bind(condition_else, member_calls_else))
-						#calls.append(call_else)
-			
 			elif body[member].has("else"):
 				_procedural_callable_generation(
 					body[member].else, Callable(func(): return not cognite_node.get(member)), propertie_names, cognite_node, calls
 				)
-				#var member_calls = get_routine_members(body[member].else, propertie_names, cognite_node)
-				#if member_calls is Callable:
-					#var condition := Callable(func(): return not cognite_node.get(member))
-					#var call = Callable(CogniteData._meta_call.bind(condition, member_calls))
-					#calls.append(call)
-			
 			if body[member].has("bigger"):
 				_procedural_callable_generation(
 					body[member].bigger,
 					Callable(func(): return cognite_node.get(member) > body[member].bigger.value),
 					propertie_names, cognite_node, calls
 				)
-				#var member_calls = get_routine_members(body[member].bigger, propertie_names, cognite_node)
-				#if member_calls is Callable:
-					#var condition := Callable(func(): return cognite_node.get(member))
-					#var call = Callable(CogniteData._meta_call.bind(condition, member_calls))
-					#calls.append(call)
-			
 			if body[member].has("smaller"):
 				_procedural_callable_generation(
 					body[member].smaller,

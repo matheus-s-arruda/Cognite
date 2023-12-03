@@ -20,6 +20,10 @@ func _enter_tree():
 	add_custom_type( "CogniteNode", "Node",
 			preload("res://addons/cognite/node/cognite_node.gd"),
 			preload("res://addons/cognite/assets/brain.svg"))
+	
+	add_custom_type( "CogniteBehavior", "Node",
+			preload("res://addons/cognite/node/behavior.gd"),
+			preload("res://addons/cognite/assets/brain2.svg"))
 
 
 func _exit_tree():
