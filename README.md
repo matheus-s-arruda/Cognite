@@ -6,14 +6,24 @@
  Develop State Machines & Behavior Trees with ease and introduce them into your scenes with just one click.
 
 [Update 1.1](#update-11)<br>
-[Update 1.2](#update-12)
+[Update 1.2](#update-12)<br>
+[Update 2.0](#update-20)
 
 ## How to use
 > - Add the `CogniteNode` node to your scene, its function is to allow StateMachines to be built in this scene.
-> - Create or add a `CogniteAssemble` and start creating your graphs.
+
+> - Create or add a `CogniteAssemble`, a `CogniteSource` and start creating your graphs.
 <br>
 
-To generate the MachineState in your scene, go to the CogniteNode node and click `CLICK TO ASSEMBLY` in the inspector.<br>If there is another node created in this way in the scene, this node will be automatically deleted.<br> Remember to save your resources and codes.
+---
+### CogniteNode
+With this node you can access the state machine and interact with its properties.
+
+### CogniteAssemble
+Resource where graph data is saved, you can save it to reuse in other CogniteNodes.
+
+### CogniteSource
+Resource for configuring CogniteAssemble, you can reuse it in different CogniteAssemble to create different behaviors using the same data that your scene can access, avoiding the need to edit other scene codes.
 
 ---
 Currently, there are 4 types of nodes.
@@ -87,3 +97,9 @@ The graph editor will now be accessed from the main screen, the operation will r
 
 It is now possible to add Resource of type CogniteBehavior to the ROOT node so that it is activated when the respective state is activated.
 To correctly use a CogniteBehavior, extend a script and save it in a file, then drag the file to one of the states created in ROOT, the code will be called when the state is activated.
+
+# Update 2.0
+## No code generation, everything virtual
+Now, the behavior will be built in real time, using `Callable` instead of conversion to GDScript.<br>
+Additionally, there is no longer `CogniteBehavior`, there is now a more efficient way to create state blocks.<br>
+
