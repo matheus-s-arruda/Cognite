@@ -20,19 +20,19 @@ Add some variable to the \"triggers\" list in your CogniteSource."
 class RoutineAsembly:
 	var modus: int
 	var assemble: Callable
-	var _calls: Array[Callable]
 
 class RoutineAsemblyProcess extends RoutineAsembly:
 	func process(state: int):
-		if modus == state and assemble:
+		if modus == state and not assemble.is_null():
 			assemble.call()
 
 class RoutineAsemblyEvent extends RoutineAsembly:
 	var cognite_node: CogniteNode
 	
 	func get_modus():
-		if cognite_node.current_state == modus and assemble:
+		if cognite_node.current_state == modus and not assemble.is_null():
 			assemble.call()
+
 
 
 static func get_propertie_names(cognite_assemble: CogniteAssemble) -> Dictionary:
@@ -296,6 +296,7 @@ static func event_routine_to_callable(routine: Dictionary, propertie_names: Dict
 	
 	var assembly := RoutineAsemblyEvent.new()
 	var state_id: int = propertie_names.state.find(routine.modus)
+	
 	if state_id == -1:
 		print("ERROR: propertie_names.state.find(routine.modus): ", routine.modus)
 		return
@@ -307,11 +308,12 @@ static func event_routine_to_callable(routine: Dictionary, propertie_names: Dict
 	
 	var calls = get_routine_members(routine.body, propertie_names, cognite_node)
 	if not calls is Callable:
+		print("ERROR: event_routine_to_callable: calls = get_routine_members")
 		return
 	
 	assembly.assemble = calls
 	assembly.cognite_node = cognite_node
-	cognite_node.variables[routine.event].callable = assembly.get_modus
+	cognite_node.variables[routine.event].callables.append(assembly.get_modus)
 	
 	return assembly
 
@@ -355,23 +357,16 @@ static func get_routine_members(body: Dictionary, propertie_names: Dictionary, c
 					propertie_names, cognite_node, calls
 				)
 		
-		call_result.append(
-			Callable(
-				func(_calls: Array[Callable]): for _call in _calls: _call.call()
-			).bind(calls)
-		)
+		call_result.append(Callable(func(): for _call in calls: _call.call()))
 	
-	var callable := Callable(func(_calls): for _call in _calls: _call.call()).bind(call_result)
+	var callable := Callable(func(): for _call in call_result: _call.call())
 	return callable
 
-static func _meta_call(condition: Callable, _call: Callable):
-	if condition.call():
-		_call.call()
 
 static func _procedural_callable_generation(body: Dictionary, condition: Callable, propertie_names: Dictionary, cognite_node: CogniteNode, calls: Array[Callable]):
 	var member_calls = get_routine_members(body, propertie_names, cognite_node)
 	if member_calls is Callable:
-		var call = Callable(CogniteData._meta_call.bind(condition, member_calls))
+		var call = Callable(func(): if condition.call(): member_calls.call())
 		calls.append(call)
 
 ####################################################################################################

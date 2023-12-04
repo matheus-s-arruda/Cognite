@@ -15,13 +15,15 @@ signal state_changed(state)
 		cognite_assemble_root = value
 
 class FakeSignal:
-	var callable: Callable
+	var callables: Array[Callable]
 	func emit():
-		if callable:
-			callable.call()
+		callables.map(func(c): c.call())
 
-var root_node: Node
-var is_active := true
+var is_active: bool:
+	set(value):
+		is_active = value
+		change_state(0)
+
 var updating: bool
 
 var propertie_names: Dictionary
@@ -89,12 +91,11 @@ func _ready():
 	
 	for routine in decompressed_event:
 		var assemble = CogniteData.event_routine_to_callable(routine, propertie_names, self)
+		
 		if assemble:
 			assembly_event.append(assemble)
 	
 	get_children().map(func(child): child.set_process(false); child.set_physics_process(false))
-	
-	change_state(0)
 
 
 func change_state(new_state: int):
