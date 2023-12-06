@@ -53,7 +53,7 @@ The path must always start in a `State`, always end in a `Change State`, at most
 
 ## install guide
 You can acquire Cognite in your project in two ways
-- Download the [latest version](https://github.com/matheus-s-arruda/Cognite/releases/tag/v1.1) and extract it into the `addons folder`. (recommended)
+- Download the [latest version](https://github.com/matheus-s-arruda/Cognite/releases/tag/v2.0) and extract it into the `addons folder`. (recommended)
 - Download directly to your godot 4.2 via [Godot Asset Library](https://godotengine.org/asset-library/asset/2235)
 - Clone this repository and add the `cognite folder` to your `addons folder` (if it doesn't exist, create it)
 
