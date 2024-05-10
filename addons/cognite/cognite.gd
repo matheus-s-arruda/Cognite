@@ -5,9 +5,6 @@ var inspector: EditorInspectorPlugin
 var main_panel: Control
 
 func _enter_tree():
-	
-	print(get_path())
-	
 	main_panel = preload("res://addons/cognite/editor/cognite_editor.tscn").instantiate()
 	main_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	main_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL

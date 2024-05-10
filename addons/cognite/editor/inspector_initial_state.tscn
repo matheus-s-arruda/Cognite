@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://drwlcw6qffplx"]
+
+[ext_resource type="Script" path="res://addons/cognite/editor/scripts/inspector_initial_state.gd" id="1_1r2ep"]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+offset_right = 399.0
+offset_bottom = 40.0
+script = ExtResource("1_1r2ep")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Initial State"
+
+[node name="opitions" type="OptionButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3

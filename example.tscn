@@ -16,8 +16,6 @@
 script/source = "extends CharacterBody2D
 
 
-
-
 func _physics_process(delta):
 	position = get_global_mouse_position()
 "
@@ -509,7 +507,7 @@ script = ExtResource("5_2veeb")
 triggers = Array[String](["dead", "player_detected"])
 conditions = Array[String](["is_hunt", "attacking", "using_skill", "summoning", "skill_variation"])
 ranges = Array[String](["distance_to_player", "delay_summon"])
-states = Array[String](["PATROL", "HUNT", "ATTACK", "SKILL", "SUMMON", "DIED"])
+states = Array[String](["PATROL", "HUNT", "ATTACK", "SKILL", "SUMMON", "DEAD"])
 
 [sub_resource type="Resource" id="Resource_ogbr8"]
 script = ExtResource("4_ma7yx")
@@ -587,7 +585,7 @@ nodes = {
 "type": 1
 },
 61329448691940: {
-"change_state": 6,
+"change_state": 1,
 "position": Vector2(840, -540),
 "right_connections": {},
 "type": 2
@@ -698,7 +696,7 @@ nodes = {
 "type": 1
 },
 191670884838003: {
-"change_state": 6,
+"change_state": 1,
 "position": Vector2(320, -340),
 "right_connections": {},
 "type": 2
@@ -835,6 +833,7 @@ shape = SubResource("CircleShape2D_ky5bg")
 
 [node name="CogniteNode" type="Node" parent="npc"]
 script = ExtResource("3_y5m25")
+initial_state = 2
 cognite_assemble_root = SubResource("Resource_ogbr8")
 
 [node name="PATROL" type="Node" parent="npc/CogniteNode"]

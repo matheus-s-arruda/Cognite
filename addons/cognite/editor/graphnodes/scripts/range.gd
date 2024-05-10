@@ -13,6 +13,7 @@ func _input(event: InputEvent):
 	assemble.nodes[id]["range"] = option_button.selected
 	get_options()
 	option_button.selected = assemble.nodes[id].range
+	super(event)
 
 
 func _gui_input(event: InputEvent):

@@ -9,6 +9,7 @@ const GRAPH_NODES := {
 	CogniteData.Types.CONDITION: preload("res://addons/cognite/editor/graphnodes/condition.tscn"),
 	CogniteData.Types.CHANGE_STATE: preload("res://addons/cognite/editor/graphnodes/change_states.tscn"),
 	CogniteData.Types.RANGE: preload("res://addons/cognite/editor/graphnodes/range.tscn"),
+	CogniteData.Types.CHANGE_PROPERTY: preload("res://addons/cognite/editor/graphnodes/change_property.tscn"),
 }
 
 var nodes: Dictionary
@@ -22,6 +23,7 @@ var create_nodegraph: OptionButton = CREATE_NODEGRAPH.instantiate()
 func _ready():
 	graph_edit.add_valid_connection_type(1, 0)
 	graph_edit.get_menu_hbox().add_child(create_nodegraph)
+	graph_edit.create_opitions = create_nodegraph
 	create_nodegraph.item_selected.connect(_on_create_nodegraph_item_selected)
 
 
@@ -38,6 +40,8 @@ func create_node(type: int, id: int):
 	graph_edit.add_child(new_graph_node)
 	if id == 0:
 		new_graph_node.position_offset = Vector2(100, 100)
+	
+	return new_graph_node
 
 
 func remove_node(id: int):
@@ -107,7 +111,8 @@ func clear_graph():
 
 func _on_create_nodegraph_item_selected(index: int):
 	create_nodegraph.selected = 0
-	create_node(index - 1, 0)
+	var new_graph_node: CogniteGraphNode = create_node(index - 1, 0)
+	new_graph_node.position_offset = (graph_edit.scroll_offset + graph_edit.get_local_mouse_position()) / graph_edit.zoom
 
 
 func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):

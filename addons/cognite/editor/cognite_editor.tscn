@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cdyybwnor7o2u"]
+[gd_scene load_steps=8 format=3 uid="uid://cdyybwnor7o2u"]
 
 [ext_resource type="Script" path="res://addons/cognite/editor/scripts/cognite_editor.gd" id="1_8i7su"]
 [ext_resource type="Texture2D" uid="uid://dgsq8vhvavv6k" path="res://addons/cognite/assets/artwork_godot.jpg" id="2_v4idv"]
+[ext_resource type="Script" path="res://addons/cognite/editor/scripts/graph_editor.gd" id="3_sfxs4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n24ot"]
 content_margin_left = 4.0
@@ -50,6 +51,7 @@ theme = SubResource("Theme_rd5gr")
 theme_override_styles/panel = SubResource("StyleBoxFlat_3nrat")
 right_disconnects = true
 minimap_enabled = false
+script = ExtResource("3_sfxs4")
 metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="PanelContainer"]

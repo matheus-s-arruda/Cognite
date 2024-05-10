@@ -1,0 +1,126 @@
+[gd_scene load_steps=7 format=3 uid="uid://dhaej270obypm"]
+
+[ext_resource type="Script" path="res://addons/cognite/node/cognite_node.gd" id="1_bhaa5"]
+[ext_resource type="Script" path="res://addons/cognite/node/assemble.gd" id="2_gc7ng"]
+[ext_resource type="Script" path="res://addons/cognite/node/source.gd" id="3_oxamc"]
+
+[sub_resource type="GDScript" id="GDScript_0q3vh"]
+script/source = "extends Node2D
+
+
+@onready var cognite_node = $CogniteNode
+@onready var label = $Label
+
+
+
+func _input(event: InputEvent):
+	if event is InputEventKey and event.pressed and event.keycode == KEY_H:
+		cognite_node.pow.emit()
+
+
+func _process(delta):
+	label.set_text([\"A\", \"B\"][cognite_node.current_state])
+"
+
+[sub_resource type="Resource" id="Resource_2u8ki"]
+script = ExtResource("3_oxamc")
+triggers = Array[String](["pow"])
+conditions = Array[String](["tal"])
+ranges = Array[String](["foo"])
+states = Array[String](["A", "B", "C", "D"])
+
+[sub_resource type="Resource" id="Resource_5f4h3"]
+script = ExtResource("2_gc7ng")
+nodes = {
+62750009150141: {
+"position": Vector2(20, -600),
+"right_connections": {
+62788596745309: Vector2i(0, 0),
+62999352119489: Vector2i(0, 0)
+},
+"state": 1,
+"type": 0
+},
+62788596745309: {
+"condition": 1,
+"position": Vector2(300, -660),
+"right_connections": {
+62831546400445: Vector2i(0, 0),
+64977520128444: Vector2i(1, 0)
+},
+"type": 3
+},
+62831546400445: {
+"change_state": 2,
+"position": Vector2(500, -660),
+"right_connections": {},
+"type": 2
+},
+62999352119489: {
+"position": Vector2(240, -460),
+"right_connections": {
+63045757894330: Vector2i(0, 0)
+},
+"trigger": 1,
+"type": 1
+},
+63045757894330: {
+"condition": true,
+"position": Vector2(480, -460),
+"properties": 0,
+"property": 1,
+"range": 0.0,
+"right_connections": {},
+"type": 5
+},
+64913162727848: {
+"position": Vector2(20, -720),
+"right_connections": {
+62788596745309: Vector2i(0, 0),
+65004447535583: Vector2i(0, 0),
+65279124109749: Vector2i(0, 0)
+},
+"state": 2,
+"type": 0
+},
+64977520128444: {
+"change_state": 1,
+"position": Vector2(500, -580),
+"right_connections": {},
+"type": 2
+},
+65279124109749: {
+"position": Vector2(240, -820),
+"right_connections": {
+65326402304398: Vector2i(0, 0)
+},
+"trigger": 1,
+"type": 1
+},
+65326402304398: {
+"condition": false,
+"position": Vector2(500, -820),
+"properties": 0,
+"property": 1,
+"range": 0.0,
+"right_connections": {},
+"type": 5
+}
+}
+source = SubResource("Resource_2u8ki")
+
+[node name="Node2D" type="Node2D"]
+script = SubResource("GDScript_0q3vh")
+
+[node name="CogniteNode" type="Node" parent="."]
+script = ExtResource("1_bhaa5")
+initial_state = 0
+cognite_assemble_root = SubResource("Resource_5f4h3")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 184.0
+offset_top = 62.0
+offset_right = 224.0
+offset_bottom = 85.0
+scale = Vector2(4.58782, 3.60785)
+text = "asd"

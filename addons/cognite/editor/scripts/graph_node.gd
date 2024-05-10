@@ -18,6 +18,7 @@ func init(_assemble: CogniteAssemble, _id: int, type: int):
 		assemble.nodes[id] = {"type": type, "right_connections": {}}
 	
 	position_offset_changed.connect(save_position)
+	focus_entered
 	return id
 
 
@@ -28,6 +29,11 @@ func _ready():
 
 func _draw():
 	draw_char(get_theme_default_font(), Vector2(size.x -12, 12), "x", 13)
+
+
+func _input(event: InputEvent):
+	if selected and event is InputEventKey and event.pressed and event.keycode == KEY_DELETE:
+		_on_close_button_up.call_deferred()
 
 
 func _gui_input(event: InputEvent):

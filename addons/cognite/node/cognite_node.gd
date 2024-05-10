@@ -3,6 +3,7 @@ class_name CogniteNode extends Node
 
 signal state_changed(state)
 
+@export var initial_state := -1
 @export var cognite_assemble_root: CogniteAssemble:
 	set(value):
 		if cognite_assemble_root != value:
@@ -75,6 +76,9 @@ func actualize():
 		variables[names] = _signal
 	
 	set_deferred("updating", false)
+	
+	if initial_state != -1:
+		change_state(initial_state)
 
 
 ## IN GAME #########################################################################################
@@ -96,6 +100,10 @@ func _ready():
 			assembly_event.append(assemble)
 	
 	get_children().map(func(child): child.set_process(false); child.set_physics_process(false))
+
+
+func set_initial_state(state: int):
+	initial_state = state
 
 
 func change_state(new_state: int):
