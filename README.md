@@ -111,3 +111,18 @@ The `start()` function will be called when the state is started, the `_process(d
 
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/2.0/thumbnail/funcs.png">
 
+# Update 2.1
+## New node: Change Property
+
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/2.0/thumbnail/change_property.png">
+This node allows you to change Range Condition variables in your CogniteAssemble.
+
+
+### Quality of life:
+
+- You can now choose an initial state via the CogniteNode Inspector.
+
+- Added right-click feature to create a GraphNode.
+
+- Press DELETE to remove the selected nodes (caution! irreversible action).
+
