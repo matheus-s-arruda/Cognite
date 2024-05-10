@@ -7,7 +7,8 @@
 
 [Update 1.1](#update-11)<br>
 [Update 1.2](#update-12)<br>
-[Update 2.0](#update-20)
+[Update 2.0](#update-20)<br>
+[Update 2.1](#update-21)
 
 ## How to use
 > - Add the `CogniteNode` node to your scene, its function is to allow StateMachines to be built in this scene.
