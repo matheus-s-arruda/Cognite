@@ -20,5 +20,6 @@ script = ExtResource("1_vsgnv")
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
 placeholder_text = "New State"
+expand_to_text_length = true
 
 [connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]

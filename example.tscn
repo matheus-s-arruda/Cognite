@@ -35,7 +35,7 @@ script/source = "extends Label
 
 
 func _process(delta):
-	text = cognite.variables.find_key(cognite.current_state)
+	text = cognite.variables.find_key(cognite._current_state)
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ywe1y"]
@@ -505,62 +505,116 @@ radius = 238.533
 script = ExtResource("4_ma7yx")
 nodes = {
 1945569910068: {
-"position": Vector2(220, 200),
+"position": Vector2(300, 140),
 "right_connections": {
-8959905829565: Vector2i(0, 0)
-},
-"state": "TOPtearm",
-"type": 0
-},
-2380066258529: {
-"position": Vector2(403.5, 613.25),
-"right_connections": {
-15681747748328: Vector2i(0, 0)
-},
-"state": "jka",
-"type": 0
-},
-3959439820644: {
-"position": Vector2(233.5, 505.25),
-"right_connections": {
-15495285767556: Vector2i(0, 0)
-},
-"state": "HHHh",
-"type": 0
-},
-4399506195122: {
-"position": Vector2(280, 340),
-"right_connections": {
+8959905829565: Vector2i(0, 0),
 12810763435086: Vector2i(0, 0)
 },
-"state": "ABAa",
+"state": "IDLE",
+"type": 0
+},
+2362869614486: {
+"change_state": "ATTACK",
+"position": Vector2(940, 520),
+"right_connections": {},
+"type": 2
+},
+3095765520569: {
+"position": Vector2(280, 240),
+"right_connections": {
+3402536915653: Vector2i(0, 0)
+},
+"state": "ATTACK",
+"type": 0
+},
+3402536915653: {
+"position": Vector2(460, 300),
+"right_connections": {
+3492093694084: Vector2i(0, 0)
+},
+"trigger": "animation_end",
+"type": 1
+},
+3492093694084: {
+"change_state": "HUNT",
+"position": Vector2(660, 300),
+"right_connections": {},
+"type": 2
+},
+6213173580233: {
+"bigger": 100.0,
+"position": Vector2(640, 620),
+"range": "distance_to_player",
+"right_connections": {
+6751940317647: Vector2i(0, 0)
+},
+"smaller": 0.0,
+"type": 4
+},
+6494896590874: {
+"condition": "can_summom",
+"position": Vector2(480, 600),
+"right_connections": {
+6213173580233: Vector2i(0, 0)
+},
+"type": 3
+},
+6751940317647: {
+"change_state": "SUMMOM",
+"position": Vector2(940, 660),
+"right_connections": {},
+"type": 2
+},
+6895301627921: {
+"position": Vector2(260, 320),
+"right_connections": {
+3402536915653: Vector2i(0, 0)
+},
+"state": "SUMMOM",
 "type": 0
 },
 12810763435086: {
-"position": Vector2(520, 180),
+"position": Vector2(460, 140),
 "right_connections": {
-13083896514096: Vector2i(0, 0)
+13083896514096: Vector2i(0, 0),
+27292269084257: Vector2i(0, 0)
 },
 "trigger": "player_detected",
 "type": 1
 },
-13083896514096: {
-"condition": "is_hunt",
-"position": Vector2(953.45, 368.052),
-"right_connections": {},
-"type": 3
+27192679530375: {
+"position": Vector2(300, 440),
+"right_connections": {
+6494896590874: Vector2i(0, 0),
+15495285767556: Vector2i(0, 0),
+39111666762269: Vector2i(0, 0)
 },
-15495285767556: {
-"position": Vector2(912.128, 231.688),
+"state": "HUNT",
+"type": 0
+},
+27292269084257: {
+"change_state": "HUNT",
+"position": Vector2(660, 140),
+"right_connections": {},
+"type": 2
+},
+39111666762269: {
+"bigger": 500.0,
+"position": Vector2(640, 440),
 "range": "distance_to_player",
-"right_connections": {},
+"right_connections": {
+2362869614486: Vector2i(1, 0),
+2680546199452: Vector2i(0, 0),
+39264037433375: Vector2i(0, 0)
+},
+"smaller": 100.0,
 "type": 4
 },
-15681747748328: {
-"position": Vector2(720, 560),
-"range": "delay_summon",
+39264037433375: {
+"change_state": "IDLE",
+"position": Vector2(940, 420),
 "right_connections": {},
-"type": 4
+"type": 2
 }
 }
 
@@ -608,9 +662,10 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="npc/detect_player"]
 shape = SubResource("CircleShape2D_ky5bg")
 
-[node name="CogniteNode" type="Node" parent="npc"]
+[node name="CogniteNode" type="Node" parent="npc" node_paths=PackedStringArray("node_reference")]
 script = ExtResource("3_y5m25")
-initial_state = 2
+initial_state = 0
+node_reference = NodePath("..")
 cognite_assemble_root = SubResource("Resource_c4kep")
 
 [connection signal="body_entered" from="npc/detect_player" to="npc" method="_on_detect_player_body_entered"]

@@ -3,6 +3,8 @@ class_name CogniteNode extends Node
 
 signal state_changed(state)
 
+var _initial_state: String
+
 @export var initial_state := -1
 ## Node where Cognite will search for variables to be changed or observed automatically.
 @export var node_reference: Node
@@ -25,7 +27,7 @@ class FakeSignal:
 var is_active: bool:
 	set(value):
 		is_active = value
-		change_state(0)
+		_change_state(0)
 
 var updating: bool
 
@@ -36,7 +38,8 @@ var routines: Array
 var decompressed_process: Array
 var decompressed_event: Array
 
-var current_state: int = -1
+var _current_state: int
+var current_state: String
 var assembly_process: Array
 var assembly_event: Array
 
@@ -80,7 +83,7 @@ func actualize():
 	set_deferred("updating", false)
 	
 	if initial_state != -1:
-		change_state(initial_state)
+		_change_state(initial_state)
 
 
 ## IN GAME #########################################################################################
@@ -105,12 +108,15 @@ func _ready():
 
 
 func set_initial_state(state: int):
-	initial_state = state
+	initial_state = state -1
 
 
-func change_state(new_state: int):
-	if new_state != current_state:
-		current_state = new_state
+func _change_state(new_state: int):
+	if new_state != _current_state:
+		_current_state = new_state
+		
+		current_state = propertie_names.state[new_state]
+		
 		state_changed.emit(current_state)
 		get_children().map(set_child_behavior_enabled)
 
@@ -133,7 +139,7 @@ func set_child_behavior_enabled(child: Node):
 func _process(delta):
 	if not Engine.is_editor_hint():
 		for assemble in assembly_process:
-			assemble.process(current_state)
+			assemble.process(_current_state)
 
 ## META ############################################################################################
 func _get(property):
@@ -151,6 +157,7 @@ func _set(property, value):
 		var p = node_reference.get(property);
 		if p != null:
 			node_reference.set(property, value)
+			print(property, value)
 	
 	if not propertie_names.is_empty():
 		for names in propertie_names:

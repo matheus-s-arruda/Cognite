@@ -55,6 +55,7 @@ popup/item_1/id = 1
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
 placeholder_text = "Property"
+expand_to_text_length = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 visible = false

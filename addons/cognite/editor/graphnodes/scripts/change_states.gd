@@ -16,7 +16,7 @@ func set_data(data: Dictionary):
 
 func _on_line_edit_text_changed(new_text: String) -> void:
 	var caret_position = line_edit.caret_column
-	var word := _filter_string(new_text)
+	var word := _filter_string(new_text).to_upper()
 	line_edit.set_text(word)
 	
 	line_edit.caret_column = caret_position

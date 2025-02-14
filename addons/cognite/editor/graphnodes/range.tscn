@@ -55,6 +55,7 @@ popup/item_0/disabled = true
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
 placeholder_text = "Property"
+expand_to_text_length = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 2

@@ -1,28 +1,44 @@
 extends CharacterBody2D
 
 const MAX_SPEED := 100.0
+const SUMMOM_TIME := 4.0
 
+var distance_to_player: float
+var can_summom := false
 
-var target_position: Vector2
+var _summom_delay := SUMMOM_TIME
+
 var direction: Vector2
 var motion: Vector2
 
-var player: Node
+var player: Node2D
 
 @onready var cognite = $CogniteNode
 @onready var animation = $AnimatedSprite2D
 @onready var collision = $CollisionShape2D
 
 
-func _ready():
-	target_position = global_position
-
-
 func _physics_process(delta):
-	if global_position.distance_to(target_position) > 10.0:
-		direction = global_position.direction_to(target_position)
+	if _summom_delay > 0.0:
+		_summom_delay -= delta
 	else:
+		can_summom = true
+	
+	if player:
+		distance_to_player = global_position.distance_to(player.global_position)
+		
+		if cognite.current_state == "ATTACK":
+			direction = Vector2.ZERO
+			attack()
+		
+		elif cognite.current_state == "HUNT":
+			direction = global_position.direction_to(player.global_position)
+		else:
+			direction = Vector2.ZERO
+	
+	if cognite.current_state == "SUMMOM":
 		direction = Vector2.ZERO
+		summon()
 	
 	if direction:
 		motion = motion.lerp(direction * MAX_SPEED, 0.5)
@@ -34,38 +50,25 @@ func _physics_process(delta):
 	
 	velocity = motion
 	move_and_slide()
-	
-	if player:
-		cognite.distance_to_player = global_position.distance_to(player.global_position)
-		
-		if cognite.delay_summon > 0.0:
-			cognite.delay_summon -= delta
-	
-	match cognite.propertie_names.state[cognite.current_state]:
-		"ATTACK": attack()
-		"SUMMON": summon()
-		"SKILL": skill()
-	
+
 
 func attack():
-	target_position = global_position
 	animation.play("attack")
-	animation.animation_finished.connect(func(): cognite.attacking = false, CONNECT_ONE_SHOT)
+	animation.animation_finished.connect(func(): cognite.animation_end.emit(), CONNECT_ONE_SHOT)
 
 
 func summon():
-	target_position = global_position
+	can_summom = false
+	_summom_delay = SUMMOM_TIME
+	
 	animation.play("summon")
-	animation.animation_finished.connect(func(): cognite.summoning = false, CONNECT_ONE_SHOT)
-
+	animation.animation_finished.connect(func(): cognite.animation_end.emit(), CONNECT_ONE_SHOT)
 
 func skill():
-	target_position = global_position
 	animation.play("skill")
-	animation.animation_finished.connect(func(): cognite.using_skill = false, CONNECT_ONE_SHOT)
+	animation.animation_finished.connect(func(): cognite.animation_end.emit(), CONNECT_ONE_SHOT)
 
 
 func _on_detect_player_body_entered(body):
 	player = body
 	cognite.player_detected.emit()
-	cognite.is_hunt = true

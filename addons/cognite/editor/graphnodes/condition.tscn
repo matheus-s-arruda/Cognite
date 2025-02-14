@@ -38,6 +38,7 @@ script = ExtResource("1_tpt4u")
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
 placeholder_text = "Property"
+expand_to_text_length = true
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2

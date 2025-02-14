@@ -30,7 +30,7 @@ class RoutineAsemblyEvent extends RoutineAsembly:
 	var cognite_node: CogniteNode
 	
 	func get_modus():
-		if cognite_node.current_state == modus and not assemble.is_null():
+		if cognite_node._current_state == modus and not assemble.is_null():
 			assemble.call()
 
 static func get_propertie_names(cognite_assemble: CogniteAssemble) -> Dictionary:
@@ -42,16 +42,20 @@ static func get_propertie_names(cognite_assemble: CogniteAssemble) -> Dictionary
 			
 			match node.type:
 				Types.MODUS:
-					if node.has("state"): propertie_names.state.append(node.state)
+					if node.has("state") and not propertie_names.state.has(node.state):
+						propertie_names.state.append(node.state)
 				
 				Types.EVENTS:
-					if node.has("trigger"): propertie_names.signal.append(node.trigger)
+					if node.has("trigger") and not propertie_names.signal.has(node.trigger):
+						propertie_names.signal.append(node.trigger)
 				
 				Types.CONDITION:
-					if node.has("condition"): propertie_names.conditions.append(node.condition)
+					if node.has("condition") and not propertie_names.conditions.has(node.condition):
+						propertie_names.conditions.append(node.condition)
 				
 				Types.RANGE:
-					if node.has("range"): propertie_names.ranges.append(node.range)
+					if node.has("range") and not propertie_names.ranges.has(node.range):
+						propertie_names.ranges.append(node.range)
 	
 	return propertie_names
 
@@ -167,7 +171,7 @@ static func range_routine(node: Dictionary, routine: Dictionary, code_names: Dic
 		if result is String:
 			return result
 		
-		elif result == 48:
+		elif result is int and result == 48:
 			routine[key] = {"value": node[key]}
 			continue
 			
@@ -261,7 +265,7 @@ static func get_routine_members(body: Dictionary, propertie_names: Dictionary, c
 			var state_id: int = propertie_names.state.find(body[member])
 			if state_id == -1:
 				continue
-			calls.append(cognite_node.change_state.bind(state_id))
+			calls.append(cognite_node._change_state.bind(state_id))
 		
 		elif member == "property":
 			var array: Array = body[member]
