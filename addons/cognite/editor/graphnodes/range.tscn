@@ -33,14 +33,28 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
 script = ExtResource("1_y8837")
 
 [node name="OptionButton" type="OptionButton" parent="."]
+visible = false
 layout_mode = 2
-item_count = 1
 selected = 0
+item_count = 1
 popup/item_0/text = "Range"
-popup/item_0/id = 0
+popup/item_0/disabled = true
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+placeholder_text = "Property"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -70,5 +84,6 @@ layout_mode = 2
 max_value = 1e+10
 step = 0.001
 
+[connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="value_changed" from="HBoxContainer2/bigger" to="." method="_on_bigger_value_changed"]
 [connection signal="value_changed" from="HBoxContainer/smaller" to="." method="_on_smaller_value_changed"]

@@ -35,13 +35,9 @@ slot/2/right_icon = null
 slot/2/draw_stylebox = true
 script = ExtResource("1_tpt4u")
 
-[node name="OptionButton" type="OptionButton" parent="."]
+[node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
-item_count = 1
-selected = 0
-popup/item_0/text = "Condition"
-popup/item_0/id = 0
-popup/item_0/disabled = true
+placeholder_text = "Property"
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
@@ -52,3 +48,5 @@ horizontal_alignment = 2
 layout_mode = 2
 text = "is false"
 horizontal_alignment = 2
+
+[connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]

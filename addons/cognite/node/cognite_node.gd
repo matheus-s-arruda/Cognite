@@ -4,6 +4,8 @@ class_name CogniteNode extends Node
 signal state_changed(state)
 
 @export var initial_state := -1
+## Node where Cognite will search for variables to be changed or observed automatically.
+@export var node_reference: Node
 @export var cognite_assemble_root: CogniteAssemble:
 	set(value):
 		if cognite_assemble_root != value:
@@ -117,10 +119,7 @@ func set_child_behavior_enabled(child: Node):
 	child.set_process(false)
 	child.set_physics_process(false)
 	
-	if not cognite_assemble_root or not cognite_assemble_root.source:
-		return
-	
-	if not cognite_assemble_root.source.states.has(child.name):
+	if not propertie_names.state.has(child.name):
 		return
 	
 	if child.name == variables.find_key(current_state):
@@ -138,12 +137,21 @@ func _process(delta):
 
 ## META ############################################################################################
 func _get(property):
+	if not Engine.is_editor_hint() and node_reference:
+		var p = node_reference.get(property);
+		if p != null: return p
+	
 	if not propertie_names.is_empty():
 		for names in propertie_names:
 			if propertie_names[names].has(property):
 				return variables[property]
 
 func _set(property, value):
+	if not Engine.is_editor_hint() and node_reference:
+		var p = node_reference.get(property);
+		if p != null:
+			node_reference.set(property, value)
+	
 	if not propertie_names.is_empty():
 		for names in propertie_names:
 			if propertie_names[names].has(property):

@@ -9,10 +9,7 @@ var initial_state: Control
 
 
 func _can_handle(object: Object):
-	if object.has_method("is_cognite_source"):
-		return true
-	
-	elif object.has_method("is_cognite_assemble"):
+	if object.has_method("is_cognite_assemble"):
 		main_panel.show_editor(object)
 		plugin.get_editor_interface().set_main_screen_editor("Cognite")
 		return true
@@ -38,13 +35,11 @@ func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wi
 			
 			var btn: OptionButton = initial_state.get_node("opitions")
 			
-			if not object.cognite_assemble_root.source.states.is_empty():
-				for item in object.cognite_assemble_root.source.states:
-					btn.add_item(item)
-				
-				btn.item_selected.connect(object.set_initial_state)
-				btn.selected = object.initial_state
-				
+			for item in object.cognite_assemble_root.get_states():
+				btn.add_item(item)
+			
+			btn.item_selected.connect(object.set_initial_state)
+			btn.selected = object.initial_state
+			
 			add_property_editor(name, initial_state)
 			return true
-

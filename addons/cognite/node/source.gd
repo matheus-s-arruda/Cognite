@@ -13,6 +13,3 @@ class_name CogniteSource extends Resource
 
 func is_cognite_source():
 	return true
-
-
-

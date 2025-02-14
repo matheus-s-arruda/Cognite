@@ -37,6 +37,11 @@ func _input(event: InputEvent):
 
 
 func _gui_input(event: InputEvent):
+	if event is InputEventMouseMotion:
+		return
+	
+	assemble.actualize()
+	
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		if Rect2(Vector2(size.x -12, 1), Vector2(13, 13)).has_point(event.position):
 			_on_close_button_up()
@@ -44,6 +49,17 @@ func _gui_input(event: InputEvent):
 
 func get_options():
 	pass
+
+
+func _filter_string(string: String) -> String:
+	var word = ''
+	var regex = RegEx.new()
+	regex.compile("[A-Za-z0-9_]")
+	
+	for valid_character in regex.search_all(string):
+		word += valid_character.get_string()
+	
+	return word
 
 
 func set_data(data: Dictionary):

@@ -43,5 +43,3 @@ func _get_plugin_name():
 func _get_plugin_icon():
 	return preload("res://addons/cognite/assets/brain.svg")
 #endregion
-
-

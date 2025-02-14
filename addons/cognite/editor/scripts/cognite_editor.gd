@@ -1,8 +1,6 @@
 @tool
 extends Control
 
-
-const CREATE_NODEGRAPH = preload("res://addons/cognite/editor/create_nodegraph.tscn")
 const GRAPH_NODES := {
 	CogniteData.Types.MODUS: preload("res://addons/cognite/editor/graphnodes/modus.tscn"),
 	CogniteData.Types.EVENTS: preload("res://addons/cognite/editor/graphnodes/events.tscn"),
@@ -14,17 +12,41 @@ const GRAPH_NODES := {
 
 var nodes: Dictionary
 var assemble: CogniteAssemble
-var create_nodegraph: OptionButton = CREATE_NODEGRAPH.instantiate()
 
 @onready var graph_edit: GraphEdit = $PanelContainer/GraphEdit
 @onready var label: Label = $PanelContainer/Label
 
+func show_editor(_assemble):
+	clear_graph()
+	assemble = _assemble
+	
+	for id in assemble.nodes:
+		if id != 1:
+			create_node(assemble.nodes[id].type, id)
+	
+	for id in assemble.nodes:
+		for node_id in assemble.nodes[id].right_connections:
+			if nodes.has(node_id) and nodes.has(id):
+				var port: Vector2i = assemble.nodes[id].right_connections[node_id]
+				graph_edit.connect_node(nodes[id].name, port.x, nodes[node_id].name, port.y)
+	
+	graph_edit.visible = true
+	label.visible = false
 
-func _ready():
-	graph_edit.add_valid_connection_type(1, 0)
-	graph_edit.get_menu_hbox().add_child(create_nodegraph)
-	graph_edit.create_opitions = create_nodegraph
-	create_nodegraph.item_selected.connect(_on_create_nodegraph_item_selected)
+
+func hide_editor():
+	graph_edit.visible = false
+	label.visible = true
+	clear_graph()
+
+
+func clear_graph():
+	graph_edit.clear_connections()
+	for node_id in nodes:
+		if node_id != 1:
+			if is_instance_valid(nodes[node_id]):
+				nodes[node_id].queue_free()
+	nodes.clear()
 
 
 func create_node(type: int, id: int):
@@ -74,60 +96,3 @@ func remove_node(id: int):
 	
 	assemble.nodes.erase(id)
 	nodes.erase(id)
-
-
-func show_editor(_assemble):
-	clear_graph()
-	assemble = _assemble
-	
-	for id in assemble.nodes:
-		if id != 1:
-			create_node(assemble.nodes[id].type, id)
-	
-	for id in assemble.nodes:
-		for node_id in assemble.nodes[id].right_connections:
-			if nodes.has(node_id) and nodes.has(id):
-				var port: Vector2i = assemble.nodes[id].right_connections[node_id]
-				graph_edit.connect_node(nodes[id].name, port.x, nodes[node_id].name, port.y)
-	
-	graph_edit.visible = true
-	label.visible = false
-
-
-func hide_editor():
-	graph_edit.visible = false
-	label.visible = true
-	clear_graph()
-
-
-func clear_graph():
-	graph_edit.clear_connections()
-	for node_id in nodes:
-		if node_id != 1:
-			if is_instance_valid(nodes[node_id]):
-				nodes[node_id].queue_free()
-	nodes.clear()
-
-
-func _on_create_nodegraph_item_selected(index: int):
-	create_nodegraph.selected = 0
-	var new_graph_node: CogniteGraphNode = create_node(index - 1, 0)
-	new_graph_node.position_offset = (graph_edit.scroll_offset + graph_edit.get_local_mouse_position()) / graph_edit.zoom
-
-
-func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
-	var front_id = graph_edit.get_node(NodePath(from_node)).id
-	var to_node_id = graph_edit.get_node(NodePath(to_node)).id
-	
-	graph_edit.connect_node(from_node, from_port, to_node, to_port)
-	assemble.nodes[front_id].right_connections[to_node_id] = Vector2i(from_port, to_port)
-	assemble.actualize()
-
-
-func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port):
-	var front_id = graph_edit.get_node(NodePath(from_node)).id
-	var to_node_id = graph_edit.get_node(NodePath(to_node)).id
-	
-	graph_edit.disconnect_node(from_node, from_port, to_node, to_port)
-	assemble.nodes[front_id].right_connections.erase(to_node_id)
-	assemble.actualize()

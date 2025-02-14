@@ -35,20 +35,27 @@ class RoutineAsemblyEvent extends RoutineAsembly:
 
 static func get_propertie_names(cognite_assemble: CogniteAssemble) -> Dictionary:
 	var propertie_names := CODE_PROPERTY_NAMES.duplicate(true)
-	if cognite_assemble.source.states.is_empty(): return {}
 	
-	for state in cognite_assemble.source.states:
-		propertie_names.state.append(except_letters(state).to_upper())
-	for trigger in cognite_assemble.source.triggers:
-		propertie_names.signal.append(except_letters(trigger))
-	for condition in cognite_assemble.source.conditions:
-		propertie_names.conditions.append(except_letters(condition))
-	for range in cognite_assemble.source.ranges:
-		propertie_names.ranges.append(except_letters(range))
+	if not cognite_assemble.nodes.is_empty():
+		for id in cognite_assemble.nodes:
+			var node: Dictionary = cognite_assemble.nodes[id]
+			
+			match node.type:
+				Types.MODUS:
+					if node.has("state"): propertie_names.state.append(node.state)
+				
+				Types.EVENTS:
+					if node.has("trigger"): propertie_names.signal.append(node.trigger)
+				
+				Types.CONDITION:
+					if node.has("condition"): propertie_names.conditions.append(node.condition)
+				
+				Types.RANGE:
+					if node.has("range"): propertie_names.ranges.append(node.range)
 	
 	return propertie_names
 
-static func create_routines(cognite_assemble: CogniteAssemble, propertie_names: Dictionary):
+static func create_routines(cognite_assemble: CogniteAssemble, propertie_names: Dictionary) -> Array:
 	var routines: Array
 	for node in cognite_assemble.nodes.values():
 		if node.type == Types.MODUS:
@@ -63,23 +70,17 @@ static func create_sub_routines(node_data: Dictionary, body: Dictionary, code_na
 	
 	match node_data.type:
 		Types.CHANGE_STATE:
-			body["state"] = code_names.state[node_data.change_state -1]
+			body["state"] = node_data.change_state
 			sucess = true
 			
 		Types.CHANGE_PROPERTY:
-			var value
-			var result: Array
 			var _type: int = node_data.properties
+			var result: Array
+			
 			result.append(_type)
+			result.append(node_data.property)
+			result.append(node_data.condition if _type == 0 else node_data.range)
 			
-			if _type == 0:
-				result.append(code_names.conditions[node_data.property -1])
-				value = node_data.condition
-			else:
-				result.append(code_names.ranges[node_data.property -1])
-				value = node_data.range
-			
-			result.append(value)
 			body["property"] = result
 			sucess = true
 			
@@ -87,8 +88,7 @@ static func create_sub_routines(node_data: Dictionary, body: Dictionary, code_na
 			if code_names.conditions.is_empty():
 				pass # Cognite.emit_alert(TEXT_ERROR_FAIL_CONDITION)
 			
-			var new_condition = code_names.conditions[node_data.condition -1]
-			body[new_condition] = new_routine
+			body[node_data.condition] = new_routine
 			
 			var result = condition_routine(node_data, new_routine, code_names, cognite_assemble)
 			if result:
@@ -97,7 +97,7 @@ static func create_sub_routines(node_data: Dictionary, body: Dictionary, code_na
 			sucess = true
 			
 		Types.RANGE:
-			var new_range = code_names.ranges[node_data.range -1]
+			var new_range = node_data.range
 			body[new_range] = new_routine
 			
 			var result = range_routine(node_data, new_routine, code_names, cognite_assemble)
@@ -110,7 +110,7 @@ static func create_sub_routines(node_data: Dictionary, body: Dictionary, code_na
 				return 48
 			
 			body["body"] = new_routine
-			return code_names.signal[node_data.trigger -1]
+			return node_data.trigger
 	
 	if not sucess:
 		return true
@@ -122,7 +122,7 @@ static func get_routines(node_modus: Dictionary, routines: Array, code_names: Di
 		if not cognite_assemble.nodes.has(node_id):
 			continue
 		
-		routine.modus = code_names.state[node_modus.state -1]
+		routine.modus = node_modus.state
 		
 		var result = create_sub_routines(cognite_assemble.nodes[node_id], routine.body, code_names, cognite_assemble)
 		
@@ -142,7 +142,7 @@ static func event_routine(event: Dictionary, _event_routine: Dictionary, code_na
 		if result is String:
 			return true
 		
-		elif result == 48:
+		elif result is int and result == 48:
 			_event_routine = {}
 			continue
 			

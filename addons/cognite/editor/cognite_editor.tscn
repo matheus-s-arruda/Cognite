@@ -63,5 +63,5 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[connection signal="connection_request" from="PanelContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
-[connection signal="disconnection_request" from="PanelContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
+[connection signal="connection_request" from="PanelContainer/GraphEdit" to="PanelContainer/GraphEdit" method="_on_connection_request"]
+[connection signal="disconnection_request" from="PanelContainer/GraphEdit" to="PanelContainer/GraphEdit" method="_on_disconnection_request"]
