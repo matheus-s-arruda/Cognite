@@ -1,14 +1,15 @@
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/1.2/thumbnail/capa.png">
 
-[![Generic badge](https://img.shields.io/badge/last_version-2.1.1-red.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/godot_version-4.2.2.stable-blue.svg)](https://shields.io/) 
+[![Generic badge](https://img.shields.io/badge/last_version-3.0.0-red.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/godot_version-4.3.stable-blue.svg)](https://shields.io/) 
 
  Develop State Machines & Behavior Trees with ease and introduce them into your scenes with just one click.
 
 [Update 1.1](#update-11)<br>
 [Update 1.2](#update-12)<br>
 [Update 2.0](#update-20)<br>
-[Update 2.1](#update-21)
+[Update 2.1](#update-21)<br>
+[Update 3.0](#update-30)
 
 ## How to use
 > - Add the `CogniteNode` node to your scene, its function is to allow StateMachines to be built in this scene.
@@ -127,3 +128,13 @@ This node allows you to change Range Condition variables in your CogniteAssemble
 
 - Press DELETE to remove the selected nodes (caution! irreversible action).
 
+# Update 3.0
+## graph workflow reformulation
+
+The States, Triggers, Ranges and Bools properties will now be literary and must be described within the graphs, thus making the workflow simpler and less confusing.
+
+(Version 3.x is no longer compatible with later versions. If you need to update a CogniteAssemble from previous versions, I recommend recreating it again in version 3.x)
+
+### Quality of life:
+
+- You can add a node that contains the properties described within the editor, this way Cognite will observe and change directly in that node.
