@@ -89,4 +89,5 @@ layout_mode = 2
 theme_override_constants/separation = 16
 theme_override_styles/separator = SubResource("StyleBoxEmpty_yck5t")
 
+[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]

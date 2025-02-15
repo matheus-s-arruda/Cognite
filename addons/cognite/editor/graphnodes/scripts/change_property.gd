@@ -41,3 +41,8 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 	line_edit.caret_column = caret_position
 	assemble.nodes[id]["property"] = word
 	assemble.actualize()
+
+
+func _on_option_button_item_selected(index: int) -> void:
+	h_box_container_2.visible = index == 0
+	h_box_container.visible = index == 1

@@ -1,12 +1,10 @@
 extends CharacterBody2D
 
 const MAX_SPEED := 100.0
-const SUMMOM_TIME := 4.0
+const SUMMON_TIME := 3.0
 
 var distance_to_player: float
 var can_summom := false
-
-var _summom_delay := SUMMOM_TIME
 
 var direction: Vector2
 var motion: Vector2
@@ -16,14 +14,10 @@ var player: Node2D
 @onready var cognite = $CogniteNode
 @onready var animation = $AnimatedSprite2D
 @onready var collision = $CollisionShape2D
+@onready var summon_delay: Timer = $summon_delay
 
 
 func _physics_process(delta):
-	if _summom_delay > 0.0:
-		_summom_delay -= delta
-	else:
-		can_summom = true
-	
 	if player:
 		distance_to_player = global_position.distance_to(player.global_position)
 		
@@ -59,10 +53,11 @@ func attack():
 
 func summon():
 	can_summom = false
-	_summom_delay = SUMMOM_TIME
+	summon_delay.start(SUMMON_TIME)
 	
 	animation.play("summon")
 	animation.animation_finished.connect(func(): cognite.animation_end.emit(), CONNECT_ONE_SHOT)
+
 
 func skill():
 	animation.play("skill")
@@ -72,3 +67,7 @@ func skill():
 func _on_detect_player_body_entered(body):
 	player = body
 	cognite.player_detected.emit()
+
+
+func _on_summon_delay_timeout() -> void:
+	can_summom = true

@@ -26,17 +26,8 @@ size = Vector2(48, 48)
 radius = 11.0
 height = 58.0
 
-[sub_resource type="GDScript" id="GDScript_kd6nb"]
-script/source = "extends Label
-
-
-
-@onready var cognite = $\"../CogniteNode\"
-
-
-func _process(delta):
-	text = cognite.variables.find_key(cognite._current_state)
-"
+[sub_resource type="CircleShape2D" id="CircleShape2D_ky5bg"]
+radius = 238.533
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ywe1y"]
 atlas = ExtResource("2_0paf7")
@@ -498,8 +489,17 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ky5bg"]
-radius = 238.533
+[sub_resource type="GDScript" id="GDScript_kd6nb"]
+script/source = "extends Label
+
+
+
+@onready var cognite = $\"../CogniteNode\"
+
+
+func _process(delta):
+	text = cognite.variables.find_key(cognite._current_state)
+"
 
 [sub_resource type="Resource" id="Resource_c4kep"]
 script = ExtResource("4_ma7yx")
@@ -561,12 +561,12 @@ nodes = {
 },
 6751940317647: {
 "change_state": "SUMMOM",
-"position": Vector2(940, 660),
+"position": Vector2(940, 640),
 "right_connections": {},
 "type": 2
 },
 6895301627921: {
-"position": Vector2(260, 320),
+"position": Vector2(280, 320),
 "right_connections": {
 3402536915653: Vector2i(0, 0)
 },
@@ -607,7 +607,7 @@ nodes = {
 2680546199452: Vector2i(0, 0),
 39264037433375: Vector2i(0, 0)
 },
-"smaller": 100.0,
+"smaller": 60.0,
 "type": 4
 },
 39264037433375: {
@@ -641,6 +641,24 @@ script = ExtResource("1_kt4pe")
 position = Vector2(-6, 6)
 shape = SubResource("CapsuleShape2D_gipc7")
 
+[node name="detect_player" type="Area2D" parent="npc"]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="npc/detect_player"]
+shape = SubResource("CircleShape2D_ky5bg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="npc"]
+sprite_frames = SubResource("SpriteFrames_vapwt")
+animation = &"walk"
+
+[node name="summon_delay" type="Timer" parent="npc"]
+process_callback = 0
+wait_time = 4.0
+one_shot = true
+autostart = true
+
 [node name="Label" type="Label" parent="npc"]
 offset_left = -70.0
 offset_top = -54.0
@@ -650,18 +668,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = SubResource("GDScript_kd6nb")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="npc"]
-sprite_frames = SubResource("SpriteFrames_vapwt")
-animation = &"walk"
-
-[node name="detect_player" type="Area2D" parent="npc"]
-collision_layer = 0
-collision_mask = 8
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="npc/detect_player"]
-shape = SubResource("CircleShape2D_ky5bg")
-
 [node name="CogniteNode" type="Node" parent="npc" node_paths=PackedStringArray("node_reference")]
 script = ExtResource("3_y5m25")
 initial_state = 0
@@ -669,3 +675,4 @@ node_reference = NodePath("..")
 cognite_assemble_root = SubResource("Resource_c4kep")
 
 [connection signal="body_entered" from="npc/detect_player" to="npc" method="_on_detect_player_body_entered"]
+[connection signal="timeout" from="npc/summon_delay" to="npc" method="_on_summon_delay_timeout"]
