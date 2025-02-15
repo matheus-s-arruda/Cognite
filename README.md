@@ -9,7 +9,10 @@
 [Update 1.2](#update-12)<br>
 [Update 2.0](#update-20)<br>
 [Update 2.1](#update-21)<br>
-[Update 3.0](#update-30)
+[Update 3.0](#update-30)<br><br>
+
+[![Download 3.0](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white "Download zip")](https://github.com/matheus-s-arruda/Cognite/releases/download/v3.0/cognite.3.0.zip)
+
 
 ## How to use
 > - Add the `CogniteNode` node to your scene, its function is to allow StateMachines to be built in this scene.
