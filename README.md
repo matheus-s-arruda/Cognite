@@ -11,7 +11,7 @@
 [Update 2.1](#update-21)<br>
 [Update 3.0](#update-30)<br><br>
 
-[![Download 3.0](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white "Download zip")](https://github.com/matheus-s-arruda/Cognite/releases/download/v3.0/cognite.3.0.zip)
+[![Download 3.0](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/matheus-s-arruda/Cognite/releases/download/v3.0/cognite.3.0.zip)
 
 
 ## How to use
