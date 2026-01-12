@@ -9,7 +9,8 @@
 [Update 1.2](#update-12)<br>
 [Update 2.0](#update-20)<br>
 [Update 2.1](#update-21)<br>
-[Update 3.0](#update-30)<br><br>
+[Update 3.0](#update-30)<br>
+[Update 4.0](#update-40)<br><br>
 
 [![Download 3.0](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/matheus-s-arruda/Cognite/releases/download/v3.0/cognite.3.0.zip)
 
@@ -141,3 +142,5 @@ The States, Triggers, Ranges and Bools properties will now be literary and must 
 ### Quality of life:
 
 - You can add a node that contains the properties described within the editor, this way Cognite will observe and change directly in that node.
+
+# Update 4.0
