@@ -4,6 +4,11 @@ class_name CogniteAssemble extends Resource
 signal actualized
 
 
+# 784: {
+	#"type": PERCEPTION,
+	#"property": {"path": "../", "property": "health"}
+	#"position": Vector(213, 123),
+#}
 @export var nodes: Dictionary
 
 

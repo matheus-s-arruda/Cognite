@@ -1,6 +1,8 @@
 @tool
 class_name CogniteGraphNode extends GraphNode
 
+enum Types {PERCEPTION, DECISION, CONTEXT, ACTION}
+
 var id: int
 var assemble: CogniteAssemble
 var is_ready: bool
@@ -64,6 +66,7 @@ func _filter_string(string: String) -> String:
 
 func set_data(data: Dictionary):
 	pass
+
 
 func save_position():
 	assemble.nodes[id]["position"] = position_offset

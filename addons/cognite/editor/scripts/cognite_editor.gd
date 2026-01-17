@@ -6,8 +6,6 @@ const GRAPH_NODES := {
 	CogniteData.Types.EVENTS: preload("res://addons/cognite/editor/graphnodes/events.tscn"),
 	CogniteData.Types.CONDITION: preload("res://addons/cognite/editor/graphnodes/condition.tscn"),
 	CogniteData.Types.CHANGE_STATE: preload("res://addons/cognite/editor/graphnodes/change_states.tscn"),
-	CogniteData.Types.RANGE: preload("res://addons/cognite/editor/graphnodes/range.tscn"),
-	CogniteData.Types.CHANGE_PROPERTY: preload("res://addons/cognite/editor/graphnodes/change_property.tscn"),
 }
 
 var nodes: Dictionary
