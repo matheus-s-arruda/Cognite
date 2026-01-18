@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://bukcku74rrx3f"]
+
+[ext_resource type="Script" uid="uid://cujf7aubet3b4" path="res://addons/cognite/editor/scripts/dock.gd" id="1_5rkij"]
+[ext_resource type="Script" uid="uid://bgtr2510rb03f" path="res://addons/cognite/editor/scripts/graph_editor.gd" id="3_j26lr"]
+
+[node name="Cognite" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 20)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+script = ExtResource("1_5rkij")
+
+[node name="GraphEdit" type="GraphEdit" parent="."]
+layout_mode = 2
+grid_pattern = 1
+connection_lines_thickness = 5.0
+minimap_enabled = false
+show_zoom_buttons = false
+show_grid_buttons = false
+show_minimap_button = false
+show_arrange_button = false
+script = ExtResource("3_j26lr")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 1
+text = "Select a CogniteNode to begin editing."
+horizontal_alignment = 1
+vertical_alignment = 1

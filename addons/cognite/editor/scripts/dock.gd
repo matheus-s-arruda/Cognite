@@ -1,22 +1,34 @@
 @tool
-extends Control
+class_name CogniteDock extends MarginContainer
+
 
 const GRAPH_NODES := {
-	CogniteData.Types.MODUS: preload("res://addons/cognite/editor/graphnodes/modus.tscn"),
-	CogniteData.Types.EVENTS: preload("res://addons/cognite/editor/graphnodes/events.tscn"),
-	CogniteData.Types.CONDITION: preload("res://addons/cognite/editor/graphnodes/condition.tscn"),
-	CogniteData.Types.CHANGE_STATE: preload("res://addons/cognite/editor/graphnodes/change_states.tscn"),
+	CogniteGraphNode.Types.PERCEPTION: preload("uid://7tjt5gy3dqh7"),
+	CogniteGraphNode.Types.CONTEXT: preload("uid://ctl6hgf0lia2t"),
+	CogniteGraphNode.Types.DECISION: preload("uid://baqewkrr2k33n"),
+	CogniteGraphNode.Types.ACTION: preload("uid://b2e3ttuqiy7v8")
 }
 
+
+@onready var graph_edit: GraphEdit = $GraphEdit
+@onready var label: Label = $Label
+
 var nodes: Dictionary
-var assemble: CogniteAssemble
 
-@onready var graph_edit: GraphEdit = $PanelContainer/GraphEdit
-@onready var label: Label = $PanelContainer/Label
+func atualize(node: Node):
+	if node is CogniteNode:
+		CogniteAssemble.current_assemble = node.cognite_assemble
+		
+		if CogniteAssemble.current_assemble:
+			show_containers(CogniteAssemble.current_assemble)
+		else: hide_containers()
+	else: hide_containers()
 
-func show_editor(_assemble):
+
+func show_containers(assemble: CogniteAssemble):
 	clear_graph()
-	assemble = _assemble
+	graph_edit.show()
+	label.hide()
 	
 	for id in assemble.nodes:
 		if id != 1:
@@ -27,15 +39,12 @@ func show_editor(_assemble):
 			if nodes.has(node_id) and nodes.has(id):
 				var port: Vector2i = assemble.nodes[id].right_connections[node_id]
 				graph_edit.connect_node(nodes[id].name, port.x, nodes[node_id].name, port.y)
-	
-	graph_edit.visible = true
-	label.visible = false
 
 
-func hide_editor():
-	graph_edit.visible = false
-	label.visible = true
+func hide_containers():
 	clear_graph()
+	graph_edit.hide()
+	label.show()
 
 
 func clear_graph():
@@ -49,14 +58,14 @@ func clear_graph():
 
 func create_node(type: int, id: int):
 	var new_graph_node: CogniteGraphNode = GRAPH_NODES[type].instantiate()
-	var _id: int = new_graph_node.init(assemble, id, type)
+	var _id: int = new_graph_node.init(CogniteAssemble.current_assemble, id, type)
 	var string: String = str(hash(type))
 	string = string.left(6 - string.length())
 	
 	nodes[_id] = new_graph_node
 	new_graph_node.size = Vector2.ZERO
 	new_graph_node.graph_editor = self
-	new_graph_node.modulate = (Color(string) + Color(0.8, 0.8, 0.8, 1.0)).clamp()
+	#new_graph_node.modulate = (Color(string) + Color(0.8, 0.8, 0.8, 1.0)).clamp()
 	graph_edit.add_child(new_graph_node)
 	if id == 0:
 		new_graph_node.position_offset = Vector2(100, 100)
@@ -70,27 +79,27 @@ func remove_node(id: int):
 		print("ERROR: remove_node::is_instance_valid() : nodes[id]")
 		return
 	
-	for node_id in assemble.nodes[id].right_connections:
+	for node_id in CogniteAssemble.current_assemble.nodes[id].right_connections:
 		if not nodes.has(node_id):
 			continue
 		
 		var conection_node = nodes[node_id]
-		var ports: Vector2i = assemble.nodes[id].right_connections[node_id]
+		var ports: Vector2i = CogniteAssemble.current_assemble.nodes[id].right_connections[node_id]
 		
 		if is_instance_valid(conection_node):
 			graph_edit.disconnect_node(node.name, ports.x, conection_node.name, ports.y)
 		else:
 			print("ERROR: remove_node::is_instance_valid() : conection_node")
 	
-	for node_id in assemble.nodes:
+	for node_id in CogniteAssemble.current_assemble.nodes:
 		if node_id == id:
 			continue
 		
 		var conection_node = nodes[node_id]
-		for connection_node_id in assemble.nodes[node_id].right_connections:
+		for connection_node_id in CogniteAssemble.current_assemble.nodes[node_id].right_connections:
 			if connection_node_id == id:
-				var ports: Vector2i = assemble.nodes[node_id].right_connections[connection_node_id]
+				var ports: Vector2i = CogniteAssemble.current_assemble.nodes[node_id].right_connections[connection_node_id]
 				graph_edit.disconnect_node(conection_node.name, ports.x, node.name, ports.y)
 	
-	assemble.nodes.erase(id)
+	CogniteAssemble.current_assemble.nodes.erase(id)
 	nodes.erase(id)

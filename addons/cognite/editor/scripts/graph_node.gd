@@ -1,7 +1,7 @@
 @tool
 class_name CogniteGraphNode extends GraphNode
 
-enum Types {PERCEPTION, DECISION, CONTEXT, ACTION}
+enum Types {PERCEPTION, CONTEXT, DECISION, ACTION}
 
 var id: int
 var assemble: CogniteAssemble

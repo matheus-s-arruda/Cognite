@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://7tjt5gy3dqh7"]
+
+[ext_resource type="Script" uid="uid://ivmu333ie1oe" path="res://addons/cognite/editor/graphnodes/scripts/perception.gd" id="1_cflm1"]
+
+[node name="Perception" type="GraphNode"]
+offset_right = 9.0
+offset_bottom = 55.0
+position_offset = Vector2(200, 200)
+title = "Perception"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+script = ExtResource("1_cflm1")
+metadata/_custom_type_script = "uid://r7sp05c76edj"
+
+[node name="path_text" type="Label" parent="."]
+layout_mode = 2
+text = "path:"
+
+[node name="path" type="LineEdit" parent="."]
+layout_mode = 2
+placeholder_text = "Path:"
+editable = false
+
+[node name="property_text" type="Label" parent="."]
+layout_mode = 2
+text = "property: "
+
+[node name="property" type="LineEdit" parent="."]
+layout_mode = 2
+placeholder_text = "Path:"
+editable = false

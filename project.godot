@@ -27,6 +27,10 @@ window/size/viewport_height=540
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/cognite/plugin.cfg")
+
 [rendering]
 
 occlusion_culling/bvh_build_quality=0

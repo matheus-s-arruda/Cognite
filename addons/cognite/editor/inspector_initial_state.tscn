@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://drwlcw6qffplx"]
 
-[ext_resource type="Script" path="res://addons/cognite/editor/scripts/inspector_initial_state.gd" id="1_1r2ep"]
+[ext_resource type="Script" uid="uid://lbgpl6dpc18j" path="res://addons/cognite/editor/scripts/inspector_initial_state.gd" id="1_1r2ep"]
 
 [node name="HBoxContainer" type="HBoxContainer"]
 offset_right = 399.0

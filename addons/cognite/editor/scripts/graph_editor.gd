@@ -3,10 +3,10 @@ extends GraphEdit
 
 const CREATE_NODEGRAPH = preload("res://addons/cognite/editor/create_nodegraph.tscn")
 
+@onready var dock: CogniteDock = $".."
+
+
 var create_opitions: OptionButton = CREATE_NODEGRAPH.instantiate()
-
-@onready var editor: VBoxContainer = $"../.."
-
 
 func _ready():
 	add_valid_connection_type(1, 0)
@@ -23,7 +23,11 @@ func _gui_input(event: InputEvent):
 
 func _on_create_nodegraph_item_selected(index: int):
 	create_opitions.selected = 0
-	var new_graph_node: CogniteGraphNode = editor.create_node(index - 1, 0)
+	
+	if not CogniteAssemble.current_assemble:
+		return
+	
+	var new_graph_node: CogniteGraphNode = dock.create_node(index - 1, 0)
 	new_graph_node.position_offset = (scroll_offset + get_local_mouse_position()) / zoom
 
 
@@ -33,9 +37,9 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 	
 	connect_node(from_node, from_port, to_node, to_port)
 	
-	if editor.assemble != null:
-		editor.assemble.nodes[front_id].right_connections[to_node_id] = Vector2i(from_port, to_port)
-		editor.assemble.actualize()
+	if CogniteAssemble.current_assemble != null:
+		CogniteAssemble.current_assemble.nodes[front_id].right_connections[to_node_id] = Vector2i(from_port, to_port)
+		CogniteAssemble.current_assemble.actualize()
 
 
 func _on_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
@@ -44,6 +48,6 @@ func _on_disconnection_request(from_node: StringName, from_port: int, to_node: S
 	
 	disconnect_node(from_node, from_port, to_node, to_port)
 	
-	if editor.assemble != null:
-		editor.assemble.nodes[front_id].right_connections.erase(to_node_id)
-		editor.assemble.actualize()
+	if CogniteAssemble.current_assemble != null:
+		CogniteAssemble.current_assemble.nodes[front_id].right_connections.erase(to_node_id)
+		CogniteAssemble.current_assemble.actualize()

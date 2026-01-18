@@ -1,11 +1,11 @@
 [gd_scene load_steps=79 format=3 uid="uid://b63crrmieet4o"]
 
 [ext_resource type="Texture2D" uid="uid://bptey1d4yeclf" path="res://assets/img/undead_executioner/idle.png" id="1_aj8cv"]
-[ext_resource type="Script" path="res://scripts/npc/npc.gd" id="1_kt4pe"]
+[ext_resource type="Script" uid="uid://b5j6ns0wqi1p6" path="res://scripts/npc/npc.gd" id="1_kt4pe"]
 [ext_resource type="Texture2D" uid="uid://c4q6v78fyteo6" path="res://assets/img/undead_executioner/attacking.png" id="2_0paf7"]
 [ext_resource type="Texture2D" uid="uid://c4okrcym3yw5d" path="res://assets/img/undead_executioner/death.png" id="3_u1a3t"]
-[ext_resource type="Script" path="res://addons/cognite/node/cognite_node.gd" id="3_y5m25"]
-[ext_resource type="Script" path="res://addons/cognite/node/assemble.gd" id="4_ma7yx"]
+[ext_resource type="Script" uid="uid://ca685uc113riu" path="res://addons/cognite/node/cognite_node.gd" id="3_y5m25"]
+[ext_resource type="Script" uid="uid://bmho1qa7r0yhk" path="res://addons/cognite/node/assemble.gd" id="4_ma7yx"]
 [ext_resource type="Texture2D" uid="uid://d3dscd1v0cj1q" path="res://assets/img/undead_executioner/skill1.png" id="5_c3qgv"]
 [ext_resource type="Texture2D" uid="uid://bwqetph7gy7br" path="res://assets/img/undead_executioner/summon.png" id="6_47ox6"]
 [ext_resource type="Texture2D" uid="uid://qhtscubt52t7" path="res://assets/img/undead_executioner/idle2.png" id="7_ogssh"]
@@ -538,7 +538,9 @@ nodes = {
 3492093694084: {
 "change_state": "HUNT",
 "position": Vector2(660, 300),
-"right_connections": {},
+"right_connections": {
+2362869614486: Vector2i(0, 0)
+},
 "type": 2
 },
 6213173580233: {
@@ -553,7 +555,7 @@ nodes = {
 },
 6494896590874: {
 "condition": "can_summom",
-"position": Vector2(480, 600),
+"position": Vector2(540, 500),
 "right_connections": {
 6213173580233: Vector2i(0, 0)
 },
@@ -595,7 +597,9 @@ nodes = {
 27292269084257: {
 "change_state": "HUNT",
 "position": Vector2(660, 140),
-"right_connections": {},
+"right_connections": {
+39264037433375: Vector2i(0, 0)
+},
 "type": 2
 },
 39111666762269: {
