@@ -8,6 +8,8 @@ static var current_assemble: CogniteAssemble
 
 @export var nodes: Dictionary
 
+@export var cognite_paths: CognitePerpectionResource
+
 
 func is_cognite_assemble():
 	return true

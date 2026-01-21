@@ -30,7 +30,7 @@ func _ready():
 
 
 func _draw():
-	draw_char(get_theme_default_font(), Vector2(size.x -12, 12), "x", 13)
+	draw_char(get_theme_default_font(), Vector2(size.x -14, 14), "x", 15)
 
 
 func _input(event: InputEvent):
