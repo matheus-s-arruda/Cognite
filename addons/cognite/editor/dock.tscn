@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://bukcku74rrx3f"]
+[gd_scene load_steps=8 format=3 uid="uid://bukcku74rrx3f"]
 
 [ext_resource type="Script" uid="uid://cujf7aubet3b4" path="res://addons/cognite/editor/scripts/dock.gd" id="1_5rkij"]
-[ext_resource type="Script" uid="uid://bgtr2510rb03f" path="res://addons/cognite/editor/scripts/graph_editor.gd" id="3_j26lr"]
+[ext_resource type="StyleBox" uid="uid://bknqdg1p6w030" path="res://addons/cognite/assets/background.stylebox" id="2_5rkij"]
+[ext_resource type="Script" uid="uid://ctwg6x7u74op6" path="res://addons/cognite/editor/scripts/assemble_list.gd" id="3_uv2al"]
+[ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="3_vfe4i"]
+[ext_resource type="Script" uid="uid://ca685uc113riu" path="res://addons/cognite/node/cognite_node.gd" id="4_uv2al"]
+[ext_resource type="Resource" uid="uid://dybstceteqdtw" path="res://testestes.tres" id="6_uv2al"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_j26lr"]
+font_size = 13
 
 [node name="Cognite" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 20)
@@ -16,21 +23,47 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 script = ExtResource("1_5rkij")
 
-[node name="GraphEdit" type="GraphEdit" parent="."]
+[node name="dock" type="HBoxContainer" parent="."]
 layout_mode = 2
-grid_pattern = 1
-connection_lines_thickness = 5.0
-minimap_enabled = false
-show_zoom_buttons = false
-show_grid_buttons = false
-show_minimap_button = false
-show_arrange_button = false
-script = ExtResource("3_j26lr")
+theme_override_constants/separation = 2
 
-[node name="Label" type="Label" parent="."]
-visible = false
+[node name="assemble_list" type="PanelContainer" parent="dock"]
 layout_mode = 2
-size_flags_vertical = 1
-text = "Select a CogniteNode to begin editing."
+theme_override_styles/panel = ExtResource("2_5rkij")
+script = ExtResource("3_uv2al")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="dock/assemble_list"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="dock/assemble_list/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("3_vfe4i")
+text = "Assembles"
+label_settings = SubResource("LabelSettings_j26lr")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="dock/assemble_list/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("3_vfe4i")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="dock/assemble_list/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="dock"]
+layout_mode = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="dock"]
+layout_mode = 2
+
+[node name="PanelContainer4" type="PanelContainer" parent="dock"]
+layout_mode = 2
+
+[node name="CogniteNode" type="Node" parent="."]
+script = ExtResource("4_uv2al")
+cognite_assemble = ExtResource("6_uv2al")
+metadata/_custom_type_script = "uid://ca685uc113riu"

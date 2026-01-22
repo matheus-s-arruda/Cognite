@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dfnc148r4nkbs"]
+
+[node name="Button" type="Button"]
+theme_override_font_sizes/font_size = 12
+toggle_mode = true
+action_mode = 0
+alignment = 0

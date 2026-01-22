@@ -1,11 +1,10 @@
-[gd_scene load_steps=79 format=3 uid="uid://b63crrmieet4o"]
+[gd_scene load_steps=77 format=3 uid="uid://b63crrmieet4o"]
 
 [ext_resource type="Texture2D" uid="uid://bptey1d4yeclf" path="res://assets/img/undead_executioner/idle.png" id="1_aj8cv"]
 [ext_resource type="Script" uid="uid://b5j6ns0wqi1p6" path="res://scripts/npc/npc.gd" id="1_kt4pe"]
 [ext_resource type="Texture2D" uid="uid://c4q6v78fyteo6" path="res://assets/img/undead_executioner/attacking.png" id="2_0paf7"]
 [ext_resource type="Texture2D" uid="uid://c4okrcym3yw5d" path="res://assets/img/undead_executioner/death.png" id="3_u1a3t"]
 [ext_resource type="Script" uid="uid://ca685uc113riu" path="res://addons/cognite/node/cognite_node.gd" id="3_y5m25"]
-[ext_resource type="Script" uid="uid://bmho1qa7r0yhk" path="res://addons/cognite/node/assemble.gd" id="4_ma7yx"]
 [ext_resource type="Texture2D" uid="uid://d3dscd1v0cj1q" path="res://assets/img/undead_executioner/skill1.png" id="5_c3qgv"]
 [ext_resource type="Texture2D" uid="uid://bwqetph7gy7br" path="res://assets/img/undead_executioner/summon.png" id="6_47ox6"]
 [ext_resource type="Texture2D" uid="uid://qhtscubt52t7" path="res://assets/img/undead_executioner/idle2.png" id="7_ogssh"]
@@ -501,127 +500,6 @@ func _process(delta):
 	text = cognite.variables.find_key(cognite._current_state)
 "
 
-[sub_resource type="Resource" id="Resource_c4kep"]
-script = ExtResource("4_ma7yx")
-nodes = {
-1945569910068: {
-"position": Vector2(300, 140),
-"right_connections": {
-8959905829565: Vector2i(0, 0),
-12810763435086: Vector2i(0, 0)
-},
-"state": "IDLE",
-"type": 0
-},
-2362869614486: {
-"change_state": "ATTACK",
-"position": Vector2(940, 520),
-"right_connections": {},
-"type": 2
-},
-3095765520569: {
-"position": Vector2(280, 240),
-"right_connections": {
-3402536915653: Vector2i(0, 0)
-},
-"state": "ATTACK",
-"type": 0
-},
-3402536915653: {
-"position": Vector2(460, 300),
-"right_connections": {
-3492093694084: Vector2i(0, 0)
-},
-"trigger": "animation_end",
-"type": 1
-},
-3492093694084: {
-"change_state": "HUNT",
-"position": Vector2(660, 300),
-"right_connections": {
-2362869614486: Vector2i(0, 0)
-},
-"type": 2
-},
-6213173580233: {
-"bigger": 100.0,
-"position": Vector2(640, 620),
-"range": "distance_to_player",
-"right_connections": {
-6751940317647: Vector2i(0, 0)
-},
-"smaller": 0.0,
-"type": 4
-},
-6494896590874: {
-"condition": "can_summom",
-"position": Vector2(540, 500),
-"right_connections": {
-6213173580233: Vector2i(0, 0)
-},
-"type": 3
-},
-6751940317647: {
-"change_state": "SUMMOM",
-"position": Vector2(940, 640),
-"right_connections": {},
-"type": 2
-},
-6895301627921: {
-"position": Vector2(280, 320),
-"right_connections": {
-3402536915653: Vector2i(0, 0)
-},
-"state": "SUMMOM",
-"type": 0
-},
-12810763435086: {
-"position": Vector2(460, 140),
-"right_connections": {
-13083896514096: Vector2i(0, 0),
-27292269084257: Vector2i(0, 0)
-},
-"trigger": "player_detected",
-"type": 1
-},
-27192679530375: {
-"position": Vector2(300, 440),
-"right_connections": {
-6494896590874: Vector2i(0, 0),
-15495285767556: Vector2i(0, 0),
-39111666762269: Vector2i(0, 0)
-},
-"state": "HUNT",
-"type": 0
-},
-27292269084257: {
-"change_state": "HUNT",
-"position": Vector2(660, 140),
-"right_connections": {
-39264037433375: Vector2i(0, 0)
-},
-"type": 2
-},
-39111666762269: {
-"bigger": 500.0,
-"position": Vector2(640, 440),
-"range": "distance_to_player",
-"right_connections": {
-2362869614486: Vector2i(1, 0),
-2680546199452: Vector2i(0, 0),
-39264037433375: Vector2i(0, 0)
-},
-"smaller": 60.0,
-"type": 4
-},
-39264037433375: {
-"change_state": "IDLE",
-"position": Vector2(940, 420),
-"right_connections": {},
-"type": 2
-}
-}
-
 [node name="world" type="Node2D"]
 
 [node name="player" type="CharacterBody2D" parent="."]
@@ -672,11 +550,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = SubResource("GDScript_kd6nb")
 
-[node name="CogniteNode" type="Node" parent="npc" node_paths=PackedStringArray("node_reference")]
+[node name="CogniteNode" type="Node" parent="npc"]
 script = ExtResource("3_y5m25")
-initial_state = 0
-node_reference = NodePath("..")
-cognite_assemble_root = SubResource("Resource_c4kep")
 
 [connection signal="body_entered" from="npc/detect_player" to="npc" method="_on_detect_player_body_entered"]
 [connection signal="timeout" from="npc/summon_delay" to="npc" method="_on_summon_delay_timeout"]

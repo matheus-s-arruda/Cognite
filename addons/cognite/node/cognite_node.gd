@@ -7,7 +7,7 @@ var updating: bool
 @export var cognite_assemble: CogniteAssemble:
 	set(value):
 		cognite_assemble = value
-		EditorInterface.get_selection().selection_changed.emit()
+		#Cognite.create.emit()
 
 
 func _ready():

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CogniteAssemble" load_steps=2 format=3 uid="uid://dybstceteqdtw"]
+
+[ext_resource type="Script" uid="uid://bmho1qa7r0yhk" path="res://addons/cognite/node/assemble.gd" id="1_516rt"]
+
+[resource]
+script = ExtResource("1_516rt")
+metadata/_custom_type_script = "uid://bmho1qa7r0yhk"

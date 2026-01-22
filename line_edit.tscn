@@ -1,40 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bbsildvh1c6p1"]
+[gd_scene load_steps=2 format=3 uid="uid://bbsildvh1c6p1"]
 
 [ext_resource type="Script" uid="uid://ca685uc113riu" path="res://addons/cognite/node/cognite_node.gd" id="1_8g3c4"]
-[ext_resource type="Script" uid="uid://caw1f8mgn25h" path="res://addons/cognite/resources/res_perception.gd" id="2_5i2r6"]
-[ext_resource type="Script" uid="uid://bmho1qa7r0yhk" path="res://addons/cognite/node/assemble.gd" id="2_8g3c4"]
-
-[sub_resource type="Resource" id="Resource_5i2r6"]
-script = ExtResource("2_5i2r6")
-paths = PackedStringArray("asdasdas", "asdasdas", "asdasdas", "asdasd", "asdasda")
-metadata/_custom_type_script = "uid://caw1f8mgn25h"
-
-[sub_resource type="Resource" id="Resource_8g3c4"]
-script = ExtResource("2_8g3c4")
-nodes = {
-2708228636737: {
-"position": Vector2(320, 80),
-"right_connections": {},
-"type": 0
-},
-2862511917448: {
-"position": Vector2(520, 80),
-"right_connections": {},
-"type": 2
-},
-2884959832191: {
-"position": Vector2(1220, 200),
-"right_connections": {},
-"type": 3
-},
-2934066743436: {
-"position": Vector2(1040, 200),
-"right_connections": {},
-"type": 1
-}
-}
-cognite_paths = SubResource("Resource_5i2r6")
-metadata/_custom_type_script = "uid://bmho1qa7r0yhk"
 
 [node name="LineEdit" type="LineEdit"]
 offset_right = 68.5625
@@ -42,5 +8,4 @@ offset_bottom = 31.0
 
 [node name="CogniteNode" type="Node" parent="."]
 script = ExtResource("1_8g3c4")
-cognite_assemble = SubResource("Resource_8g3c4")
 metadata/_custom_type_script = "uid://ca685uc113riu"
