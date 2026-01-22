@@ -2,8 +2,12 @@
 class_name CogniteDock extends MarginContainer
 
 
+@onready var percepition_list: PanelContainer = $dock/percepition_list
+
 var current_assemble: CogniteAssemble
 
 
 func set_current_assemble(assemble: CogniteAssemble):
-	pass
+	current_assemble = assemble
+	
+	percepition_list.set_assemble(assemble)

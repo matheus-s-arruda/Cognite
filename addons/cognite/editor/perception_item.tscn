@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://1r7qeyebm7rx"]
+
+[ext_resource type="Script" uid="uid://ctct0s1udq57v" path="res://addons/cognite/editor/scripts/perception_item.gd" id="1_ta6m6"]
+
+[node name="perception_item" type="HBoxContainer"]
+script = ExtResource("1_ta6m6")
+
+[node name="property_name" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Property:"
+
+[node name="MenuButton" type="MenuButton" parent="."]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+icon_alignment = 1
+item_count = 3
+popup/item_0/text = "bool"
+popup/item_0/id = 1
+popup/item_1/text = "int"
+popup/item_1/id = 2
+popup/item_2/text = "float"
+popup/item_2/id = 3

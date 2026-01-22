@@ -3,7 +3,7 @@ class_name Cognite extends EditorPlugin
 
 
 var inspector: EditorInspectorPlugin
-#var selector: EditorSelection
+static var editor_theme: Theme
 var main_panel: Control
 
 
@@ -22,8 +22,11 @@ func _enter_tree():
 			preload("res://addons/cognite/node/cognite_node.gd"),
 			preload("res://addons/cognite/assets/brain.svg"))
 	
-	#selector = EditorInterface.get_selection()
-	#selector.selection_changed.connect(_on_selection_changed)
+	editor_theme = get_editor_interface().get_editor_theme()
+
+
+static func get_theme_icon(icon_name: String) -> Texture2D:
+	return editor_theme.get_icon(icon_name, "EditorIcons")
 
 
 func _exit_tree():

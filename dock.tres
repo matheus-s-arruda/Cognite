@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CogniteAssemble" load_steps=2 format=3 uid="uid://ds3i8pn8e3wnx"]
+
+[ext_resource type="Script" uid="uid://bmho1qa7r0yhk" path="res://addons/cognite/node/assemble.gd" id="1_ogsr7"]
+
+[resource]
+script = ExtResource("1_ogsr7")
+perceptions = Array[Array]([["rteste", 3], ["GADA", 1]])
+metadata/_custom_type_script = "uid://bmho1qa7r0yhk"

@@ -4,6 +4,8 @@ class_name CogniteNode extends Node
 var updating: bool
 
 
+@export var perception_target: NodePath
+
 @export var cognite_assemble: CogniteAssemble:
 	set(value):
 		cognite_assemble = value

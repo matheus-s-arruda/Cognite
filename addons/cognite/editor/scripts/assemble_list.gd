@@ -16,11 +16,11 @@ func _ready() -> void:
 
 func refresh_registry():
 	assemble_map.clear()
-	reset_assemble_buttons()
+	for button in assemble_list:
+		button.queue_free()
+	assemble_list.clear()
 	_scan_directory("res://")
 	load_assemble_buttons()
-	
-	print("CogniteLibrary: Atualizado com ", assemble_map.size(), " itens.")
 
 
 func _scan_directory(path: String):
@@ -78,11 +78,6 @@ func _on_fs_changed():
 	refresh_registry()
 
 
-func reset_assemble_buttons():
-	for button in assemble_list:
-		button.queue_free()
-
-
 func load_assemble_buttons():
 	if assemble_map.is_empty(): return
 	
@@ -90,6 +85,7 @@ func load_assemble_buttons():
 	for item in assemble_map:
 		var button: Button = ASSEMBLE_LIST_BUTTON.instantiate()
 		button_node_list.add_child(button)
+		assemble_list.append(button)
 		button.pressed.connect(_assemble_button_pressed.bind(assemble_map[item]) )
 		button.text = item
 		count += 1
