@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://dm7ya0ai3sps4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxm0b"]
+content_margin_left = 8.0
+content_margin_right = 4.0
+bg_color = Color(0.24080001, 0.2604, 0.28, 0.5882353)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="perception_context_item" type="PanelContainer"]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="activated" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+alignment = 1
+icon_alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_bxm0b")
+text = "metadatas"
+vertical_alignment = 1
+
+[node name="mni" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "min:"
+
+[node name="max" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "max:"
+
+[node name="boolean_text" type="Label" parent="VBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "boolean"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="delete" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+focus_mode = 0
+text = "x"
+icon_alignment = 1

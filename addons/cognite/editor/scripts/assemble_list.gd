@@ -3,6 +3,8 @@ extends PanelContainer
 
 const ASSEMBLE_LIST_BUTTON = preload("uid://dfnc148r4nkbs")
 
+var assemble_button_group := ButtonGroup.new()
+
 var assemble_map: Dictionary = {}
 var assemble_list: Array[Button]
 
@@ -79,14 +81,13 @@ func _on_fs_changed():
 
 
 func load_assemble_buttons():
-	if assemble_map.is_empty(): return
-	
 	var count := 0
 	for item in assemble_map:
 		var button: Button = ASSEMBLE_LIST_BUTTON.instantiate()
 		button_node_list.add_child(button)
 		assemble_list.append(button)
 		button.pressed.connect(_assemble_button_pressed.bind(assemble_map[item]) )
+		button.button_group = assemble_button_group
 		button.text = item
 		count += 1
 

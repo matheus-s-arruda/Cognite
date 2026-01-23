@@ -5,7 +5,7 @@ const VALUE_TYPE_TEXT: PackedStringArray = ["type", "bool", "int", "float"]
 const FILTER_TYPE_TEXT: PackedStringArray = ["null", "", "[0-9_]", "[0-9._]"]
 
 @onready var property_name: LineEdit = $property_name
-@onready var menu_button: MenuButton = $MenuButton
+@onready var menu_button: MenuButton = $PanelContainer/MenuButton
 
 var property_type: Variant.Type
 var Assemble: CogniteAssemble

@@ -4,18 +4,14 @@
 [ext_resource type="StyleBox" uid="uid://bknqdg1p6w030" path="res://addons/cognite/assets/background.stylebox" id="2_5rkij"]
 [ext_resource type="Script" uid="uid://ctwg6x7u74op6" path="res://addons/cognite/editor/scripts/assemble_list.gd" id="3_uv2al"]
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="3_vfe4i"]
-[ext_resource type="Script" uid="uid://ca685uc113riu" path="res://addons/cognite/node/cognite_node.gd" id="4_uv2al"]
 [ext_resource type="Script" uid="uid://cfueccykdy42w" path="res://addons/cognite/editor/scripts/percepition_list.gd" id="5_bxm0b"]
-[ext_resource type="Resource" uid="uid://dp77b62eby58u" path="res://metede.tres" id="7_2m7hh"]
+[ext_resource type="Script" uid="uid://bga2ukub1e0ix" path="res://addons/cognite/editor/scripts/context_list.gd" id="6_bxm0b"]
+[ext_resource type="PackedScene" uid="uid://dgg6fxmx7asyf" path="res://addons/cognite/editor/context_item.tscn" id="7_2m7hh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_j26lr"]
 font_size = 13
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uv2al"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 
 [node name="Cognite" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 20)
@@ -32,7 +28,7 @@ script = ExtResource("1_5rkij")
 
 [node name="dock" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 4
 
 [node name="assemble_list" type="PanelContainer" parent="dock"]
 layout_mode = 2
@@ -48,7 +44,7 @@ theme_override_constants/separation = 4
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 theme_override_styles/normal = ExtResource("3_vfe4i")
-text = "Assembles"
+text = "assemblies"
 label_settings = SubResource("LabelSettings_j26lr")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -87,22 +83,49 @@ theme_override_styles/panel = ExtResource("2_5rkij")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="dock/percepition_list/VBoxContainer/PanelContainer"]
 layout_mode = 2
+theme_override_constants/separation = 4
 
 [node name="create_perception_item" type="Button" parent="dock/percepition_list/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
-text = "create new perception"
+text = "create new Perception"
 
-[node name="PanelContainer3" type="PanelContainer" parent="dock"]
+[node name="context_list" type="PanelContainer" parent="dock"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_5rkij")
+script = ExtResource("6_bxm0b")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="dock/context_list"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="dock/context_list/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("3_vfe4i")
+text = "Contexts"
+label_settings = SubResource("LabelSettings_j26lr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="dock/context_list/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("3_vfe4i")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="dock/context_list/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="create_perception_item" type="Button" parent="dock/context_list/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "create new Context"
+
+[node name="context_item" parent="dock/context_list/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("7_2m7hh")]
+layout_mode = 2
 
 [node name="PanelContainer4" type="PanelContainer" parent="dock"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_5rkij")
 
-[node name="CogniteNode" type="Node" parent="."]
-script = ExtResource("4_uv2al")
-cognite_assemble = ExtResource("7_2m7hh")
-metadata/_custom_type_script = "uid://ca685uc113riu"
-
 [connection signal="pressed" from="dock/percepition_list/VBoxContainer/PanelContainer/VBoxContainer/create_perception_item" to="dock/percepition_list" method="_on_create_perception_item_pressed"]
+[connection signal="pressed" from="dock/context_list/VBoxContainer/PanelContainer/VBoxContainer/create_perception_item" to="dock/context_list" method="_on_create_perception_item_pressed"]

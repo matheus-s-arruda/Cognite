@@ -3,12 +3,17 @@ class_name CogniteAssemble extends Resource
 
 signal actualized
 
-@export var nodes: Dictionary
+@export var creation_count := 0
 
 #[
 #	0: ["distance", TYPE_FLOAT
 #]
 @export var perceptions: Array[Array]
+
+#[
+#	0:
+#]
+@export var contexts: Dictionary
 
 
 func is_cognite_assemble():
