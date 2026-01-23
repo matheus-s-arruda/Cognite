@@ -2,7 +2,6 @@
 extends HBoxContainer
 
 const VALUE_TYPE_TEXT: PackedStringArray = ["type", "bool", "int", "float"]
-const FILTER_TYPE_TEXT: PackedStringArray = ["null", "", "[0-9_]", "[0-9._]"]
 
 @onready var property_name: LineEdit = $property_name
 @onready var menu_button: MenuButton = $PanelContainer/MenuButton
@@ -25,7 +24,7 @@ func load_property(perception: Array):
 
 func _property_name_text_changed(new_text: String):
 	var caret_position = property_name.caret_column
-	var word := _filter_string(new_text, "[A-Za-z0-9_]")
+	var word := Cognite.filter_string(new_text, "[A-Za-z_]")
 	property_name.set_text(word)
 	property_name.caret_column = caret_position
 	Assemble.perceptions[assemble_perception_id][0] = word
@@ -33,17 +32,14 @@ func _property_name_text_changed(new_text: String):
 
 
 func _on_menu_button_pressed(id : int) -> void:
-	property_type = id
-	menu_button.set_button_icon(Cognite.get_theme_icon(VALUE_TYPE_TEXT[property_type]))
-	Assemble.perceptions[assemble_perception_id][1] = id
-	Assemble.actualize()
+	if Assemble.perceptions.has(id):
+		property_type = id
+		menu_button.set_button_icon(Cognite.get_theme_icon(VALUE_TYPE_TEXT[property_type]))
+		Assemble.perceptions[assemble_perception_id][1] = id
+		Assemble.actualize()
 
 
-func _filter_string(string: String, filter: String) -> String:
-	var word = ''
-	var regex = RegEx.new()
-	regex.compile(filter) #("[A-Za-z0-9_]")
-	
-	for valid_character in regex.search_all(string):
-		word += valid_character.get_string()
-	return word
+func _on_delete_pressed() -> void:
+	Assemble.perceptions.erase(assemble_perception_id)
+	Assemble.actualize.call_deferred()
+	queue_free()

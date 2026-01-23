@@ -12,15 +12,16 @@ var context_list: Array[Control]
 
 
 func _on_create_perception_item_pressed() -> void:
-	pass # Replace with function body.
+	var new_context := current_assemble.create_context()
+	create_context_item(new_context[0], new_context[1])
 
 
-func load_assemble(assemble: CogniteAssemble):
+func set_assemble(assemble: CogniteAssemble):
 	current_assemble = assemble
 	refresh_registry()
 	
 	for context in assemble.contexts:
-		create_context_item(context)
+		create_context_item(context, assemble.contexts[context])
 
 
 func refresh_registry():
@@ -30,11 +31,11 @@ func refresh_registry():
 	context_list.clear()
 
 
-func create_context_item(context: Dictionary):
+func create_context_item(context_id: int, context: Dictionary):
 	var ctx = CONTEXT_ITEM.instantiate()
 	node_list.add_child(ctx)
 	context_list.append(ctx)
-	ctx
+	ctx.load_context(current_assemble, context_id, context)
 
 
 
@@ -43,5 +44,4 @@ func load_context_itens():
 	for item in context_map:
 		var context_item: Control = CONTEXT_ITEM.instantiate()
 		node_list.add_child(context_item)
-		pass
 		count += 1

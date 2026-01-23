@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bukcku74rrx3f"]
+[gd_scene load_steps=9 format=3 uid="uid://bukcku74rrx3f"]
 
 [ext_resource type="Script" uid="uid://cujf7aubet3b4" path="res://addons/cognite/editor/scripts/dock.gd" id="1_5rkij"]
 [ext_resource type="StyleBox" uid="uid://bknqdg1p6w030" path="res://addons/cognite/assets/background.stylebox" id="2_5rkij"]
@@ -6,7 +6,6 @@
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="3_vfe4i"]
 [ext_resource type="Script" uid="uid://cfueccykdy42w" path="res://addons/cognite/editor/scripts/percepition_list.gd" id="5_bxm0b"]
 [ext_resource type="Script" uid="uid://bga2ukub1e0ix" path="res://addons/cognite/editor/scripts/context_list.gd" id="6_bxm0b"]
-[ext_resource type="PackedScene" uid="uid://dgg6fxmx7asyf" path="res://addons/cognite/editor/context_item.tscn" id="7_2m7hh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_j26lr"]
 font_size = 13
@@ -119,9 +118,6 @@ layout_mode = 2
 [node name="create_perception_item" type="Button" parent="dock/context_list/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "create new Context"
-
-[node name="context_item" parent="dock/context_list/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("7_2m7hh")]
-layout_mode = 2
 
 [node name="PanelContainer4" type="PanelContainer" parent="dock"]
 layout_mode = 2

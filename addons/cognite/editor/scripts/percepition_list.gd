@@ -28,16 +28,17 @@ func load_itens():
 		perceptions.add_child(item)
 		item.Assemble = assemble
 		item.assemble_perception_id = 1
-		item.load_property(perception)
+		item.load_property(assemble.perceptions[perception])
 
 
 func create_item():
+	var new_perception := assemble.create_perception()
 	var item = PERCEPTION_ITEM.instantiate()
+	
 	perceptions.add_child(item)
 	item.Assemble = assemble
-	item.load_property(["", TYPE_BOOL])
-	item.assemble_perception_id = assemble.perceptions.size()
-	assemble.perceptions.append(["", TYPE_BOOL])
+	item.load_property(new_perception[1])
+	item.assemble_perception_id = new_perception[0]
 	
 
 

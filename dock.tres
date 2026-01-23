@@ -4,5 +4,30 @@
 
 [resource]
 script = ExtResource("1_ogsr7")
-perceptions = Array[Array]([["rteste", 3], ["GADA", 1]])
+creation_count = 6
+perceptions = {
+0: ["mete", 2],
+3: ["broklyn", 1],
+4: ["treer", 1],
+5: ["noossaa", 2]
+}
+contexts = {
+2: {
+"activated": true,
+"min_shot": 1,
+"name": "manotodoido",
+"perception_ids": {
+0: {
+"boolean": false,
+"max": 6656.0,
+"min": 54.0
+},
+5: {
+"boolean": false,
+"max": 666.0,
+"min": 99.0
+}
+}
+}
+}
 metadata/_custom_type_script = "uid://bmho1qa7r0yhk"

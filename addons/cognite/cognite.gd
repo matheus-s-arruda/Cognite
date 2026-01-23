@@ -54,6 +54,15 @@ func _get_plugin_icon():
 #endregion
 
 
+static func filter_string(string: String, filter: String) -> String:
+	var word = ''
+	var regex = RegEx.new()
+	regex.compile(filter) #("[A-Za-z0-9_]")
+	
+	for valid_character in regex.search_all(string):
+		word += valid_character.get_string()
+	return word
+
 #func _on_selection_changed():
 	#var nodes_selecionados = selector.get_selected_nodes()
 	#

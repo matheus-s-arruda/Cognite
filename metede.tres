@@ -4,4 +4,8 @@
 
 [resource]
 script = ExtResource("1_jsrq1")
+creation_count = 2
+perceptions = {
+0: ["gomenassai", ["property_name", 2]]
+}
 metadata/_custom_type_script = "uid://bmho1qa7r0yhk"

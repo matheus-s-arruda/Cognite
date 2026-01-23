@@ -5,9 +5,14 @@
 
 [node name="perception_item" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
-offset_right = 116.0
-offset_bottom = 88.0
+offset_right = 354.0
+offset_bottom = 31.0
 script = ExtResource("1_ta6m6")
+
+[node name="delete" type="Button" parent="."]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+text = "x"
 
 [node name="property_name" type="LineEdit" parent="."]
 layout_mode = 2
@@ -29,3 +34,5 @@ popup/item_1/text = "int"
 popup/item_1/id = 2
 popup/item_2/text = "float"
 popup/item_2/id = 3
+
+[connection signal="pressed" from="delete" to="." method="_on_delete_pressed"]
