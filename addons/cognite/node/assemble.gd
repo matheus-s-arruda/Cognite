@@ -3,6 +3,8 @@ class_name CogniteAssemble extends Resource
 
 signal actualized
 
+const CONTEXT_TEMPLATE := {"name": "", "activated": true, "priority": 0, "min_shot": 0, "perception_ids": {}}
+
 @export var creation_count := 0
 
 @export var perceptions: Dictionary
@@ -28,8 +30,8 @@ func get_perception(id: int) -> Array:
 
 
 func create_context() -> Array:
-	var c := [creation_count, {"name": "context_name", "activated": true, "min_shot": 0, "perception_ids": {}}]
-	contexts[creation_count] = {"name": "context_name", "activated": true, "min_shot": 0, "perception_ids": {}}
+	var c := [creation_count, CONTEXT_TEMPLATE.duplicate(true)]
+	contexts[creation_count] = CONTEXT_TEMPLATE.duplicate(true)
 	creation_count += 1
 	actualize()
 	return c

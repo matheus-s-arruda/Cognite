@@ -27,8 +27,7 @@ func _property_name_text_changed(new_text: String):
 	var word := Cognite.filter_string(new_text, "[A-Za-z_]")
 	property_name.set_text(word)
 	property_name.caret_column = caret_position
-	Assemble.perceptions[assemble_perception_id][0] = word
-	Assemble.actualize()
+	Assemble.atualize_perception(assemble_perception_id, [word, property_type])
 
 
 func _on_menu_button_pressed(id : int) -> void:

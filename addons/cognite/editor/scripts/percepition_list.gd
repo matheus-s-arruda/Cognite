@@ -27,7 +27,7 @@ func load_itens():
 		var item = PERCEPTION_ITEM.instantiate()
 		perceptions.add_child(item)
 		item.Assemble = assemble
-		item.assemble_perception_id = 1
+		item.assemble_perception_id = perception
 		item.load_property(assemble.perceptions[perception])
 
 

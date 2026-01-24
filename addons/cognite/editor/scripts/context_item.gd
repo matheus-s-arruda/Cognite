@@ -16,6 +16,7 @@ var context_percetion_list: Array[Control]
 @onready var perception_list: VBoxContainer = $VBoxContainer/PanelContainer/perception_list
 @onready var panel_perception_list: PanelContainer = $VBoxContainer/PanelContainer
 @onready var context_activated: CheckButton = $VBoxContainer/header/activated
+@onready var priority_value: LineEdit = $VBoxContainer/HBoxContainer3/priority_value
 
 
 func _ready() -> void:
@@ -27,6 +28,7 @@ func load_context(_assemble: CogniteAssemble, _context_id: int, _context_data: D
 	
 	context_name.text = context_data.name
 	min_shot.text = str(context_data.min_shot)
+	priority_value.text = str(context_data.priority)
 	context_activated.set_pressed_no_signal(context_data.activated)
 	refresh_itens()
 	
@@ -51,6 +53,7 @@ func refresh_itens():
 	
 	assemble.atualize_context(context_id, context_data)
 	perception_count = context_data.perception_ids.size()
+	max_shot.text = "/" + str(perception_count)
 
 
 func create_context_perception_item(perception_id: int, data: Dictionary):
@@ -100,6 +103,7 @@ func _on_create_perception_item_pressed(id: int) -> void:
 	create_context_perception_item(id, p)
 	assemble.atualize_context(context_id, context_data)
 	perception_count = context_data.perception_ids.size()
+	max_shot.text = "/" + str(perception_count)
 
 
 func _on_show_perception_list_toggled(toggled_on: bool) -> void:
@@ -119,3 +123,13 @@ func reset_perception_item_menu():
 	for perception_id in assemble.perceptions:
 		var perception: Array = assemble.perceptions[perception_id]
 		create_perception_item.get_popup().add_item(perception[0], perception_id)
+
+
+func _on_priority_value_text_changed(new_text: String) -> void:
+	var caret_position = priority_value.caret_column
+	var word := Cognite.filter_string(new_text, "[0-9]")
+	priority_value.set_text(word)
+	priority_value.caret_column = caret_position
+	
+	context_data.priority = int(word)
+	assemble.atualize_context(context_id, context_data)

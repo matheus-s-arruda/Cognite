@@ -4,30 +4,32 @@
 
 [resource]
 script = ExtResource("1_ogsr7")
-creation_count = 6
+creation_count = 8
 perceptions = {
-0: ["mete", 2],
+0: ["metemete", 3],
+1: ["tytytytyty", 1],
 3: ["broklyn", 1],
 4: ["treer", 1],
 5: ["noossaa", 2]
 }
 contexts = {
-2: {
+7: {
 "activated": true,
-"min_shot": 1,
-"name": "manotodoido",
+"min_shot": 0,
+"name": "Tatradsad",
 "perception_ids": {
 0: {
 "boolean": false,
-"max": 6656.0,
-"min": 54.0
+"max": null,
+"min": null
 },
 5: {
 "boolean": false,
-"max": 666.0,
-"min": 99.0
+"max": null,
+"min": null
 }
-}
+},
+"priority": 0
 }
 }
 metadata/_custom_type_script = "uid://bmho1qa7r0yhk"
