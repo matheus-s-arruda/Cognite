@@ -1,0 +1,130 @@
+[gd_scene load_steps=6 format=3 uid="uid://c5hj7stps4kmp"]
+
+[ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="1_is4p3"]
+[ext_resource type="PackedScene" uid="uid://dfvabl2hgn276" path="res://addons/cognite/editor/decision_context_item.tscn" id="2_86vnw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uv2al"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.23921569, 0.25882354, 0.2784314, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a1jf3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a1jf3"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.21176471, 0.23921569, 0.2901961, 0.5882353)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="decision_item" type="PanelContainer"]
+offset_right = 251.0
+offset_bottom = 70.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_uv2al")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="header" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="activated" type="CheckButton" parent="VBoxContainer/header"]
+layout_mode = 2
+button_pressed = true
+
+[node name="Label" type="Label" parent="VBoxContainer/header"]
+layout_mode = 2
+text = "activated"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_a1jf3")
+
+[node name="delete" type="Button" parent="VBoxContainer/header"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+focus_mode = 0
+text = "x"
+icon_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Name:"
+
+[node name="context_name" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Name:"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="priority_text" type="Label" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Priority:"
+vertical_alignment = 1
+
+[node name="priority_value" type="LineEdit" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "0"
+placeholder_text = "Priority:"
+
+[node name="show_context_list" type="CheckButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_a1jf3")
+button_pressed = true
+text = "Show Contexts"
+icon_alignment = 1
+expand_icon = true
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_is4p3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="create_perception_item" type="MenuButton" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+focus_mode = 0
+text = "Add Context"
+item_count = 1
+popup/item_0/text = "Perceptions"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_0/separator = true
+
+[node name="decision_context_item" parent="VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("2_86vnw")]
+layout_mode = 2

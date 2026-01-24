@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfvabl2hgn276"]
+
+[ext_resource type="Script" uid="uid://crdcevoegt76r" path="res://addons/cognite/editor/scripts/decision_context_item.gd" id="1_xckht"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxm0b"]
+content_margin_left = 8.0
+content_margin_right = 4.0
+bg_color = Color(0.24080001, 0.2604, 0.28, 0.5882353)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="decision_context_item" type="PanelContainer"]
+script = ExtResource("1_xckht")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="context_name" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_bxm0b")
+vertical_alignment = 1
+
+[node name="delete" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 20)
+layout_mode = 2
+focus_mode = 0
+text = "x"
+icon_alignment = 1
+
+[connection signal="pressed" from="HBoxContainer/delete" to="." method="_on_delete_pressed"]

@@ -15,10 +15,15 @@ perceptions = {
 contexts = {
 7: {
 "activated": true,
-"min_shot": 0,
+"min_shot": 3,
 "name": "Tatradsad",
 "perception_ids": {
 0: {
+"boolean": false,
+"max": null,
+"min": null
+},
+1: {
 "boolean": false,
 "max": null,
 "min": null
@@ -29,7 +34,8 @@ contexts = {
 "min": null
 }
 },
-"priority": 0
+"priority": 1
 }
 }
+decisions = null
 metadata/_custom_type_script = "uid://bmho1qa7r0yhk"

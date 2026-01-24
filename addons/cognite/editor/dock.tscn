@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bukcku74rrx3f"]
+[gd_scene load_steps=11 format=3 uid="uid://bukcku74rrx3f"]
 
 [ext_resource type="Script" uid="uid://cujf7aubet3b4" path="res://addons/cognite/editor/scripts/dock.gd" id="1_5rkij"]
 [ext_resource type="StyleBox" uid="uid://bknqdg1p6w030" path="res://addons/cognite/assets/background.stylebox" id="2_5rkij"]
@@ -6,11 +6,14 @@
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="3_vfe4i"]
 [ext_resource type="Script" uid="uid://cfueccykdy42w" path="res://addons/cognite/editor/scripts/percepition_list.gd" id="5_bxm0b"]
 [ext_resource type="Script" uid="uid://bga2ukub1e0ix" path="res://addons/cognite/editor/scripts/context_list.gd" id="6_bxm0b"]
+[ext_resource type="PackedScene" uid="uid://c5hj7stps4kmp" path="res://addons/cognite/editor/decision_item.tscn" id="7_2m7hh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_j26lr"]
 font_size = 13
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uv2al"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2m7hh"]
 
 [node name="Cognite" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 20)
@@ -119,7 +122,41 @@ layout_mode = 2
 layout_mode = 2
 text = "create new Context"
 
-[node name="PanelContainer4" type="PanelContainer" parent="dock"]
+[node name="decision_list" type="PanelContainer" parent="dock"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_2m7hh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="dock/decision_list"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="dock/decision_list/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_5rkij")
+text = "Decisions"
+label_settings = SubResource("LabelSettings_j26lr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="dock/decision_list/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("2_5rkij")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="dock/decision_list/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="create_decision_item" type="Button" parent="dock/decision_list/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "create new Decision"
+
+[node name="decision_item" parent="dock/decision_list/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("7_2m7hh")]
+layout_mode = 2
+
+[node name="PanelContainer5" type="PanelContainer" parent="dock"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_5rkij")
 
