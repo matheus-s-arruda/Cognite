@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c5hj7stps4kmp"]
 
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="1_is4p3"]
-[ext_resource type="PackedScene" uid="uid://dfvabl2hgn276" path="res://addons/cognite/editor/decision_context_item.tscn" id="2_86vnw"]
+[ext_resource type="Script" uid="uid://dsox6ai6go3gd" path="res://addons/cognite/editor/scripts/decision_item.gd" id="1_oyct5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uv2al"]
 content_margin_left = 2.0
@@ -33,8 +33,9 @@ corner_radius_bottom_left = 3
 
 [node name="decision_item" type="PanelContainer"]
 offset_right = 251.0
-offset_bottom = 70.0
+offset_bottom = 179.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_uv2al")
+script = ExtResource("1_oyct5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -71,7 +72,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Name:"
 
-[node name="context_name" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+[node name="decision_name" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Name:"
@@ -79,19 +80,18 @@ placeholder_text = "Name:"
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="priority_text" type="Label" parent="VBoxContainer/HBoxContainer3"]
+[node name="base_score_text" type="Label" parent="VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
-text = "Priority:"
+text = "Base score:"
 vertical_alignment = 1
 
-[node name="priority_value" type="LineEdit" parent="VBoxContainer/HBoxContainer3"]
+[node name="score_value" type="LineEdit" parent="VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
-text = "0"
-placeholder_text = "Priority:"
+placeholder_text = "score:"
 
 [node name="show_context_list" type="CheckButton" parent="VBoxContainer"]
 custom_minimum_size = Vector2(24, 24)
@@ -115,7 +115,7 @@ theme_override_styles/panel = ExtResource("1_is4p3")
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="create_perception_item" type="MenuButton" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="create_context_item" type="MenuButton" parent="VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 0
@@ -126,5 +126,8 @@ popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_0/separator = true
 
-[node name="decision_context_item" parent="VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("2_86vnw")]
-layout_mode = 2
+[connection signal="toggled" from="VBoxContainer/header/activated" to="." method="_on_activated_toggled"]
+[connection signal="pressed" from="VBoxContainer/header/delete" to="." method="_on_delete_pressed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/decision_name" to="." method="_on_decision_name_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer3/score_value" to="." method="_on_score_value_text_changed"]
+[connection signal="about_to_popup" from="VBoxContainer/PanelContainer/VBoxContainer/create_context_item" to="." method="_on_create_context_item_about_to_popup"]

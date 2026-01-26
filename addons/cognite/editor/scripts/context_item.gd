@@ -14,7 +14,6 @@ var context_percetion_list: Array[Control]
 @onready var perception_list: VBoxContainer = $VBoxContainer/PanelContainer/perception_list
 @onready var panel_perception_list: PanelContainer = $VBoxContainer/PanelContainer
 @onready var context_activated: CheckButton = $VBoxContainer/header/activated
-@onready var base_score_edit: LineEdit = $VBoxContainer/HBoxContainer2/base_score_edit
 
 
 func _ready() -> void:
@@ -25,7 +24,6 @@ func load_context(_assemble: CogniteAssemble, _context_id: int, _context_data: D
 	assemble = _assemble; context_id = _context_id; context_data = _context_data
 	
 	context_name.text = context_data.name
-	base_score_edit.text = str(context_data.base_score)
 	context_activated.set_pressed_no_signal(context_data.activated)
 	
 	refresh_itens()
@@ -78,16 +76,6 @@ func _on_delete_pressed() -> void:
 	assemble.contexts.erase(context_id)
 	assemble.actualize.call_deferred()
 	queue_free()
-
-
-func _on_base_score_edit_text_changed(new_text: String) -> void:
-	var caret_position = base_score_edit.caret_column
-	var word := Cognite.filter_string(new_text, "[0-9]")
-	base_score_edit.set_text(word)
-	base_score_edit.caret_column = caret_position
-	
-	context_data.base_score = int(word)
-	assemble.atualize_context(context_id, context_data)
 
 
 func _on_create_perception_item_pressed(id: int) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bukcku74rrx3f"]
+[gd_scene load_steps=13 format=3 uid="uid://bukcku74rrx3f"]
 
 [ext_resource type="Script" uid="uid://cujf7aubet3b4" path="res://addons/cognite/editor/scripts/dock.gd" id="1_5rkij"]
 [ext_resource type="StyleBox" uid="uid://bknqdg1p6w030" path="res://addons/cognite/assets/background.stylebox" id="2_5rkij"]
@@ -6,7 +6,9 @@
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="3_vfe4i"]
 [ext_resource type="Script" uid="uid://cfueccykdy42w" path="res://addons/cognite/editor/scripts/percepition_list.gd" id="5_bxm0b"]
 [ext_resource type="Script" uid="uid://bga2ukub1e0ix" path="res://addons/cognite/editor/scripts/context_list.gd" id="6_bxm0b"]
-[ext_resource type="PackedScene" uid="uid://c5hj7stps4kmp" path="res://addons/cognite/editor/decision_item.tscn" id="7_2m7hh"]
+[ext_resource type="Script" uid="uid://bmwvndvj3wy0e" path="res://addons/cognite/editor/scripts/decision_list.gd" id="7_bxm0b"]
+[ext_resource type="Script" uid="uid://ca685uc113riu" path="res://addons/cognite/node/cognite_node.gd" id="8_maeht"]
+[ext_resource type="Resource" uid="uid://d24r1pi270utp" path="res://tropa.tres" id="9_ctjeq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_j26lr"]
 font_size = 13
@@ -89,6 +91,7 @@ theme_override_constants/separation = 4
 
 [node name="create_perception_item" type="Button" parent="dock/percepition_list/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
+disabled = true
 text = "create new Perception"
 
 [node name="context_list" type="PanelContainer" parent="dock"]
@@ -120,12 +123,13 @@ layout_mode = 2
 
 [node name="create_perception_item" type="Button" parent="dock/context_list/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
+disabled = true
 text = "create new Context"
 
 [node name="decision_list" type="PanelContainer" parent="dock"]
-visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2m7hh")
+script = ExtResource("7_bxm0b")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="dock/decision_list"]
 custom_minimum_size = Vector2(350, 0)
@@ -152,15 +156,19 @@ theme_override_constants/separation = 4
 
 [node name="create_decision_item" type="Button" parent="dock/decision_list/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
+disabled = true
 text = "create new Decision"
-
-[node name="decision_item" parent="dock/decision_list/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("7_2m7hh")]
-layout_mode = 2
 
 [node name="PanelContainer5" type="PanelContainer" parent="dock"]
 visible = false
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_5rkij")
 
+[node name="CogniteNode" type="Node" parent="."]
+script = ExtResource("8_maeht")
+cognite_assemble = ExtResource("9_ctjeq")
+metadata/_custom_type_script = "uid://ca685uc113riu"
+
 [connection signal="pressed" from="dock/percepition_list/VBoxContainer/PanelContainer/VBoxContainer/create_perception_item" to="dock/percepition_list" method="_on_create_perception_item_pressed"]
 [connection signal="pressed" from="dock/context_list/VBoxContainer/PanelContainer/VBoxContainer/create_perception_item" to="dock/context_list" method="_on_create_perception_item_pressed"]
+[connection signal="pressed" from="dock/decision_list/VBoxContainer/PanelContainer/VBoxContainer/create_decision_item" to="dock/decision_list" method="_on_create_decision_item_pressed"]

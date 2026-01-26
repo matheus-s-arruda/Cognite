@@ -79,21 +79,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Name:"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "Base score:"
-vertical_alignment = 1
-
-[node name="base_score_edit" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "score:"
-
 [node name="show_perception_list" type="CheckButton" parent="VBoxContainer"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -135,6 +120,5 @@ popup/item_0/separator = true
 [connection signal="toggled" from="VBoxContainer/header/activated" to="." method="_on_activated_toggled"]
 [connection signal="pressed" from="VBoxContainer/header/delete" to="." method="_on_delete_pressed"]
 [connection signal="text_changed" from="VBoxContainer/HBoxContainer/context_name" to="." method="_on_context_name_text_changed"]
-[connection signal="text_changed" from="VBoxContainer/HBoxContainer2/base_score_edit" to="." method="_on_base_score_edit_text_changed"]
 [connection signal="toggled" from="VBoxContainer/show_perception_list" to="." method="_on_show_perception_list_toggled"]
 [connection signal="about_to_popup" from="VBoxContainer/PanelContainer/perception_list/PanelContainer/create_perception_item" to="." method="_on_create_perception_item_about_to_popup"]
