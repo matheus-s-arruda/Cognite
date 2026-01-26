@@ -12,7 +12,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="perception_context_item" type="PanelContainer"]
-offset_right = 119.0
+offset_right = 232.0
 offset_bottom = 31.0
 script = ExtResource("1_tbpni")
 
@@ -27,24 +27,9 @@ size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_bxm0b")
 vertical_alignment = 1
 
-[node name="min" type="LineEdit" parent="HBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(40, 20)
+[node name="score" type="LineEdit" parent="HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "min:"
-
-[node name="max" type="LineEdit" parent="HBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(40, 20)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "max:"
-
-[node name="boolean" type="CheckButton" parent="HBoxContainer"]
-visible = false
-layout_mode = 2
-text = "boolean"
+placeholder_text = "Score:"
 
 [node name="delete" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(30, 20)
@@ -53,7 +38,5 @@ focus_mode = 0
 text = "x"
 icon_alignment = 1
 
-[connection signal="text_changed" from="HBoxContainer/min" to="." method="_on_min_text_changed"]
-[connection signal="text_changed" from="HBoxContainer/max" to="." method="_on_max_text_changed"]
-[connection signal="toggled" from="HBoxContainer/boolean" to="." method="_on_boolean_toggled"]
+[connection signal="text_changed" from="HBoxContainer/score" to="." method="_on_score_text_changed"]
 [connection signal="pressed" from="HBoxContainer/delete" to="." method="_on_delete_pressed"]

@@ -54,15 +54,15 @@ layout_mode = 2
 icon_alignment = 1
 item_count = 5
 popup/item_0/text = "boolean"
-popup/item_0/id = 0
+popup/item_0/id = 1
 popup/item_1/text = "equal to"
-popup/item_1/id = 1
+popup/item_1/id = 4
 popup/item_2/text = "less than"
 popup/item_2/id = 2
 popup/item_3/text = "more than"
 popup/item_3/id = 3
 popup/item_4/text = "between"
-popup/item_4/id = 4
+popup/item_4/id = 3
 
 [node name="CheckButton" type="CheckButton" parent="proper"]
 visible = false

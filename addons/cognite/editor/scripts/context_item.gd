@@ -10,12 +10,11 @@ var context_data: Dictionary
 var context_percetion_list: Array[Control]
 
 @onready var context_name: LineEdit = $VBoxContainer/HBoxContainer/context_name
-@onready var min_shot: LineEdit = $VBoxContainer/HBoxContainer2/min_shot
-@onready var max_shot: LineEdit = $VBoxContainer/HBoxContainer2/max_shot
 @onready var create_perception_item: MenuButton = $VBoxContainer/PanelContainer/perception_list/PanelContainer/create_perception_item
 @onready var perception_list: VBoxContainer = $VBoxContainer/PanelContainer/perception_list
 @onready var panel_perception_list: PanelContainer = $VBoxContainer/PanelContainer
 @onready var context_activated: CheckButton = $VBoxContainer/header/activated
+@onready var base_score_edit: LineEdit = $VBoxContainer/HBoxContainer2/base_score_edit
 
 
 func _ready() -> void:
@@ -26,10 +25,10 @@ func load_context(_assemble: CogniteAssemble, _context_id: int, _context_data: D
 	assemble = _assemble; context_id = _context_id; context_data = _context_data
 	
 	context_name.text = context_data.name
-	min_shot.text = str(context_data.min_shot)
+	base_score_edit.text = str(context_data.base_score)
 	context_activated.set_pressed_no_signal(context_data.activated)
-	refresh_itens()
 	
+	refresh_itens()
 	reset_perception_item_menu()
 
 
@@ -40,7 +39,7 @@ func refresh_itens():
 	
 	var erase_ids: Array
 	for p in context_data.perception_ids:
-		var item: Array = assemble.get_perception(p)
+		var item: Dictionary = assemble.get_perception(p)
 		if item.is_empty():
 			erase_ids.append(p)
 		else:
@@ -51,14 +50,13 @@ func refresh_itens():
 	
 	assemble.atualize_context(context_id, context_data)
 	perception_count = context_data.perception_ids.size()
-	max_shot.text = "/" + str(perception_count)
 
 
-func create_context_perception_item(perception_id: int, data: Dictionary):
+func create_context_perception_item(perception_id: int, score: int):
 	var per = PERCEPTION_CONTEXT_ITEM.instantiate()
 	perception_list.add_child(per)
 	context_percetion_list.append(per)
-	per.load_perception(perception_id, context_id, data, assemble)
+	per.load_perception(perception_id, context_id, score, assemble)
 
 
 func _on_context_name_text_changed(new_text: String) -> void:
@@ -76,32 +74,27 @@ func _on_activated_toggled(toggled_on: bool) -> void:
 	assemble.atualize_context(context_id, context_data)
 
 
-func _on_min_shot_text_changed(new_text: String) -> void:
-	var caret_position = min_shot.caret_column
-	var word := Cognite.filter_string(new_text, "[0-9]")
-	var inter := int(word)
-	inter = min(inter, perception_count)
-	
-	min_shot.set_text(str(inter))
-	min_shot.caret_column = caret_position
-	
-	context_data.min_shot = inter
-	assemble.atualize_context(context_id, context_data)
-
-
 func _on_delete_pressed() -> void:
 	assemble.contexts.erase(context_id)
 	assemble.actualize.call_deferred()
 	queue_free()
 
 
+func _on_base_score_edit_text_changed(new_text: String) -> void:
+	var caret_position = base_score_edit.caret_column
+	var word := Cognite.filter_string(new_text, "[0-9]")
+	base_score_edit.set_text(word)
+	base_score_edit.caret_column = caret_position
+	
+	context_data.base_score = int(word)
+	assemble.atualize_context(context_id, context_data)
+
+
 func _on_create_perception_item_pressed(id: int) -> void:
-	var p := {"min": null, "max": null, "boolean": false}
-	context_data.perception_ids[id] = p
-	create_context_perception_item(id, p)
+	context_data.perception_ids[id] = 0
+	create_context_perception_item(id, 0)
 	assemble.atualize_context(context_id, context_data)
 	perception_count = context_data.perception_ids.size()
-	max_shot.text = "/" + str(perception_count)
 
 
 func _on_show_perception_list_toggled(toggled_on: bool) -> void:
@@ -119,5 +112,5 @@ func reset_perception_item_menu():
 	create_perception_item.get_popup().set_item_disabled(0, true)
 	
 	for perception_id in assemble.perceptions:
-		var perception: Array = assemble.perceptions[perception_id]
-		create_perception_item.get_popup().add_item(perception[0], perception_id)
+		var perception: Dictionary = assemble.perceptions[perception_id]
+		create_perception_item.get_popup().add_item(perception.name, perception_id)
