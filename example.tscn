@@ -565,9 +565,6 @@ vertical_alignment = 1
 script = SubResource("GDScript_kd6nb")
 
 [node name="CogniteNode" type="Node" parent="npc"]
-process_thread_group = 4
-process_thread_group_order = 0
-process_thread_messages = 0
 script = ExtResource("9_mdusf")
 cognite_assemble = ExtResource("10_hl4on")
 Distance = null

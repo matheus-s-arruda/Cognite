@@ -13,6 +13,10 @@ var runtime_context: Dictionary
 var runtime_decision: Dictionary
 var decisions: Dictionary
 
+var current_decision: Dictionary
+var best_score_decision: int
+var highest_score_decision: int
+
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
@@ -40,18 +44,10 @@ func _process(delta: float) -> void:
 	
 	var keys = decisions.keys()
 	keys.sort_custom(sort_decision_score)
-	#keys.reverse()
-	print(decisions[keys[0]])
-	#var decision_best_match := 0
-	#var decision_best_match_value := 0
-	#for i in decisions.size() -1:
-		#if decisions.keys()[i] > decisions.keys()[i + 1]:
-			#decision_best_match = decisions.keys()[i]
-			#decision_best_match_value
-		#else:
-			#decision_best_match = decisions.keys()[i + 1]
+	best_score_decision = keys[0]
+	highest_score_decision = decisions[keys[0]]
 	
-	#print(cognite_assemble.decisions[decision_best_match].name, " : ")
+	current_decision = cognite_assemble.decisions[best_score_decision]
 
 
 func is_cognite_node():
