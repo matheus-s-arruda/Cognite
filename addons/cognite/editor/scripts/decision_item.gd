@@ -70,7 +70,7 @@ func _on_decision_name_text_changed(new_text: String) -> void:
 
 func _on_score_value_text_changed(new_text: String) -> void:
 	var caret_position = score_value.caret_column
-	var word := Cognite.filter_string(new_text, "[0-9]")
+	var word := Cognite.filter_string(new_text, "[-0-9]")
 	score_value.set_text(word)
 	score_value.caret_column = caret_position
 	

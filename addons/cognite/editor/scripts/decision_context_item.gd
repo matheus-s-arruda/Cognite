@@ -25,7 +25,7 @@ func _on_delete_pressed() -> void:
 
 
 func _on_score_value_text_changed(new_text: String) -> void:
-	var word := Cognite.filter_string(new_text, "[0-9]")
+	var word := Cognite.filter_string(new_text, "[-0-9]")
 	var caret_position = score_value.caret_column
 	
 	score_value.set_text(word)

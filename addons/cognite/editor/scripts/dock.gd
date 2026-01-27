@@ -1,5 +1,5 @@
 @tool
-class_name CogniteDock extends MarginContainer
+class_name CogniteDock extends PanelContainer
 
 
 @onready var percepition_list: PanelContainer = $dock/percepition_list

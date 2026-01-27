@@ -1,5 +1,5 @@
 @tool
-extends VBoxContainer
+extends PanelContainer
 
 enum PropertyType {BOOL, EQUAL, LESS, MORE, BETWEEN}
 const VALUE_TYPE_TEXT: PackedStringArray = ["boolean", "equal to", "less than", "more than", "between"]
@@ -9,12 +9,12 @@ var property: Dictionary
 var Assemble: CogniteAssemble
 var assemble_perception_id: int
 
-@onready var property_name: LineEdit = $HBoxContainer/property_name
-@onready var proper: HBoxContainer = $proper
-@onready var property_type_button: MenuButton = $proper/PanelContainer/property_type
-@onready var check_button: CheckButton = $proper/CheckButton
-@onready var line_edit: LineEdit = $proper/LineEdit
-@onready var line_edit_2: LineEdit = $proper/LineEdit2
+@onready var property_name: LineEdit = $perception_item/HBoxContainer/property_name
+@onready var proper: HBoxContainer = $perception_item/proper
+@onready var property_type_button: MenuButton = $perception_item/proper/PanelContainer/property_type
+@onready var check_button: CheckButton = $perception_item/proper/CheckButton
+@onready var line_edit: LineEdit = $perception_item/proper/LineEdit
+@onready var line_edit_2: LineEdit = $perception_item/proper/LineEdit2
 
 
 func _ready() -> void:
@@ -84,7 +84,7 @@ func _on_check_button_toggled(toggled_on: bool) -> void:
 
 func _on_line_edit_text_changed(new_text: String) -> void:
 	var caret_position = line_edit.caret_column
-	var word := Cognite.filter_string(new_text, "[0-9.]")
+	var word := Cognite.filter_string(new_text, "[-0-9.]")
 	line_edit.set_text(word)
 	property.prop1 = int(word)
 	line_edit.caret_column = caret_position
@@ -93,7 +93,7 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 
 func _on_line_edit_2_text_changed(new_text: String) -> void:
 	var caret_position = line_edit_2.caret_column
-	var word := Cognite.filter_string(new_text, "[0-9.]")
+	var word := Cognite.filter_string(new_text, "[-0-9.]")
 	line_edit_2.set_text(word)
 	property.prop2 = int(word)
 	line_edit_2.caret_column = caret_position

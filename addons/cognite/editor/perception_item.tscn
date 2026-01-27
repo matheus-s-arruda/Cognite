@@ -1,40 +1,61 @@
-[gd_scene load_steps=4 format=3 uid="uid://1r7qeyebm7rx"]
+[gd_scene load_steps=5 format=3 uid="uid://1r7qeyebm7rx"]
 
-[ext_resource type="Script" path="res://addons/cognite/editor/scripts/perception_item.gd" id="1_ta6m6"]
+[ext_resource type="Script" uid="uid://ctct0s1udq57v" path="res://addons/cognite/editor/scripts/perception_item.gd" id="1_ta6m6"]
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="2_0mx6j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0mx6j"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.14901961, 0.16078432, 0.1764706, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5546, 0.94, 0.59313995, 0.5882353)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0mx6j"]
 content_margin_left = 0.0
 content_margin_right = 12.0
 
-[node name="perception_item" type="VBoxContainer"]
-custom_minimum_size = Vector2(0, 30)
+[node name="PanelContainer" type="PanelContainer"]
+offset_top = 62.0
 offset_right = 354.0
-offset_bottom = 31.0
+offset_bottom = 62.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0mx6j")
 script = ExtResource("1_ta6m6")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="perception_item" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="delete" type="Button" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="perception_item"]
+layout_mode = 2
+
+[node name="delete" type="Button" parent="perception_item/HBoxContainer"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "x"
 
-[node name="property_name" type="LineEdit" parent="HBoxContainer"]
+[node name="property_name" type="LineEdit" parent="perception_item/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Property:"
 
-[node name="show_property" type="CheckButton" parent="HBoxContainer"]
+[node name="show_property" type="CheckButton" parent="perception_item/HBoxContainer"]
 layout_mode = 2
 button_pressed = true
 text = "Show"
 
-[node name="proper" type="HBoxContainer" parent="."]
+[node name="proper" type="HBoxContainer" parent="perception_item"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="proper"]
+[node name="Label" type="Label" parent="perception_item/proper"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -43,17 +64,18 @@ text = "property type"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="proper"]
+[node name="PanelContainer" type="PanelContainer" parent="perception_item/proper"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("2_0mx6j")
 
-[node name="property_type" type="MenuButton" parent="proper/PanelContainer"]
+[node name="property_type" type="MenuButton" parent="perception_item/proper/PanelContainer"]
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 icon_alignment = 1
 item_count = 5
 popup/item_0/text = "boolean"
+popup/item_0/id = 0
 popup/item_1/text = "equal to"
 popup/item_1/id = 1
 popup/item_2/text = "less than"
@@ -63,24 +85,24 @@ popup/item_3/id = 3
 popup/item_4/text = "between"
 popup/item_4/id = 4
 
-[node name="CheckButton" type="CheckButton" parent="proper"]
+[node name="CheckButton" type="CheckButton" parent="perception_item/proper"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 text = "set true"
 
-[node name="LineEdit" type="LineEdit" parent="proper"]
+[node name="LineEdit" type="LineEdit" parent="perception_item/proper"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LineEdit2" type="LineEdit" parent="proper"]
+[node name="LineEdit2" type="LineEdit" parent="perception_item/proper"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[connection signal="pressed" from="HBoxContainer/delete" to="." method="_on_delete_pressed"]
-[connection signal="toggled" from="HBoxContainer/show_property" to="." method="_on_show_property_toggled"]
-[connection signal="toggled" from="proper/CheckButton" to="." method="_on_check_button_toggled"]
-[connection signal="text_changed" from="proper/LineEdit" to="." method="_on_line_edit_text_changed"]
-[connection signal="text_changed" from="proper/LineEdit2" to="." method="_on_line_edit_2_text_changed"]
+[connection signal="pressed" from="perception_item/HBoxContainer/delete" to="perception_item" method="_on_delete_pressed"]
+[connection signal="toggled" from="perception_item/HBoxContainer/show_property" to="." method="_on_show_property_toggled"]
+[connection signal="toggled" from="perception_item/proper/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="text_changed" from="perception_item/proper/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="text_changed" from="perception_item/proper/LineEdit2" to="." method="_on_line_edit_2_text_changed"]
