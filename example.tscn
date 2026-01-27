@@ -1,22 +1,33 @@
 [gd_scene load_steps=78 format=3 uid="uid://b63crrmieet4o"]
 
 [ext_resource type="Texture2D" uid="uid://bptey1d4yeclf" path="res://assets/img/undead_executioner/idle.png" id="1_aj8cv"]
-[ext_resource type="Script" path="res://scripts/npc/npc.gd" id="1_kt4pe"]
+[ext_resource type="Script" uid="uid://b5j6ns0wqi1p6" path="res://scripts/npc/npc.gd" id="1_kt4pe"]
 [ext_resource type="Texture2D" uid="uid://c4q6v78fyteo6" path="res://assets/img/undead_executioner/attacking.png" id="2_0paf7"]
 [ext_resource type="Texture2D" uid="uid://c4okrcym3yw5d" path="res://assets/img/undead_executioner/death.png" id="3_u1a3t"]
 [ext_resource type="Texture2D" uid="uid://d3dscd1v0cj1q" path="res://assets/img/undead_executioner/skill1.png" id="5_c3qgv"]
 [ext_resource type="Texture2D" uid="uid://bwqetph7gy7br" path="res://assets/img/undead_executioner/summon.png" id="6_47ox6"]
 [ext_resource type="Texture2D" uid="uid://qhtscubt52t7" path="res://assets/img/undead_executioner/idle2.png" id="7_ogssh"]
-[ext_resource type="Script" path="res://addons/cognite/node/cognite_node.gd" id="9_mdusf"]
-[ext_resource type="Resource" uid="uid://d24r1pi270utp" path="res://tropa.tres" id="10_3gpt6"]
+[ext_resource type="Script" uid="uid://ca685uc113riu" path="res://addons/cognite/node/cognite_node.gd" id="9_mdusf"]
+[ext_resource type="Resource" uid="uid://c1cjpf5p1bldr" path="res://teste.tres" id="10_hl4on"]
 [ext_resource type="Texture2D" uid="uid://dfry4yr23rsm0" path="res://icon.svg" id="11_r6wqi"]
 
 [sub_resource type="GDScript" id="GDScript_dmsor"]
 script/source = "extends CharacterBody2D
 
+@onready var cognite_node: CogniteNode = $\"../npc/CogniteNode\"
+@onready var npc: CharacterBody2D = $\"../npc\"
 
 func _physics_process(delta):
 	position = get_global_mouse_position()
+	
+	cognite_node.Distance = position.distance_to(npc.position)
+	
+	
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			cognite_node.Clicked = event.is_pressed() 
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kdyc6"]
@@ -497,10 +508,10 @@ script/source = "extends Label
 @onready var cognite_node: CogniteNode = $\"../CogniteNode\"
 
 
-func _ready() -> void:
-	print(cognite_node.asdad)
-	cognite_node.asdad = 40
-	print(cognite_node.asdad)
+#func _ready() -> void:
+	#print(cognite_node.asdad)
+	#cognite_node.asdad = 40
+	#print(cognite_node.asdad)
 "
 
 [node name="world" type="Node2D"]
@@ -554,18 +565,13 @@ vertical_alignment = 1
 script = SubResource("GDScript_kd6nb")
 
 [node name="CogniteNode" type="Node" parent="npc"]
-process_mode = 4
-process_priority = 4
-process_physics_priority = 4
 process_thread_group = 4
 process_thread_group_order = 0
 process_thread_messages = 0
-auto_translate_mode = 4
-editor_description = "4"
 script = ExtResource("9_mdusf")
-cognite_assemble = ExtResource("10_3gpt6")
-liche = null
-asdad = null
+cognite_assemble = ExtResource("10_hl4on")
+Distance = null
+Clicked = null
 
 [connection signal="body_entered" from="npc/detect_player" to="npc" method="_on_detect_player_body_entered"]
 [connection signal="timeout" from="npc/summon_delay" to="npc" method="_on_summon_delay_timeout"]
