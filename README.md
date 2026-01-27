@@ -1,7 +1,7 @@
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/1.2/thumbnail/capa.png">
 
-[![Generic badge](https://img.shields.io/badge/last_version-3.0.0-red.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/godot_version-4.3.stable-blue.svg)](https://shields.io/) 
+[![Generic badge](https://img.shields.io/badge/last_version-4.1.0-red.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/godot_version-4.5.1.stable-blue.svg)](https://shields.io/)
 
  Develop State Machines & Behavior Trees with ease and introduce them into your scenes with just one click.
 
@@ -144,3 +144,9 @@ The States, Triggers, Ranges and Bools properties will now be literary and must 
 - You can add a node that contains the properties described within the editor, this way Cognite will observe and change directly in that node.
 
 # Update 4.0
+## Complete system reorganization
+- The graph system has been removed; the design is now based on scoring.
+- All states are active and are decided by a scoring system.
+- Scoring is determined by context
+- Contexts are defined based on perceptions, observing the world from the CogniteNode.
+
