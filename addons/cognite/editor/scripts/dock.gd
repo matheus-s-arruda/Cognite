@@ -6,9 +6,9 @@ class_name CogniteDock extends MarginContainer
 @onready var context_list: PanelContainer = $dock/context_list
 @onready var decision_list: PanelContainer = $dock/decision_list
 
-@onready var create_perception_item: Button = $dock/percepition_list/VBoxContainer/PanelContainer/VBoxContainer/create_perception_item
-@onready var create_context_item: Button = $dock/context_list/VBoxContainer/PanelContainer/VBoxContainer/create_perception_item
-@onready var create_decision_item: Button = $dock/decision_list/VBoxContainer/PanelContainer/VBoxContainer/create_decision_item
+@onready var create_perception_item: Button = $dock/percepition_list/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/create_perception_item
+@onready var create_context_item: Button = $dock/context_list/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/create_perception_item
+@onready var create_decision_item: Button = $dock/decision_list/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/create_decision_item
 
 
 var current_assemble: CogniteAssemble

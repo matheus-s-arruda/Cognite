@@ -1,13 +1,13 @@
 @tool
 extends PanelContainer
 
-const CONTEXT_ITEM = preload("uid://dgg6fxmx7asyf")
+const CONTEXT_ITEM = preload("res://addons/cognite/editor/context_item.tscn")
 
 
 var current_assemble: CogniteAssemble
 var context_list: Array[Control]
 
-@onready var node_list: VBoxContainer = $VBoxContainer/PanelContainer/VBoxContainer
+@onready var node_list: VBoxContainer = $VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer
 
 
 func _on_create_perception_item_pressed() -> void:

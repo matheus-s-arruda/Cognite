@@ -1,7 +1,7 @@
 @tool
 extends PanelContainer
 
-const DECISION_CONTEXT_ITEM = preload("uid://dfvabl2hgn276")
+const DECISION_CONTEXT_ITEM = preload("res://addons/cognite/editor/decision_context_item.tscn")
 
 var id: int
 var decision_data: Dictionary
@@ -24,6 +24,9 @@ func load_context(current_assemble: CogniteAssemble, decision_id: int, decision:
 	assemble = current_assemble; id = decision_id; decision_data = decision
 	decision_name.text = decision.name
 	score_value.text = str(decision.base_score)
+	
+	for ctx in decision.context_ids:
+		create_decision_context_item(ctx)
 
 
 func reset_perception_item_menu():
@@ -33,7 +36,7 @@ func reset_perception_item_menu():
 	create_context_item.get_popup().set_item_disabled(0, true)
 	
 	for context_id in assemble.contexts:
-		var ctx: Dictionary = assemble.contexts[context_id]
+		var ctx: Dictionary = assemble.get_context(context_id)
 		create_context_item.get_popup().add_item(ctx.name, context_id)
 
 

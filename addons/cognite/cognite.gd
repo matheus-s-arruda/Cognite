@@ -2,15 +2,14 @@
 class_name Cognite extends EditorPlugin
 
 
-var inspector: EditorInspectorPlugin
+#var inspector: EditorInspectorPlugin
 static var editor_theme: Theme
 var main_panel: Control
 
 
 func _enter_tree():
-	inspector = preload("res://addons/cognite/inspector.gd").new()
-	inspector
-	add_inspector_plugin(inspector)
+	#inspector = preload("res://addons/cognite/inspector/inspector.gd").new()
+	#add_inspector_plugin(inspector)
 	
 	main_panel = preload("res://addons/cognite/editor/dock.tscn").instantiate()
 	main_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -18,10 +17,7 @@ func _enter_tree():
 	get_editor_interface().get_editor_main_screen().add_child(main_panel)
 	_make_visible(false)
 	
-	add_custom_type( "CogniteNode", "Node",
-			preload("res://addons/cognite/node/cognite_node.gd"),
-			preload("res://addons/cognite/assets/brain.svg"))
-	
+	add_custom_type( "CogniteNode", "Node", preload("res://addons/cognite/node/cognite_node.gd"), preload("res://addons/cognite/assets/brain.svg"))
 	editor_theme = get_editor_interface().get_editor_theme()
 
 
@@ -30,9 +26,9 @@ static func get_theme_icon(icon_name: String) -> Texture2D:
 
 
 func _exit_tree():
-	remove_inspector_plugin(inspector)
 	remove_custom_type("CogniteNode")
-	inspector.free()
+	#remove_inspector_plugin(inspector)
+	#inspector.free()
 	
 	if is_instance_valid(main_panel):
 		main_panel.queue_free()

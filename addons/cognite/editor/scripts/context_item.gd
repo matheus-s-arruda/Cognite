@@ -1,7 +1,7 @@
 @tool
 extends PanelContainer
 
-const PERCEPTION_CONTEXT_ITEM = preload("uid://dm7ya0ai3sps4")
+const PERCEPTION_CONTEXT_ITEM = preload("res://addons/cognite/editor/perception_context_item.tscn")
 
 var assemble: CogniteAssemble
 var context_id: int

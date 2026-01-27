@@ -16,7 +16,7 @@ func load_context(_context_id: int, _decision_id: int, _assemble: CogniteAssembl
 	var context: Dictionary = assemble.get_context(context_id)
 	var decision: Dictionary = assemble.get_decision(_decision_id)
 	context_name.text = context.name
-	score_value.text = str(decision.base_score)
+	score_value.text = str(decision.context_ids[context_id])
 
 
 func _on_delete_pressed() -> void:

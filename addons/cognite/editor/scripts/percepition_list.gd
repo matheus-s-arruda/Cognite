@@ -1,10 +1,10 @@
 @tool
 extends PanelContainer
 
-const PERCEPTION_ITEM = preload("uid://1r7qeyebm7rx")
+const PERCEPTION_ITEM = preload("res://addons/cognite/editor/perception_item.tscn")
 
 
-@onready var perceptions: VBoxContainer = $VBoxContainer/PanelContainer/VBoxContainer
+@onready var perceptions: VBoxContainer = $VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer
 
 var assemble: CogniteAssemble
 var perceptions_list: Dictionary

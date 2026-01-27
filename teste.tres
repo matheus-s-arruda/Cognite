@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CogniteAssemble" load_steps=2 format=3 uid="uid://c1cjpf5p1bldr"]
+
+[ext_resource type="Script" path="res://addons/cognite/node/assemble.gd" id="1_d0138"]
+
+[resource]
+script = ExtResource("1_d0138")
+creation_count = 0
+perceptions = {}
+contexts = {}
+decisions = {}

@@ -1,14 +1,14 @@
 [gd_scene load_steps=6 format=3 uid="uid://c5hj7stps4kmp"]
 
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="1_is4p3"]
-[ext_resource type="Script" uid="uid://dsox6ai6go3gd" path="res://addons/cognite/editor/scripts/decision_item.gd" id="1_oyct5"]
+[ext_resource type="Script" path="res://addons/cognite/editor/scripts/decision_item.gd" id="1_oyct5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uv2al"]
 content_margin_left = 2.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 2.0
-bg_color = Color(0.23921569, 0.25882354, 0.2784314, 1)
+bg_color = Color(0.239216, 0.258824, 0.278431, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -25,7 +25,7 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.21176471, 0.23921569, 0.2901961, 0.5882353)
+bg_color = Color(0.211765, 0.239216, 0.290196, 0.588235)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -97,12 +97,12 @@ placeholder_text = "score:"
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_a1jf3")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_a1jf3")
-theme_override_styles/hover = SubResource("StyleBoxFlat_a1jf3")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_a1jf3")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_a1jf3")
 theme_override_styles/focus = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_a1jf3")
+theme_override_styles/normal = SubResource("StyleBoxFlat_a1jf3")
 button_pressed = true
 text = "Show Contexts"
 icon_alignment = 1
@@ -118,11 +118,9 @@ layout_mode = 2
 [node name="create_context_item" type="MenuButton" parent="VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
-focus_mode = 0
 text = "Add Context"
 item_count = 1
 popup/item_0/text = "Perceptions"
-popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_0/separator = true
 

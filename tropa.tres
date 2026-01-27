@@ -1,16 +1,22 @@
 [gd_resource type="Resource" script_class="CogniteAssemble" load_steps=2 format=3 uid="uid://d24r1pi270utp"]
 
-[ext_resource type="Script" uid="uid://bmho1qa7r0yhk" path="res://addons/cognite/node/assemble.gd" id="1_kbvkb"]
+[ext_resource type="Script" path="res://addons/cognite/node/assemble.gd" id="1_kbvkb"]
 
 [resource]
 script = ExtResource("1_kbvkb")
-creation_count = 3
+creation_count = 11
 perceptions = {
 2: {
 "name": "liche",
 "prop1": 0,
 "prop2": 0,
 "type": 0
+},
+3: {
+"name": "asdad",
+"prop1": 1,
+"prop2": 0,
+"type": 1
 }
 }
 contexts = {
@@ -18,16 +24,24 @@ contexts = {
 "activated": true,
 "name": "Oppo",
 "perception_ids": {
-2: 0
+2: 0,
+3: 0
+}
+},
+10: {
+"activated": true,
+"name": "mappa",
+"perception_ids": {
+3: 0
 }
 }
 }
 decisions = {
 0: {
 "activated": true,
-"base_score": 0,
+"base_score": 33,
 "context_ids": {
-1: 0
+1: 122
 },
 "name": ""
 }

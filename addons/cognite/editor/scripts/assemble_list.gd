@@ -1,14 +1,14 @@
 @tool
 extends PanelContainer
 
-const ASSEMBLE_LIST_BUTTON = preload("uid://dfnc148r4nkbs")
+const ASSEMBLE_LIST_BUTTON = preload("res://addons/cognite/editor/assemble_list_button.tscn")
 
 var assemble_button_group := ButtonGroup.new()
 
 var assemble_map: Dictionary = {}
 var assemble_list: Array[Button]
 
-@onready var button_node_list: VBoxContainer = $VBoxContainer/PanelContainer/VBoxContainer
+@onready var button_node_list: VBoxContainer = $VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer
 @onready var cognite_dock: CogniteDock = $"../.."
 
 

@@ -1,12 +1,12 @@
 @tool
 extends PanelContainer
 
-const DECISION_ITEM = preload("uid://c5hj7stps4kmp")
+const DECISION_ITEM = preload("res://addons/cognite/editor/decision_item.tscn")
 
 var current_assemble: CogniteAssemble
 var decision_list: Array[Control]
 
-@onready var context_list: VBoxContainer = $VBoxContainer/PanelContainer/VBoxContainer
+@onready var context_list: VBoxContainer = $VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer
 
 
 func set_assemble(assemble: CogniteAssemble):

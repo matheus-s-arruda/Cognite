@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://dfvabl2hgn276"]
 
-[ext_resource type="Script" uid="uid://crdcevoegt76r" path="res://addons/cognite/editor/scripts/decision_context_item.gd" id="1_xckht"]
+[ext_resource type="Script" path="res://addons/cognite/editor/scripts/decision_context_item.gd" id="1_xckht"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxm0b"]
 content_margin_left = 8.0
 content_margin_right = 4.0
-bg_color = Color(0.24080001, 0.2604, 0.28, 0.5882353)
+bg_color = Color(0.2408, 0.2604, 0.28, 0.588235)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
