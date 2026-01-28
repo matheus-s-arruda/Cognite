@@ -4,54 +4,67 @@
 
 [resource]
 script = ExtResource("1_kbvkb")
-creation_count = 12
+creation_count = 25
 perceptions = {
-2: {
-"name": "liche",
-"prop1": 0,
+20: {
+"name": "life",
+"prop1": 30,
 "prop2": 0,
-"type": 0
+"type": 2
 },
-3: {
-"name": "asdad",
-"prop1": 1,
+21: {
+"name": "surrounded",
+"prop1": 4,
 "prop2": 0,
-"type": 1
+"type": 3
+},
+22: {
+"name": "ammunition",
+"prop1": 30,
+"prop2": 0,
+"type": 2
 }
 }
 contexts = {
-1: {
+17: {
 "activated": true,
-"name": "Oppo",
+"name": "escape",
 "perception_ids": {
-2: 0,
-3: 0
+20: 0,
+21: 0,
+22: 0
 }
 },
-10: {
+18: {
 "activated": true,
-"name": "mappa",
+"name": "heal",
 "perception_ids": {
-3: 0
+20: 0
 }
+},
+19: {
+"activated": true,
+"name": "",
+"perception_ids": {}
 }
 }
 decisions = {
-0: {
+23: {
 "activated": true,
-"base_score": 33,
+"base_score": 25,
 "context_ids": {
-1: 122
+17: 25
 },
-"name": "mato"
+"name": "ToEscape"
 },
-11: {
+24: {
 "activated": true,
-"base_score": 21,
+"base_score": 0,
 "context_ids": {
-10: 20
+17: 0,
+18: 0
 },
-"name": "tato"
+"name": "Heal"
 }
 }
 metadata/_custom_type_script = "uid://bmho1qa7r0yhk"

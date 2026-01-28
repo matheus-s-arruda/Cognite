@@ -25,7 +25,7 @@ func set_assemble(assemble: CogniteAssemble):
 
 func refresh_registry():
 	for button in context_list:
-		button.queue_free()
+		if button: button.queue_free()
 	context_list.clear()
 
 

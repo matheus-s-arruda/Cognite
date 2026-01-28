@@ -4,65 +4,28 @@
 
 [resource]
 script = ExtResource("1_d0138")
-creation_count = 9
+creation_count = 14
 perceptions = {
-0: {
+11: {
 "name": "Distance",
-"prop1": 400,
+"prop1": 300,
 "prop2": 0,
 "type": 3
 },
-1: {
+12: {
 "name": "Clicked",
 "prop1": 1,
 "prop2": 0,
 "type": 0
-},
-7: {
-"name": "Avistado",
-"prop1": 200,
-"prop2": 0,
-"type": 2
 }
 }
 contexts = {
-2: {
+13: {
 "activated": true,
-"name": "InimigoVisto",
+"name": "Attack",
 "perception_ids": {
-7: 0
+11: 0,
+12: 0
 }
-},
-6: {
-"activated": true,
-"name": "InimigoLonge",
-"perception_ids": {
-0: 0
-}
-}
-}
-decisions = {
-3: {
-"activated": true,
-"base_score": 20,
-"context_ids": {
-2: 1
-},
-"name": "Atacar"
-},
-4: {
-"activated": true,
-"base_score": 30,
-"context_ids": {
-2: -10,
-6: 10
-},
-"name": "Summonar"
-},
-8: {
-"activated": true,
-"base_score": 30,
-"context_ids": {},
-"name": "Vigiar"
 }
 }
