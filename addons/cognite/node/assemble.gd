@@ -6,12 +6,14 @@ signal actualized
 const PERCEPTION_TEMPLATE := {"name": "", "type": 0, "prop1": 0, "prop2": 0}
 const CONTEXT_TEMPLATE := {"name": "", "activated": true, "perception_ids": {}}
 const DECISION_TEMPLATE := {"name": "", "activated": true, "base_score": 0, "context_ids": {}}
-
+const ACTION_TEMPLATE := {"activated": true, "decision_id": 0, "deed_list": []}
 
 @export var creation_count := 0
 @export var perceptions: Dictionary
 @export var contexts: Dictionary
 @export var decisions: Dictionary
+@export var actions: Dictionary
+@export var deeds: Dictionary
 
 
 func create_perception() -> Array:
@@ -60,6 +62,30 @@ func atualize_decision(id: int, decision: Dictionary):
 func get_decision(id: int) -> Dictionary:
 	if decisions.has(id): return decisions[id]
 	return {}
+
+
+func create_action(decision_id: int) -> Array:
+	var action := ACTION_TEMPLATE.duplicate(true)
+	action.decision_id = decision_id
+	actions[creation_count] = action
+	creation_count += 1
+	actualize()
+	return [creation_count, action]
+
+func atualize_action(id: int, action: Dictionary):
+	action[id] = action
+	actualize()
+
+func get_action(id: int) -> Dictionary:
+	if actions.has(id): return actions[id]
+	return {}
+
+
+func create_deed() -> int:
+	deeds[creation_count] = ""
+	creation_count += 1
+	actualize()
+	return creation_count
 
 
 func is_cognite_assemble():

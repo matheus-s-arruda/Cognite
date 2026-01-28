@@ -1,7 +1,6 @@
 @tool
 extends PanelContainer
 
-
 var context_id: int
 var decision_id: int
 var assemble: CogniteAssemble

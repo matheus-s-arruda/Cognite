@@ -1,0 +1,113 @@
+[gd_scene load_steps=5 format=3 uid="uid://5ryiecwquvgd"]
+
+[ext_resource type="Script" uid="uid://ri50s6oqcsao" path="res://addons/cognite/editor/scripts/action_item.gd" id="1_btbdu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eiykg"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.133333, 0.141176, 0.152941, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9882353, 0.49803922, 0.49803922, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3yy8p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3yy8p"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.211765, 0.239216, 0.290196, 0.588235)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="action_item" type="PanelContainer"]
+offset_right = 16.0
+offset_bottom = 16.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_eiykg")
+script = ExtResource("1_btbdu")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="header" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="activated" type="CheckButton" parent="VBoxContainer/header"]
+layout_mode = 2
+button_pressed = true
+
+[node name="Label" type="Label" parent="VBoxContainer/header"]
+layout_mode = 2
+text = "activated"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_3yy8p")
+
+[node name="delete" type="Button" parent="VBoxContainer/header"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+focus_mode = 0
+text = "x"
+icon_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Binded Decision:"
+vertical_alignment = 1
+
+[node name="context_name" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Name:"
+editable = false
+
+[node name="show_perception_list" type="CheckButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/focus = SubResource("StyleBoxFlat_3yy8p")
+button_pressed = true
+text = "Show Actions"
+icon_alignment = 1
+expand_icon = true
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3yy8p")
+
+[node name="deed_list" type="VBoxContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="create_deed" type="Button" parent="VBoxContainer/PanelContainer/deed_list"]
+layout_mode = 2
+focus_mode = 0
+text = "Add Action"
+
+[connection signal="toggled" from="VBoxContainer/header/activated" to="." method="_on_activated_toggled"]
+[connection signal="pressed" from="VBoxContainer/header/delete" to="." method="_on_delete_pressed"]
+[connection signal="toggled" from="VBoxContainer/show_perception_list" to="." method="_on_show_perception_list_toggled"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/deed_list/create_deed" to="." method="_on_create_deed_pressed"]

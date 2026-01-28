@@ -11,16 +11,12 @@ var decision_list: Array[Control]
 
 func set_assemble(assemble: CogniteAssemble):
 	current_assemble = assemble
-	refresh_registry()
+	for button in decision_list:
+		if button: button.queue_free()
+	decision_list.clear()
 	
 	for decision in assemble.decisions:
 		create_decision_item(decision, assemble.decisions[decision])
-
-
-func refresh_registry():
-	for button in decision_list:
-		button.queue_free()
-	decision_list.clear()
 
 
 func create_decision_item(decision_id: int, decision: Dictionary):

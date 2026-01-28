@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bukcku74rrx3f"]
+[gd_scene load_steps=14 format=3 uid="uid://bukcku74rrx3f"]
 
 [ext_resource type="Script" uid="uid://cujf7aubet3b4" path="res://addons/cognite/editor/scripts/dock.gd" id="1_5rkij"]
 [ext_resource type="Texture2D" uid="uid://dgsq8vhvavv6k" path="res://addons/cognite/assets/artwork_godot.jpg" id="1_bxm0b"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cfueccykdy42w" path="res://addons/cognite/editor/scripts/percepition_list.gd" id="5_bxm0b"]
 [ext_resource type="Script" uid="uid://bga2ukub1e0ix" path="res://addons/cognite/editor/scripts/context_list.gd" id="6_bxm0b"]
 [ext_resource type="Script" uid="uid://bmwvndvj3wy0e" path="res://addons/cognite/editor/scripts/decision_list.gd" id="7_bxm0b"]
+[ext_resource type="Script" uid="uid://bcvf288alwh81" path="res://addons/cognite/editor/scripts/action_list.gd" id="9_maeht"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_maeht"]
 content_margin_left = 4.0
@@ -77,6 +78,7 @@ size_flags_vertical = 3
 
 [node name="percepition_list" type="PanelContainer" parent="dock"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_uv2al")
 script = ExtResource("5_bxm0b")
 
@@ -116,6 +118,7 @@ text = "create new Perception"
 
 [node name="context_list" type="PanelContainer" parent="dock"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("2_5rkij")
 script = ExtResource("6_bxm0b")
 
@@ -154,6 +157,7 @@ text = "create new Context"
 
 [node name="decision_list" type="PanelContainer" parent="dock"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2m7hh")
 script = ExtResource("7_bxm0b")
 
@@ -191,6 +195,49 @@ layout_mode = 2
 disabled = true
 text = "create new Decision"
 
+[node name="action_list" type="PanelContainer" parent="dock"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("2_5rkij")
+script = ExtResource("9_maeht")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="dock/action_list"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="dock/action_list/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("3_vfe4i")
+text = "Actions"
+label_settings = SubResource("LabelSettings_j26lr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="dock/action_list/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("3_vfe4i")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="dock/action_list/VBoxContainer/PanelContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="dock/action_list/VBoxContainer/PanelContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="dock/action_list/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_5rkij")
+
+[node name="create_new_action" type="MenuButton" parent="dock/action_list/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+text = "Create new Action"
+
 [connection signal="pressed" from="dock/percepition_list/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/create_perception_item" to="dock/percepition_list" method="_on_create_perception_item_pressed"]
 [connection signal="pressed" from="dock/context_list/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/create_perception_item" to="dock/context_list" method="_on_create_perception_item_pressed"]
 [connection signal="pressed" from="dock/decision_list/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/create_decision_item" to="dock/decision_list" method="_on_create_decision_item_pressed"]
+[connection signal="pressed" from="dock/action_list/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/PanelContainer/create_new_action" to="dock/action_list" method="_on_create_new_action_pressed"]

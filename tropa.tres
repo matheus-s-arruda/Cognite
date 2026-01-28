@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_kbvkb")
-creation_count = 25
+creation_count = 31
 perceptions = {
 20: {
 "name": "life",
@@ -66,5 +66,16 @@ decisions = {
 },
 "name": "Heal"
 }
+}
+actions = {
+28: {
+"activated": true,
+"decision_id": 24,
+"deed_list": []
+}
+}
+deeds = {
+29: "",
+30: ""
 }
 metadata/_custom_type_script = "uid://bmho1qa7r0yhk"
