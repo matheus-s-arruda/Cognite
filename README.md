@@ -11,7 +11,7 @@ You can acquire Cognite in your project in two ways
 
 [previous version - Cognite 1.3](https://github.com/matheus-s-arruda/Cognite/blob/3.0/README.md)
 
-# Update 4.0 - Cognite 2
+# Update 4.0
 ## Complete system reorganization
 
 - The graph system has been removed; the design is now based on scoring.
