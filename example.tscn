@@ -559,6 +559,5 @@ script = ExtResource("9_mdusf")
 cognite_assemble = ExtResource("10_hl4on")
 Distance = null
 Clicked = null
-Avistado = null
 
 [connection signal="timeout" from="npc/summon_delay" to="npc" method="_on_summon_delay_timeout"]

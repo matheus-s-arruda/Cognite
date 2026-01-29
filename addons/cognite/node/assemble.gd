@@ -7,6 +7,7 @@ const PERCEPTION_TEMPLATE := {"name": "", "type": 0, "prop1": 0, "prop2": 0}
 const CONTEXT_TEMPLATE := {"name": "", "activated": true, "perception_ids": {}}
 const DECISION_TEMPLATE := {"name": "", "activated": true, "base_score": 0, "context_ids": {}}
 const ACTION_TEMPLATE := {"activated": true, "decision_id": 0, "deed_list": []}
+const DEED_TEMPLATE := {"name": "", "process_mode": 0}
 
 @export var creation_count := 0
 @export var perceptions: Dictionary
@@ -66,14 +67,15 @@ func get_decision(id: int) -> Dictionary:
 
 func create_action(decision_id: int) -> Array:
 	var action := ACTION_TEMPLATE.duplicate(true)
+	var a = [creation_count, action]
 	action.decision_id = decision_id
 	actions[creation_count] = action
 	creation_count += 1
 	actualize()
-	return [creation_count, action]
+	return a
 
 func atualize_action(id: int, action: Dictionary):
-	action[id] = action
+	actions[id] = action
 	actualize()
 
 func get_action(id: int) -> Dictionary:
@@ -81,12 +83,21 @@ func get_action(id: int) -> Dictionary:
 	return {}
 
 
-func create_deed() -> int:
-	deeds[creation_count] = ""
+func create_deed() -> Array:
+	var deed := DEED_TEMPLATE.duplicate(true)
+	var d = [creation_count, deed]
+	deeds[creation_count] = deed
 	creation_count += 1
 	actualize()
-	return creation_count
+	return d
 
+func atualize_deed(id: int, deed: Dictionary):
+	deeds[id] = deed
+	actualize()
+
+func get_deed(id: int) -> Dictionary:
+	if deeds.has(id): return deeds[id]
+	return {}
 
 func is_cognite_assemble():
 	return true

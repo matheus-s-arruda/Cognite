@@ -24,14 +24,16 @@ func load_action(_assemble: CogniteAssemble, _action_id: int, _action_data: Dict
 		item.queue_free()
 	deed_list.clear()
 	
-	for deed in action_data.deed_list:
-		create_deed(deed)
+	for deed_id in action_data.deed_list:
+		var deed := assemble.get_deed(deed_id)
+		if not deed.is_empty():
+			create_deed(deed_id, deed)
 
 
-func create_deed(deed_id: int):
+func create_deed(deed_id: int, deed_data: Dictionary):
 	var deed = DEED_ITEM.instantiate()
 	deed_list_panel.add_child(deed)
-	deed.load_deed(assemble, action_id, deed_id)
+	deed.load_deed(assemble, action_id, deed_id, deed_data)
 	deed_list.append(deed)
 
 
@@ -51,7 +53,7 @@ func _on_show_perception_list_toggled(toggled_on: bool) -> void:
 
 
 func _on_create_deed_pressed() -> void:
-	var deed := assemble.create_deed()
-	action_data.deed_list.append(deed)
+	var new_deed := assemble.create_deed()
+	action_data.deed_list.append(new_deed[0])
 	assemble.atualize_action(action_id, action_data)
-	create_deed(deed)
+	create_deed(new_deed[0], new_deed[1])

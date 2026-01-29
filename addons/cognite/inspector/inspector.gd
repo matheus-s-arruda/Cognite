@@ -10,4 +10,11 @@ func _can_handle(object: Object):
 
 func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wide):
 	if object is CogniteAssemble:
-		return name == "creation_count" or name == "perceptions" or name == "contexts" or name == "decisions"
+		return (
+			name == "creation_count"
+			or name == "perceptions"
+			or name == "contexts"
+			or name == "decisions"
+			or name == "actions"
+			or name == "deeds"
+		)
