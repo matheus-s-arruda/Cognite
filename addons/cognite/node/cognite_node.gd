@@ -11,6 +11,7 @@ var updating: bool
 
 var runtime_context: Dictionary
 var runtime_decision: Dictionary
+var runtime_action: Dictionary
 var decisions: Dictionary
 
 var current_decision: Dictionary
@@ -31,6 +32,9 @@ func _enter_tree() -> void:
 	for decision_id in cognite_assemble.decisions:
 		decisions[decision_id] = 0
 		runtime_decision[decision_id] = CogniteRuntimeDecision.new(cognite_assemble.decisions[decision_id], self)
+	
+	for action_id in cognite_assemble.actions:
+		runtime_action[action_id] = CogniteRuntimeAction.new(cognite_assemble.actions[action_id], self)
 
 
 func _process(delta: float) -> void:

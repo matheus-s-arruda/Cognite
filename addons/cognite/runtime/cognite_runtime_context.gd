@@ -5,7 +5,6 @@ enum PropertyType {BOOL, EQUAL, LESS, MORE, BETWEEN}
 
 var cognite_node: CogniteNode
 var perpection_list: Array[Callable]
-
 var validate: bool
 
 

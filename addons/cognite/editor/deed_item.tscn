@@ -1,33 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://d56kl0ah7k1r"]
+[gd_scene load_steps=2 format=3 uid="uid://d56kl0ah7k1r"]
 
 [ext_resource type="Script" uid="uid://b7l48hlrgw1aj" path="res://addons/cognite/editor/scripts/deed_item.gd" id="1_d7xlx"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btbdu"]
-content_margin_left = 4.0
-content_margin_right = 4.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qug8o"]
-content_margin_left = 6.0
-content_margin_right = 6.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-corner_detail = 5
-
 [node name="deed_item" type="HBoxContainer"]
-offset_right = 232.0
-offset_bottom = 42.0
+offset_right = 252.0
+offset_bottom = 31.0
 script = ExtResource("1_d7xlx")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 
 [node name="up" type="Button" parent="VBoxContainer"]
@@ -36,17 +16,6 @@ layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 13
-theme_override_styles/normal = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_btbdu")
-theme_override_styles/focus = SubResource("StyleBoxFlat_btbdu")
 text = "▲"
 icon_alignment = 1
 
@@ -56,17 +25,6 @@ layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 13
-theme_override_styles/normal = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/hover = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_qug8o")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qug8o")
 text = "▼"
 icon_alignment = 1
 
