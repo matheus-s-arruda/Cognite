@@ -557,5 +557,9 @@ script = SubResource("GDScript_kd6nb")
 [node name="CogniteNode" type="Node" parent="npc"]
 script = ExtResource("9_mdusf")
 cognite_assemble = ExtResource("10_hl4on")
+Distance = null
+Clicked = null
+
+[node name="Node" type="Node" parent="npc/CogniteNode"]
 
 [connection signal="timeout" from="npc/summon_delay" to="npc" method="_on_summon_delay_timeout"]

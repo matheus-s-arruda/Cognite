@@ -18,6 +18,19 @@ var current_decision: Dictionary
 var best_score_decision: int
 var highest_score_decision: int
 
+var signals: Array
+
+func recalcule_action_signals():
+	for action_id in cognite_assemble.actions:
+		for deed_id in cognite_assemble.actions[action_id].deed_list:
+			var deed: Dictionary = cognite_assemble.deeds[deed_id]
+			
+			signals.append(Signal(self, "_on_" + deed.name + "_initiated")) 
+			signals.append(Signal(self, "_on_" + deed.name + "_finalized"))
+	
+	for i in get_signal_list():
+		print(i)
+
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_d0138")
-creation_count = 18
+creation_count = 20
 perceptions = {
 11: {
 "name": "Distance",
@@ -43,10 +43,16 @@ actions = {
 15: {
 "activated": true,
 "decision_id": 14,
-"deed_list": [16, 17]
+"deed_list": [18, 19]
 }
 }
 deeds = {
-16: "Manbcha",
-17: "Ddeta"
+18: {
+"name": "Binv",
+"process_mode": 1
+},
+19: {
+"name": "Provo",
+"process_mode": 2
+}
 }
