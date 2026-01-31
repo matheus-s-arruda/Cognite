@@ -1,9 +1,11 @@
 @tool
 class_name CogniteNode extends Node
 
+signal started(_deed_name: StringName)
+signal finalized(_deed_name: StringName)
+signal request(_deed_name: StringName)
 
 @export var cognite_assemble: CogniteAssemble
-
 
 var perceptions: Dictionary
 var context: Dictionary
@@ -14,22 +16,13 @@ var runtime_decision: Dictionary
 var runtime_action: Dictionary
 var decisions: Dictionary
 
-var current_decision: Dictionary
-var best_score_decision: int
-var highest_score_decision: int
+var action_by_decision: Dictionary
+var best_score_decision: int = -1
 
-var signals: Array
 
-func recalcule_action_signals():
-	for action_id in cognite_assemble.actions:
-		for deed_id in cognite_assemble.actions[action_id].deed_list:
-			var deed: Dictionary = cognite_assemble.deeds[deed_id]
-			
-			signals.append(Signal(self, "_on_" + deed.name + "_initiated")) 
-			signals.append(Signal(self, "_on_" + deed.name + "_finalized"))
-	
-	for i in get_signal_list():
-		print(i)
+func deed_action_finalized(deed_name: StringName):
+	var action_id: int = action_by_decision[best_score_decision]
+	runtime_action[action_id]
 
 
 func _enter_tree() -> void:
@@ -47,8 +40,9 @@ func _enter_tree() -> void:
 		runtime_decision[decision_id] = CogniteRuntimeDecision.new(cognite_assemble.decisions[decision_id], self)
 	
 	for action_id in cognite_assemble.actions:
-		runtime_action[action_id] = CogniteRuntimeAction.new(cognite_assemble.actions[action_id], self)
-
+		var action: Dictionary = cognite_assemble.actions[action_id]
+		runtime_action[action_id] = CogniteRuntimeAction.new(action, self)
+		action_by_decision[action.decision_id] = action_id
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
@@ -60,15 +54,22 @@ func _process(delta: float) -> void:
 		decisions[dcs] = runtime_decision[dcs].get_score()
 	
 	var keys = decisions.keys()
-	keys.sort_custom(sort_decision_score)
-	best_score_decision = keys[0]
-	highest_score_decision = decisions[keys[0]]
+	keys.sort_custom(_sort_decision_score)
 	
-	current_decision = cognite_assemble.decisions[best_score_decision]
+	if best_score_decision != keys[0]:
+		action_cicle(keys[0])
+		best_score_decision = keys[0]
 
 
-func is_cognite_node():
-	return true
+func action_cicle(new_decision: int):
+	if decisions.has(best_score_decision):
+		var action_id = action_by_decision[best_score_decision]
+		runtime_action[action_id].finish()
+	
+	if decisions.has(new_decision):
+		var action_id = action_by_decision[new_decision]
+		runtime_action[action_id].start()
+
 
 func _get_property_list():
 	var props := []
@@ -94,5 +95,14 @@ func _set(property, value):
 		perceptions[property] = value
 		return true
 
-func sort_decision_score(a, b):
+func _sort_decision_score(a, b):
 	return decisions[a] > decisions[b]
+
+func _on_deed_started(_deed_name: StringName):
+	started.emit(_deed_name)
+
+func _on_deed_finalized(_deed_name: StringName):
+	finalized.emit(_deed_name)
+
+func _on_deed_request(_deed_name: StringName):
+	request.emit(_deed_name)

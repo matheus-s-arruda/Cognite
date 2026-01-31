@@ -21,13 +21,13 @@ var motion: Vector2
 func _physics_process(delta):
 	direction = Vector2()
 	
-	if not cognite_node.current_decision: return
-	
-	if cognite_node.current_decision.name == "Atacar":
-		current_state = States.MOVING
-	
-	if cognite_node.current_decision.name == "Summonar":
-		current_state = States.SUMMON
+	#if not cognite_node.current_decision: return
+	#
+	#if cognite_node.current_decision.name == "Atacar":
+		#current_state = States.MOVING
+	#
+	#if cognite_node.current_decision.name == "Summonar":
+		#current_state = States.SUMMON
 		
 	
 	match current_state:

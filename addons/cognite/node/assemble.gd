@@ -7,7 +7,7 @@ const PERCEPTION_TEMPLATE := {"name": "", "type": 0, "prop1": 0, "prop2": 0}
 const CONTEXT_TEMPLATE := {"name": "", "activated": true, "perception_ids": {}}
 const DECISION_TEMPLATE := {"name": "", "activated": true, "base_score": 0, "context_ids": {}}
 const ACTION_TEMPLATE := {"activated": true, "decision_id": 0, "deed_list": []}
-const DEED_TEMPLATE := {"name": "", "process_mode": 0}
+const DEED_TEMPLATE := {"name": "", "process_mode": 1}
 
 @export var creation_count := 0
 @export var perceptions: Dictionary
