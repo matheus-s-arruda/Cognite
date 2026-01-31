@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_rhek2")
-creation_count = 25
+creation_count = 26
 perceptions = {
 0: {
 "name": "player_visible",
@@ -29,6 +29,12 @@ perceptions = {
 "prop1": 100,
 "prop2": 0,
 "type": 3
+},
+25: {
+"name": "player_not_visible",
+"prop1": 1,
+"prop2": 0,
+"type": 0
 }
 }
 contexts = {
@@ -36,9 +42,7 @@ contexts = {
 "activated": true,
 "name": "evaluate",
 "perception_ids": {
-0: 0,
-1: 0,
-9: 0
+25: 0
 }
 },
 10: {
@@ -117,7 +121,7 @@ deeds = {
 "process_mode": 1
 },
 15: {
-"name": "Wait",
+"name": "WaitWander",
 "process_mode": 1
 },
 17: {

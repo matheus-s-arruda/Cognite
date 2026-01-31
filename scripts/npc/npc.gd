@@ -12,13 +12,23 @@ var direction: Vector2
 var motion: Vector2
 
 @onready var player: CharacterBody2D = $"../player"
-@onready var cognite_node: CogniteNode = $CogniteNode
 @onready var animation = $AnimatedSprite2D
 @onready var collision = $CollisionShape2D
+
+@onready var cognite_node: CogniteNode = $CogniteNode
+
 @onready var summon_delay: Timer = $summon_delay
+@onready var wating: Timer = $wating
 
 
 func _physics_process(delta):
+	cognite_node.player_visible = position.distance_to(player.position) < 500
+	cognite_node.player_not_visible = position.distance_to(player.position) < 500
+	cognite_node.player_detected = position.distance_to(player.position)
+	cognite_node.player_close = position.distance_to(player.position)
+	cognite_node.player_not_close = position.distance_to(player.position)
+	
+	
 	#if not cognite_node.current_decision: return
 	#
 	#if cognite_node.current_decision.name == "Atacar":
@@ -79,12 +89,19 @@ func _on_summon_delay_timeout() -> void:
 
 
 func _on_cognite_node_started(_deed_name: StringName) -> void:
-	if _deed_name == "StopMotion":
-		move(position)
+	match _deed_name:
+		"PickRandomPoint":
+			move( Vector2(randi_range(0, 900), randi_range(0, 600)))
+	
+		"WaitWander":
+			wating.start(0.5 + randf())
+			await wating.timeout
+			cognite_node.deed_action_finalized("WaitWander")
 		
-	if _deed_name == "PickRandomPoint":
-		move(player.position)
+		"StopMotion":
+			move(position)
+			cognite_node.deed_action_finalized("StopMotion")
 
 
 func _on_cognite_node_finalized(_deed_name: StringName) -> void:
-	pass # Replace with function body.
+	pass

@@ -529,6 +529,9 @@ shape = SubResource("RectangleShape2D_kdyc6")
 position = Vector2(210, 266)
 script = ExtResource("1_kt4pe")
 
+[node name="wating" type="Timer" parent="npc"]
+one_shot = true
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="npc"]
 position = Vector2(-6, 6)
 shape = SubResource("CapsuleShape2D_gipc7")
@@ -561,6 +564,7 @@ player_visible = null
 player_detected = null
 playerClose = null
 playerNotClose = null
+player_not_visible = null
 
 [connection signal="timeout" from="npc/summon_delay" to="npc" method="_on_summon_delay_timeout"]
 [connection signal="finalized" from="npc/CogniteNode" to="npc" method="_on_cognite_node_finalized"]
