@@ -33,8 +33,8 @@ func _init(action: Dictionary, _cognite_node: CogniteNode) -> void:
 func start():
 	current_process = 0
 	
-	for deed in deeds:
-		deed = deed as CogniteRuntimeDeed
+	for deed_id in deeds:
+		var deed: CogniteRuntimeDeed = deeds[deed_id]
 		if not deed.started.is_connected(cognite_node._on_deed_started):
 			deed.started.connect(cognite_node._on_deed_started)
 			

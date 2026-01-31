@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bwqetph7gy7br" path="res://assets/img/undead_executioner/summon.png" id="6_47ox6"]
 [ext_resource type="Texture2D" uid="uid://qhtscubt52t7" path="res://assets/img/undead_executioner/idle2.png" id="7_ogssh"]
 [ext_resource type="Script" uid="uid://ca685uc113riu" path="res://addons/cognite/node/cognite_node.gd" id="9_mdusf"]
-[ext_resource type="Resource" uid="uid://c1cjpf5p1bldr" path="res://teste.tres" id="10_hl4on"]
+[ext_resource type="Resource" uid="uid://cplkqa5lprjyk" path="res://lith_ia.tres" id="10_hl4on"]
 [ext_resource type="Texture2D" uid="uid://dfry4yr23rsm0" path="res://icon.svg" id="11_r6wqi"]
 
 [sub_resource type="GDScript" id="GDScript_dmsor"]
@@ -20,14 +20,13 @@ script/source = "extends CharacterBody2D
 func _physics_process(delta):
 	position = get_global_mouse_position()
 	
-	cognite_node.Distance = position.distance_to(npc.position)
 	
 	
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			cognite_node.Clicked = event.is_pressed() 
+#func _unhandled_input(event: InputEvent) -> void:
+	#if event is InputEventMouseButton:
+		#if event.button_index == MOUSE_BUTTON_LEFT:
+			#cognite_node.Clicked = event.is_pressed() 
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kdyc6"]
@@ -506,8 +505,9 @@ script/source = "extends Label
 
 
 func _process(delta: float) -> void:
-	if not cognite_node.current_decision.is_empty():
-		text = cognite_node.current_decision.name + \" : \" + str(cognite_node.highest_score_decision)
+	if cognite_node.best_score_decision != -1:
+		
+		text = cognite_node.cognite_assemble.decisions[cognite_node.best_score_decision].name
 "
 
 [node name="world" type="Node2D"]
@@ -557,9 +557,11 @@ script = SubResource("GDScript_kd6nb")
 [node name="CogniteNode" type="Node" parent="npc"]
 script = ExtResource("9_mdusf")
 cognite_assemble = ExtResource("10_hl4on")
-Distance = null
-Clicked = null
-
-[node name="Node" type="Node" parent="npc/CogniteNode"]
+player_visible = null
+player_detected = null
+playerClose = null
+playerNotClose = null
 
 [connection signal="timeout" from="npc/summon_delay" to="npc" method="_on_summon_delay_timeout"]
+[connection signal="finalized" from="npc/CogniteNode" to="npc" method="_on_cognite_node_finalized"]
+[connection signal="started" from="npc/CogniteNode" to="npc" method="_on_cognite_node_started"]

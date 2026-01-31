@@ -22,7 +22,7 @@ var best_score_decision: int = -1
 
 func deed_action_finalized(deed_name: StringName):
 	var action_id: int = action_by_decision[best_score_decision]
-	runtime_action[action_id]
+	runtime_action[action_id].finalized_current_deed(deed_name)
 
 
 func _enter_tree() -> void:
@@ -60,7 +60,6 @@ func _process(delta: float) -> void:
 		action_cicle(keys[0])
 		best_score_decision = keys[0]
 
-
 func action_cicle(new_decision: int):
 	if decisions.has(best_score_decision):
 		var action_id = action_by_decision[best_score_decision]
@@ -69,7 +68,6 @@ func action_cicle(new_decision: int):
 	if decisions.has(new_decision):
 		var action_id = action_by_decision[new_decision]
 		runtime_action[action_id].start()
-
 
 func _get_property_list():
 	var props := []

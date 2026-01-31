@@ -1,0 +1,144 @@
+[gd_resource type="Resource" script_class="CogniteAssemble" load_steps=2 format=3 uid="uid://cplkqa5lprjyk"]
+
+[ext_resource type="Script" uid="uid://bmho1qa7r0yhk" path="res://addons/cognite/node/assemble.gd" id="1_rhek2"]
+
+[resource]
+script = ExtResource("1_rhek2")
+creation_count = 25
+perceptions = {
+0: {
+"name": "player_visible",
+"prop1": 1,
+"prop2": 0,
+"type": 0
+},
+1: {
+"name": "player_detected",
+"prop1": 500,
+"prop2": 0,
+"type": 2
+},
+7: {
+"name": "playerClose",
+"prop1": 100,
+"prop2": 0,
+"type": 2
+},
+9: {
+"name": "playerNotClose",
+"prop1": 100,
+"prop2": 0,
+"type": 3
+}
+}
+contexts = {
+2: {
+"activated": true,
+"name": "evaluate",
+"perception_ids": {
+0: 0,
+1: 0,
+9: 0
+}
+},
+10: {
+"activated": true,
+"name": "VeryClose",
+"perception_ids": {
+1: 0,
+7: 0
+}
+},
+11: {
+"activated": true,
+"name": "playerSidelined",
+"perception_ids": {
+9: 0
+}
+}
+}
+decisions = {
+3: {
+"activated": true,
+"base_score": 0,
+"context_ids": {
+2: 1
+},
+"name": "Wander"
+},
+4: {
+"activated": true,
+"base_score": 0,
+"context_ids": {
+11: 4
+},
+"name": "SummonGhosts"
+},
+8: {
+"activated": true,
+"base_score": 0,
+"context_ids": {
+10: 3
+},
+"name": "ScytheAttack"
+},
+22: {
+"activated": true,
+"base_score": 1,
+"context_ids": {},
+"name": "Idle"
+}
+}
+actions = {
+13: {
+"activated": true,
+"decision_id": 3,
+"deed_list": [14, 15]
+},
+16: {
+"activated": true,
+"decision_id": 4,
+"deed_list": [17, 18]
+},
+19: {
+"activated": true,
+"decision_id": 8,
+"deed_list": [20, 21]
+},
+23: {
+"activated": true,
+"decision_id": 22,
+"deed_list": [24]
+}
+}
+deeds = {
+14: {
+"name": "PickRandomPoint",
+"process_mode": 1
+},
+15: {
+"name": "Wait",
+"process_mode": 1
+},
+17: {
+"name": "StopMovement",
+"process_mode": 2
+},
+18: {
+"name": "SpawnGhosts",
+"process_mode": 1
+},
+20: {
+"name": "DashForward",
+"process_mode": 1
+},
+21: {
+"name": "ScytheSlash",
+"process_mode": 1
+},
+24: {
+"name": "StopMotion",
+"process_mode": 1
+}
+}
+metadata/_custom_type_script = "uid://bmho1qa7r0yhk"

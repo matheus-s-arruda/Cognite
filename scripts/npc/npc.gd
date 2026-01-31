@@ -19,8 +19,6 @@ var motion: Vector2
 
 
 func _physics_process(delta):
-	direction = Vector2()
-	
 	#if not cognite_node.current_decision: return
 	#
 	#if cognite_node.current_decision.name == "Atacar":
@@ -29,31 +27,33 @@ func _physics_process(delta):
 	#if cognite_node.current_decision.name == "Summonar":
 		#current_state = States.SUMMON
 		
-	
-	match current_state:
-		States.IDLE:
-			pass
-		
-		States.MOVING:
-			move()
-		
-		States.ATTACK:
-			attack()
-		
-		States.SUMMON:
-			if can_summom: summon()
-			if animation.animation != "summon":
-				move()
+	#
+	#match current_state:
+		#States.IDLE:
+			#pass
+		#
+		#States.MOVING:
+			#move()
+		#
+		#States.ATTACK:
+			#attack()
+		#
+		#States.SUMMON:
+			#if can_summom: summon()
+			#if animation.animation != "summon":
+				#move()
 			
 	
-	if direction: motion = motion.lerp(direction * MAX_SPEED, 0.5)
+	if direction:
+		motion = motion.lerp(direction * MAX_SPEED, 0.5)
+	
 	else: motion = motion.lerp(Vector2.ZERO, 0.2)
 	velocity = motion
 	move_and_slide()
 
 
-func move():
-	direction = position.direction_to(player.position)
+func move(to: Vector2):
+	direction = position.direction_to(to)
 	motion = motion.lerp(direction * MAX_SPEED, 0.5)
 	
 	animation.flip_h = velocity.x < 0.0
@@ -76,3 +76,15 @@ func skill():
 
 func _on_summon_delay_timeout() -> void:
 	can_summom = true
+
+
+func _on_cognite_node_started(_deed_name: StringName) -> void:
+	if _deed_name == "StopMotion":
+		move(position)
+		
+	if _deed_name == "PickRandomPoint":
+		move(player.position)
+
+
+func _on_cognite_node_finalized(_deed_name: StringName) -> void:
+	pass # Replace with function body.
