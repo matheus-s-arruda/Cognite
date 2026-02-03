@@ -4,61 +4,37 @@
 
 [resource]
 script = ExtResource("1_rhek2")
-creation_count = 26
+creation_count = 29
 perceptions = {
-0: {
-"name": "player_visible",
-"prop1": 1,
-"prop2": 0,
-"type": 0
-},
-1: {
-"name": "player_detected",
-"prop1": 500,
-"prop2": 0,
-"type": 2
-},
-7: {
-"name": "playerClose",
-"prop1": 100,
-"prop2": 0,
-"type": 2
-},
-9: {
-"name": "playerNotClose",
-"prop1": 100,
-"prop2": 0,
-"type": 3
-},
-25: {
-"name": "player_not_visible",
-"prop1": 1,
-"prop2": 0,
-"type": 0
-}
+28: ["Teste", 1]
 }
 contexts = {
 2: {
 "activated": true,
 "name": "evaluate",
 "perception_ids": {
-25: 0
+28: {
+"bool": false,
+"max": 0.0,
+"min": 0.0,
+"text": 0.0
+}
 }
 },
 10: {
 "activated": true,
 "name": "VeryClose",
-"perception_ids": {
-1: 0,
-7: 0
-}
+"perception_ids": {}
 },
 11: {
 "activated": true,
 "name": "playerSidelined",
-"perception_ids": {
-9: 0
-}
+"perception_ids": {}
+},
+27: {
+"activated": true,
+"name": "",
+"perception_ids": {}
 }
 }
 decisions = {

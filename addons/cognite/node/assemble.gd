@@ -3,7 +3,7 @@ class_name CogniteAssemble extends Resource
 
 signal actualized
 
-const PERCEPTION_TEMPLATE := {"name": "", "type": 0, "prop1": 0, "prop2": 0}
+const PERCEPTION_CONTEXT_TEMPLATE := {"bool": false, "min": 0, "max": 1, "text": ""}
 const CONTEXT_TEMPLATE := {"name": "", "activated": true, "perception_ids": {}}
 const DECISION_TEMPLATE := {"name": "", "activated": true, "base_score": 0, "context_ids": {}}
 const ACTION_TEMPLATE := {"activated": true, "decision_id": 0, "deed_list": []}
@@ -17,20 +17,20 @@ const DEED_TEMPLATE := {"name": "", "process_mode": 1}
 @export var deeds: Dictionary
 
 
-func create_perception() -> Array:
-	var p := [creation_count, PERCEPTION_TEMPLATE.duplicate(true)]
-	perceptions[creation_count] = PERCEPTION_TEMPLATE.duplicate(true)
+func create_perception() -> int:
+	var p := creation_count
+	perceptions[creation_count] = ["", 0]
 	creation_count += 1
 	actualize()
 	return p
 
-func atualize_perception(id: int, perception: Dictionary):
-	perceptions[id] = perception
+func atualize_perception(id: int, _name: String, type: int):
+	perceptions[id] = [_name, type]
 	actualize()
 
-func get_perception(id: int) -> Dictionary:
+func get_perception(id: int) -> Array:
 	if perceptions.has(id): return perceptions[id]
-	return {}
+	return []
 
 
 func create_context() -> Array:

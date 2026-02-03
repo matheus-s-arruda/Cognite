@@ -34,7 +34,7 @@ func create_item():
 	var item = PERCEPTION_ITEM.instantiate()
 	
 	perceptions.add_child(item)
-	item.load_property(new_perception[0], assemble)
+	item.load_property(new_perception, assemble)
 	
 
 

@@ -37,11 +37,9 @@ func refresh_itens():
 	
 	var erase_ids: Array
 	for p in context_data.perception_ids:
-		var item: Dictionary = assemble.get_perception(p)
-		if item.is_empty():
-			erase_ids.append(p)
-		else:
-			create_context_perception_item(p, context_data.perception_ids[p])
+		var item: Array = assemble.get_perception(p)
+		if item.is_empty(): erase_ids.append(p)
+		else: create_context_perception_item(p, context_data.perception_ids[p])
 	
 	for p in erase_ids:
 		context_data.perception_ids.erase(p)
@@ -50,11 +48,11 @@ func refresh_itens():
 	perception_count = context_data.perception_ids.size()
 
 
-func create_context_perception_item(perception_id: int, score: int):
+func create_context_perception_item(perception_id: int, perception: Dictionary):
 	var per = PERCEPTION_CONTEXT_ITEM.instantiate()
 	perception_list.add_child(per)
 	context_percetion_list.append(per)
-	per.load_perception(perception_id, context_id, score, assemble)
+	per.load_perception(perception_id, perception, context_id, assemble)
 
 
 func _on_context_name_text_changed(new_text: String) -> void:
@@ -79,8 +77,8 @@ func _on_delete_pressed() -> void:
 
 
 func _on_create_perception_item_pressed(id: int) -> void:
-	context_data.perception_ids[id] = 0
-	create_context_perception_item(id, 0)
+	context_data.perception_ids[id] = assemble.PERCEPTION_CONTEXT_TEMPLATE.duplicate(true)
+	create_context_perception_item(id, context_data.perception_ids[id])
 	assemble.atualize_context(context_id, context_data)
 	perception_count = context_data.perception_ids.size()
 
@@ -100,5 +98,5 @@ func reset_perception_item_menu():
 	create_perception_item.get_popup().set_item_disabled(0, true)
 	
 	for perception_id in assemble.perceptions:
-		var perception: Dictionary = assemble.perceptions[perception_id]
-		create_perception_item.get_popup().add_item(perception.name, perception_id)
+		var perception: Array = assemble.perceptions[perception_id]
+		create_perception_item.get_popup().add_item(perception[0], perception_id)

@@ -1,6 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dm7ya0ai3sps4"]
+[gd_scene load_steps=5 format=3 uid="uid://dm7ya0ai3sps4"]
 
-[ext_resource type="Script" path="res://addons/cognite/editor/scripts/perception_context_item.gd" id="1_tbpni"]
+[ext_resource type="Script" uid="uid://ht0aoj0edvql" path="res://addons/cognite/editor/scripts/perception_context_item.gd" id="1_tbpni"]
+[ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="2_ihtp0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6jnvs"]
+content_margin_left = 0.0
+content_margin_right = 12.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxm0b"]
 content_margin_left = 8.0
@@ -16,10 +21,85 @@ offset_right = 232.0
 offset_bottom = 31.0
 script = ExtResource("1_tbpni")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="perception_item" type="VBoxContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="property_name" type="Label" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="perception_item"]
+layout_mode = 2
+
+[node name="delete" type="Button" parent="perception_item/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x"
+
+[node name="property_name" type="LineEdit" parent="perception_item/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Property:"
+
+[node name="proper" type="HBoxContainer" parent="perception_item"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="perception_item/proper"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6jnvs")
+text = "property type"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="perception_item/proper"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("2_ihtp0")
+
+[node name="property_type" type="MenuButton" parent="perception_item/proper/PanelContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+icon_alignment = 1
+item_count = 5
+popup/item_0/text = "boolean"
+popup/item_0/id = 0
+popup/item_1/text = "equal to"
+popup/item_1/id = 1
+popup/item_2/text = "less than"
+popup/item_2/id = 2
+popup/item_3/text = "more than"
+popup/item_3/id = 3
+popup/item_4/text = "between"
+popup/item_4/id = 4
+
+[node name="CheckButton" type="CheckButton" parent="perception_item/proper"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "set true"
+
+[node name="LineEdit" type="LineEdit" parent="perception_item/proper"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit2" type="LineEdit" parent="perception_item/proper"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="show_property" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Show"
+
+[node name="property_name" type="Label" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -27,11 +107,42 @@ size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_bxm0b")
 vertical_alignment = 1
 
-[node name="delete" type="Button" parent="HBoxContainer"]
+[node name="delete" type="Button" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(30, 20)
 layout_mode = 2
 focus_mode = 0
 text = "x"
 icon_alignment = 1
 
-[connection signal="pressed" from="HBoxContainer/delete" to="." method="_on_delete_pressed"]
+[node name="proper" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="boolean" type="CheckButton" parent="VBoxContainer/proper"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "set true"
+
+[node name="min" type="LineEdit" parent="VBoxContainer/proper"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Min:"
+
+[node name="max" type="LineEdit" parent="VBoxContainer/proper"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Max:"
+
+[node name="text" type="LineEdit" parent="VBoxContainer/proper"]
+visible = false
+layout_mode = 2
+placeholder_text = "String:"
+
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/show_property" to="." method="_on_show_property_toggled"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/delete" to="." method="_on_delete_pressed"]
+[connection signal="toggled" from="VBoxContainer/proper/boolean" to="." method="_on_check_button_toggled"]
+[connection signal="text_changed" from="VBoxContainer/proper/min" to="." method="_on_min_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/proper/max" to="." method="_on_max_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/proper/text" to="." method="_on_text_text_changed"]

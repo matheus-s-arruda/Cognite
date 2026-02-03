@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dgg6fxmx7asyf"]
 
-[ext_resource type="Script" path="res://addons/cognite/editor/scripts/context_item.gd" id="1_u3i8g"]
+[ext_resource type="Script" uid="uid://bv5awqpt3v145" path="res://addons/cognite/editor/scripts/context_item.gd" id="1_u3i8g"]
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="2_3yy8p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uv2al"]
@@ -83,12 +83,12 @@ placeholder_text = "Name:"
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/focus = SubResource("StyleBoxFlat_3yy8p")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_3yy8p")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_3yy8p")
-theme_override_styles/hover = SubResource("StyleBoxFlat_3yy8p")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_3yy8p")
 theme_override_styles/normal = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_3yy8p")
+theme_override_styles/focus = SubResource("StyleBoxFlat_3yy8p")
 button_pressed = true
 text = "Show Perpections"
 icon_alignment = 1
@@ -112,6 +112,7 @@ size_flags_vertical = 0
 text = "Add Perception"
 item_count = 1
 popup/item_0/text = "Perceptions"
+popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_0/separator = true
 
