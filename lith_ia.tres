@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1_rhek2")
-creation_count = 29
+creation_count = 30
 perceptions = {
-28: ["Teste", 1]
+28: ["Teste", 1],
+29: ["Man", 2]
 }
 contexts = {
 2: {
@@ -15,7 +16,7 @@ contexts = {
 "perception_ids": {
 28: {
 "bool": false,
-"max": 0.0,
+"max": 90.0,
 "min": 0.0,
 "text": 0.0
 }
@@ -24,7 +25,14 @@ contexts = {
 10: {
 "activated": true,
 "name": "VeryClose",
-"perception_ids": {}
+"perception_ids": {
+29: {
+"bool": false,
+"max": 1,
+"min": 0,
+"text": ""
+}
+}
 },
 11: {
 "activated": true,

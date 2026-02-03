@@ -76,8 +76,15 @@ func _get_property_list():
 		return props
 	
 	for id in cognite_assemble.perceptions:
-		var per: Dictionary = cognite_assemble.perceptions[id]
-		props.append({"name": per.name, "type": TYPE_BOOL if per.type == 0 else TYPE_FLOAT})
+		var per: Array = cognite_assemble.perceptions[id]
+		var data: Dictionary = {"name": per[0]}
+		
+		match per[1]:
+			0: data["type"] = TYPE_BOOL
+			1: data["type"] = TYPE_FLOAT
+			2: data["type"] = TYPE_STRING
+			
+		props.append(data)
 	
 	return props
 

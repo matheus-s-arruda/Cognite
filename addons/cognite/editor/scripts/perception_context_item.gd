@@ -13,6 +13,7 @@ var assemble: CogniteAssemble
 @onready var min: LineEdit = $VBoxContainer/proper/min
 @onready var max: LineEdit = $VBoxContainer/proper/max
 @onready var text: LineEdit = $VBoxContainer/proper/text
+@onready var perception_type: Label = $VBoxContainer/proper/property_name
 
 
 func load_perception(perception_id: int, _perception_data: Dictionary, _context_id: int, _assemble: CogniteAssemble):
@@ -23,12 +24,18 @@ func load_perception(perception_id: int, _perception_data: Dictionary, _context_
 	perception_data = context.perception_ids[id]
 	
 	match perception[1]:
-		0: boolean.show(); boolean.set_pressed_no_signal(perception_data.bool)
+		0:
+			boolean.set_pressed_no_signal(perception_data.bool)
+			perception_type.text = "Boolean"
+			boolean.show()
 		1:
 			min.text = str(perception_data.min); min.show()
 			max.text = str(perception_data.max); max.show()
-		2:  text.text = str(perception_data.text); text.show()
-
+			perception_type.text = "Numeric"
+		2:
+			text.text = str(perception_data.text)
+			perception_type.text = "String"
+			text.show()
 
 
 func _on_delete_pressed() -> void:
@@ -67,7 +74,7 @@ func _on_max_text_changed(new_text: String) -> void:
 
 func _on_text_text_changed(new_text: String) -> void:
 	var caret_position = text.caret_column
-	var word := Cognite.filter_string(new_text, "[a-zA-Z_w]")
+	var word := Cognite.filter_string(new_text, "[a-zA-Z_]")
 	text.set_text(word)
 	text.caret_column = caret_position
 	perception_data.text = float(word)
