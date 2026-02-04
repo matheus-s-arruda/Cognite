@@ -88,8 +88,18 @@ func _on_summon_delay_timeout() -> void:
 	can_summom = true
 
 
+func find_cover():
+	pass
+
+
 func _on_cognite_node_started(_deed_name: StringName) -> void:
 	match _deed_name:
+		"GetCover":
+			var cover = find_cover()
+			move(cover.position)
+		
+		
+		
 		"PickRandomPoint":
 			move( Vector2(randi_range(0, 900), randi_range(0, 600)))
 	

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d56kl0ah7k1r"]
 
-[ext_resource type="Script" uid="uid://b7l48hlrgw1aj" path="res://addons/cognite/editor/scripts/deed_item.gd" id="1_d7xlx"]
+[ext_resource type="Script" uid="uid://b7l48hlrgw1aj" path="res://addons/cognite/editor/scripts/itens/deed_item.gd" id="1_d7xlx"]
 
 [node name="deed_item" type="HBoxContainer"]
 offset_right = 252.0

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://1r7qeyebm7rx"]
 
-[ext_resource type="Script" uid="uid://ctct0s1udq57v" path="res://addons/cognite/editor/scripts/perception_item.gd" id="1_ta6m6"]
+[ext_resource type="Script" uid="uid://ctct0s1udq57v" path="res://addons/cognite/editor/scripts/itens/perception_item.gd" id="1_ta6m6"]
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="2_0mx6j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0mx6j"]

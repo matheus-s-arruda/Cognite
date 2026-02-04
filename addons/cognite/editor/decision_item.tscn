@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c5hj7stps4kmp"]
 
 [ext_resource type="StyleBox" uid="uid://45k1jrxg4nlw" path="res://addons/cognite/assets/light_background.stylebox" id="1_is4p3"]
-[ext_resource type="Script" uid="uid://dsox6ai6go3gd" path="res://addons/cognite/editor/scripts/decision_item.gd" id="1_oyct5"]
+[ext_resource type="Script" uid="uid://dsox6ai6go3gd" path="res://addons/cognite/editor/scripts/itens/decision_item.gd" id="1_oyct5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uv2al"]
 content_margin_left = 2.0
