@@ -18,6 +18,7 @@ You can acquire Cognite in your project in two ways
 - All states are active and are decided by a scoring system.
 - Scoring is determined by context
 - Contexts are defined based on perceptions, observing the world from the CogniteNode.
+- Predefined actions occurring in cascade or in parallel.
 
 
 In summary, CogniteNode triggers Perceptions, Various Perceptions create Contexts, and from these Contexts, Decisions are defined through the impact that each Context has on the Decisions.
@@ -33,7 +34,7 @@ Perceptions are the receivers of the world; they indicate what happens, they don
 
 ## Contexts
 
-Contexts, as the name suggests, are the abstraction of context from perceptions, from facts that, in turn, are related.
+Contexts, as the name suggests, are abstractions derived from perceptions; they are the facts that want to tell us something.
 
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/5.1/thumbnail/context.png">
 
@@ -43,6 +44,11 @@ The key to the functioning and purpose of this system is the Score. Intuitively,
 
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/5.1/thumbnail/decision.png">
 
+## Action
+
+Another gem of this system is the Deeds. Each Action has a set of Deeds that can be executed in parallel or sequentially. The purpose of this abstraction is to differentiate it as much as possible from an FSM system.
+
+<img src="https://github.com/matheus-s-arruda/Cognite/blob/5.1/thumbnail/action.png">
 
 # Dear dev
 
