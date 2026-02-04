@@ -93,7 +93,3 @@ func finish():
 			
 		if deed.request.is_connected(cognite_node._on_deed_request):
 			deed.request.disconnect(cognite_node._on_deed_request)
-
-
-func process():
-	pass

@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://b63crrmieet4o"]
+[gd_scene load_steps=77 format=3 uid="uid://b63crrmieet4o"]
 
 [ext_resource type="Texture2D" uid="uid://bptey1d4yeclf" path="res://assets/img/undead_executioner/idle.png" id="1_aj8cv"]
 [ext_resource type="Script" uid="uid://b5j6ns0wqi1p6" path="res://scripts/npc/npc.gd" id="1_kt4pe"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bwqetph7gy7br" path="res://assets/img/undead_executioner/summon.png" id="6_47ox6"]
 [ext_resource type="Texture2D" uid="uid://qhtscubt52t7" path="res://assets/img/undead_executioner/idle2.png" id="7_ogssh"]
 [ext_resource type="Script" uid="uid://ca685uc113riu" path="res://addons/cognite/node/cognite_node.gd" id="9_mdusf"]
+[ext_resource type="Resource" uid="uid://cs3mjev2tawic" path="res://lith_ia.tres" id="10_hl4on"]
 [ext_resource type="Texture2D" uid="uid://dfry4yr23rsm0" path="res://icon.svg" id="11_r6wqi"]
 
 [sub_resource type="GDScript" id="GDScript_dmsor"]
@@ -505,8 +506,7 @@ script/source = "extends Label
 
 func _process(delta: float) -> void:
 	if cognite_node.best_score_decision != -1:
-		
-		text = cognite_node.cognite_assemble.decisions[cognite_node.best_score_decision].name
+		text = str(cognite_node.cognite_assemble.decisions[cognite_node.best_score_decision].name)
 "
 
 [node name="world" type="Node2D"]
@@ -558,6 +558,10 @@ script = SubResource("GDScript_kd6nb")
 
 [node name="CogniteNode" type="Node" parent="npc"]
 script = ExtResource("9_mdusf")
+cognite_assemble = ExtResource("10_hl4on")
+Life = 5.0
+TargetDistance = null
+IsEnemyVisible = true
 
 [connection signal="timeout" from="npc/summon_delay" to="npc" method="_on_summon_delay_timeout"]
 [connection signal="finalized" from="npc/CogniteNode" to="npc" method="_on_cognite_node_finalized"]

@@ -143,6 +143,7 @@ size_flags_horizontal = 3
 placeholder_text = "Max:"
 
 [node name="text" type="LineEdit" parent="VBoxContainer/proper"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "String:"

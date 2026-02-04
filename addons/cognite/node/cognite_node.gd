@@ -7,7 +7,6 @@ signal request(_deed_name: StringName)
 
 @export var cognite_assemble: CogniteAssemble
 
-var perceptions: Dictionary
 var context: Dictionary
 var updating: bool
 
@@ -28,10 +27,6 @@ func deed_action_finalized(deed_name: StringName):
 func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
 	
-	for id in cognite_assemble.perceptions:
-		var per: Dictionary = cognite_assemble.perceptions[id]
-		perceptions[per.name] = false if per.type == 0 else 0.0
-	
 	for context_id in cognite_assemble.contexts:
 		runtime_context[context_id] = CogniteRuntimeContext.new(cognite_assemble.contexts[context_id], cognite_assemble, self)
 	
@@ -47,8 +42,17 @@ func _enter_tree() -> void:
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	
+	for id in cognite_assemble.perceptions:
+		var per: Array = cognite_assemble.perceptions[id]
+		
+		if not cognite_assemble.perception_runtime_value.has(per[0]):
+			match per[1]:
+				0: cognite_assemble.perception_runtime_value[per[0]] = false
+				1: cognite_assemble.perception_runtime_value[per[0]] = 0.0
+				2: cognite_assemble.perception_runtime_value[per[0]] = ""
+	
 	for crc in runtime_context:
-		runtime_context[crc].is_valid()
+		runtime_context[crc].check_is_valid()
 	
 	for dcs in runtime_decision:
 		decisions[dcs] = runtime_decision[dcs].get_score()
@@ -65,14 +69,16 @@ func action_cicle(new_decision: int):
 		var action_id = action_by_decision[best_score_decision]
 		runtime_action[action_id].finish()
 	
-	if decisions.has(new_decision):
+	if decisions.has(new_decision) and action_by_decision.has(new_decision):
 		var action_id = action_by_decision[new_decision]
 		runtime_action[action_id].start()
+	else:
+		print("asdsadasdasdadasdasa")
 
 func _get_property_list():
 	var props := []
 	
-	if not cognite_assemble and cognite_assemble.perceptions.is_empty():
+	if not cognite_assemble or cognite_assemble.perceptions.is_empty():
 		return props
 	
 	for id in cognite_assemble.perceptions:
@@ -83,22 +89,29 @@ func _get_property_list():
 			0: data["type"] = TYPE_BOOL
 			1: data["type"] = TYPE_FLOAT
 			2: data["type"] = TYPE_STRING
-			
+		
 		props.append(data)
-	
 	return props
 
 func _get(property: StringName):
-	if not perceptions.has(property): return
-	return perceptions[property]
+	if cognite_assemble.perception_runtime_value.has(property):
+		return cognite_assemble.perception_runtime_value[property]
+	return null
 
 func _set(property, value):
-	if not perceptions.has(property): return false
-	var last_value = perceptions[property]
-	
-	if (last_value is bool and value is bool) or (last_value is float and (value is float or value is int)):
-		perceptions[property] = value
+	if _is_dynamic_property(property):
+		cognite_assemble.atualize_perception_runtime_value(property, value)
 		return true
+	return false
+
+
+func _is_dynamic_property(prop_name: String) -> bool:
+	if not cognite_assemble: return false
+	for id in cognite_assemble.perceptions:
+		if cognite_assemble.perceptions[id][0] == prop_name:
+			return true
+	return false
+
 
 func _sort_decision_score(a, b):
 	return decisions[a] > decisions[b]

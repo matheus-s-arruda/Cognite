@@ -13,4 +13,5 @@ func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wi
 			or name == "decisions"
 			or name == "actions"
 			or name == "deeds"
+			or name == "perception_runtime_value"
 		)

@@ -16,6 +16,7 @@ const DEED_TEMPLATE := {"name": "", "process_mode": 1}
 @export var actions: Dictionary
 @export var deeds: Dictionary
 
+@export var perception_runtime_value: Dictionary
 
 func create_perception() -> int:
 	var p := creation_count
@@ -99,8 +100,11 @@ func get_deed(id: int) -> Dictionary:
 	if deeds.has(id): return deeds[id]
 	return {}
 
-func is_cognite_assemble():
-	return true
+
+func atualize_perception_runtime_value(perception_name: String, value):
+	perception_runtime_value[perception_name] = value
+	if Engine.is_editor_hint(): actualize()
+
 
 func actualize():
 	take_over_path(resource_path)

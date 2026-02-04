@@ -14,6 +14,7 @@ var context_list: Array[Control]
 @onready var score_value: LineEdit = $VBoxContainer/HBoxContainer3/score_value
 @onready var create_context_item: MenuButton = $VBoxContainer/PanelContainer/VBoxContainer/create_context_item
 @onready var context_itens: VBoxContainer = $VBoxContainer/PanelContainer/VBoxContainer
+@onready var decision_buttons: PanelContainer = $VBoxContainer/PanelContainer
 
 
 func _ready() -> void:
@@ -73,7 +74,6 @@ func _on_score_value_text_changed(new_text: String) -> void:
 	var word := Cognite.filter_string(new_text, "[-0-9]")
 	score_value.set_text(word)
 	score_value.caret_column = caret_position
-	
 	decision_data.base_score = int(word)
 	assemble.atualize_decision(id, decision_data)
 
@@ -86,3 +86,7 @@ func _on_create_context_item_pressed(index: int):
 
 func _on_create_context_item_about_to_popup() -> void:
 	reset_perception_item_menu()
+
+
+func _on_show_context_list_toggled(toggled_on: bool) -> void:
+	decision_buttons.visible = toggled_on

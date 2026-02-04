@@ -1,48 +1,33 @@
-[gd_resource type="Resource" script_class="CogniteAssemble" load_steps=2 format=3 uid="uid://cplkqa5lprjyk"]
+[gd_resource type="Resource" script_class="CogniteAssemble" load_steps=2 format=3 uid="uid://cs3mjev2tawic"]
 
 [ext_resource type="Script" uid="uid://bmho1qa7r0yhk" path="res://addons/cognite/node/assemble.gd" id="1_rhek2"]
 
 [resource]
 script = ExtResource("1_rhek2")
-creation_count = 30
+creation_count = 37
 perceptions = {
-28: ["Teste", 1],
-29: ["Man", 2]
+28: ["Life", 1],
+29: ["TargetDistance", 1],
+31: ["IsEnemyVisible", 0]
 }
 contexts = {
 2: {
 "activated": true,
-"name": "evaluate",
+"name": "IsLifeDown",
 "perception_ids": {
 28: {
 "bool": false,
-"max": 90.0,
+"max": 20.0,
 "min": 0.0,
-"text": 0.0
-}
-}
+"text": ""
 },
-10: {
-"activated": true,
-"name": "VeryClose",
-"perception_ids": {
-29: {
-"bool": false,
+31: {
+"bool": true,
 "max": 1,
 "min": 0,
 "text": ""
 }
 }
-},
-11: {
-"activated": true,
-"name": "playerSidelined",
-"perception_ids": {}
-},
-27: {
-"activated": true,
-"name": "",
-"perception_ids": {}
 }
 }
 decisions = {
@@ -52,28 +37,14 @@ decisions = {
 "context_ids": {
 2: 1
 },
-"name": "Wander"
+"name": "Recover"
 },
-4: {
-"activated": true,
-"base_score": 0,
-"context_ids": {
-11: 4
-},
-"name": "SummonGhosts"
-},
-8: {
-"activated": true,
-"base_score": 0,
-"context_ids": {
-10: 3
-},
-"name": "ScytheAttack"
-},
-22: {
+33: {
 "activated": true,
 "base_score": 1,
-"context_ids": {},
+"context_ids": {
+2: -1
+},
 "name": "Idle"
 }
 }
@@ -81,31 +52,21 @@ actions = {
 13: {
 "activated": true,
 "decision_id": 3,
-"deed_list": [14, 15]
+"deed_list": [14, 15, 32]
 },
-16: {
+34: {
 "activated": true,
-"decision_id": 4,
-"deed_list": [17, 18]
-},
-19: {
-"activated": true,
-"decision_id": 8,
-"deed_list": [20, 21]
-},
-23: {
-"activated": true,
-"decision_id": 22,
-"deed_list": [24]
+"decision_id": 33,
+"deed_list": [35, 36]
 }
 }
 deeds = {
 14: {
-"name": "PickRandomPoint",
+"name": "GetCover",
 "process_mode": 1
 },
 15: {
-"name": "WaitWander",
+"name": "ToHeal",
 "process_mode": 1
 },
 17: {
@@ -127,6 +88,25 @@ deeds = {
 24: {
 "name": "StopMotion",
 "process_mode": 1
+},
+32: {
+"name": "WaitHighLife",
+"process_mode": 1
+},
+35: {
+"name": "Patrol",
+"process_mode": 1
+},
+36: {
+"name": "Wait",
+"process_mode": 1
 }
+}
+perception_runtime_value = {
+"IsEnemyVisible": true,
+"Life": 5.0,
+&"Man": "asddsa2a",
+"Nosssa": true,
+&"Teste": 50.0
 }
 metadata/_custom_type_script = "uid://bmho1qa7r0yhk"

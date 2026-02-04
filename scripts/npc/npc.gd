@@ -22,11 +22,11 @@ var motion: Vector2
 
 
 func _physics_process(delta):
-	cognite_node.player_visible = position.distance_to(player.position) < 500
-	cognite_node.player_not_visible = position.distance_to(player.position) < 500
-	cognite_node.player_detected = position.distance_to(player.position)
-	cognite_node.player_close = position.distance_to(player.position)
-	cognite_node.player_not_close = position.distance_to(player.position)
+	#cognite_node.player_visible = position.distance_to(player.position) < 500
+	#cognite_node.player_not_visible = position.distance_to(player.position) < 500
+	#cognite_node.player_detected = position.distance_to(player.position)
+	#cognite_node.player_close = position.distance_to(player.position)
+	#cognite_node.player_not_close = position.distance_to(player.position)
 	
 	
 	#if not cognite_node.current_decision: return
