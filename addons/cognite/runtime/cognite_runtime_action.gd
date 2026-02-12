@@ -84,7 +84,7 @@ func finish():
 	current_process = 0
 	
 	for deed in deeds:
-		deed = deed as CogniteRuntimeDeed
+		deed = deeds[deed] as CogniteRuntimeDeed
 		if deed.started.is_connected(cognite_node._on_deed_started):
 			deed.started.disconnect(cognite_node._on_deed_started)
 			
