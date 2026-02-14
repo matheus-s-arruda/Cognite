@@ -100,6 +100,29 @@ func get_deed(id: int) -> Dictionary:
 	if deeds.has(id): return deeds[id]
 	return {}
 
+func clear_deeds() -> void:
+	var used: Dictionary = {}
+	var to_remove: Array = []
+	
+	for action in actions.values():
+		for deed_id in action.deed_list:
+			used[deed_id] = true
+	
+	for deed_id in deeds.keys():
+		if not used.has(deed_id):
+			to_remove.append(deed_id)
+	
+	for deed_id in to_remove:
+		deeds.erase(deed_id)
+	
+	for action in actions.values():
+		var valid_list: Array = []
+		
+		for deed_id in action.deed_list:
+			if deeds.has(deed_id):
+				valid_list.append(deed_id)
+		action.deed_list = valid_list
+
 
 func atualize_perception_runtime_value(perception_name: String, value):
 	perception_runtime_value[perception_name] = value

@@ -77,5 +77,5 @@ func _on_text_text_changed(new_text: String) -> void:
 	var word := Cognite.filter_string(new_text, "[a-zA-Z_]")
 	text.set_text(word)
 	text.caret_column = caret_position
-	perception_data.text = float(word)
+	perception_data.text = str(word)
 	assemble.atualize_context(context_id, context)

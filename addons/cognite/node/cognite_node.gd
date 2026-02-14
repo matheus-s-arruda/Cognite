@@ -26,6 +26,8 @@ func deed_action_finalized(deed_name: StringName):
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
+
+	cognite_assemble.clear_deeds()
 	
 	for context_id in cognite_assemble.contexts:
 		runtime_context[context_id] = CogniteRuntimeContext.new(cognite_assemble.contexts[context_id], cognite_assemble, self)
