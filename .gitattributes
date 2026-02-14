@@ -3,4 +3,4 @@
 
 # Mantém apenas a pasta addons
 * export-ignore
-/addons/* !export-ignore
+/addons/** !export-ignore
