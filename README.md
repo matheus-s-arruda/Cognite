@@ -1,7 +1,7 @@
 <img src="https://github.com/matheus-s-arruda/Cognite/blob/1.2/thumbnail/capa.png">
 
-[![Generic badge](https://img.shields.io/badge/last_version-4.1.0-red.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/godot_version-4.5.1.stable-blue.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/last_version-4.1.1-red.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/godot_version-4.6.stable-blue.svg)](https://shields.io/)
 
 ## install guide
 You can acquire Cognite in your project in two ways
